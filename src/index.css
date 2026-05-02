@@ -227,6 +227,30 @@ input.number, input.text {
   border: none !important;
 }
 
+/* Estilos de Barra de Scroll Minimalista */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 transparent;
+}
+
 @media (max-width: 768px) {
   .gastosContainer { grid-template-columns: 1fr; }
   .headerDay { grid-template-columns: 1fr; }
