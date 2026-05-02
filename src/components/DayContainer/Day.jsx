@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { DateTime } from "luxon";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
@@ -12,192 +13,190 @@ export default function Day({
   inputs,
   setInputs,
   setOn,
+  onRefresh,
 }) {
   
-  const getNum = (val) => parseFloat(val) || 0;
-
-  // --- LÓGICA DINÁMICA ---
-
-  // 1. GASTOS EFECTIVO
-  const addCashGasto = () => {
-    const current = inputs.cashExpenses || [
-      { n: inputs.nA || '', v: inputs.a || 0 }, { n: inputs.nB || '', v: inputs.b || 0 },
-      { n: inputs.nC || '', v: inputs.c || 0 }, { n: inputs.nD || '', v: inputs.d || 0 },
-      { n: inputs.nE || '', v: inputs.e || 0 }, { n: inputs.nF || '', v: inputs.f || 0 },
-      { n: inputs.nG || '', v: inputs.g || 0 }, { n: inputs.nH || '', v: inputs.h || 0 },
-      { n: inputs.nI || '', v: inputs.i || 0 }, { n: inputs.nJ || '', v: inputs.j || 0 }
-    ];
-    setInputs({ ...inputs, cashExpenses: [...current, { n: '', v: 0 }] });
+  const getNum = (val) => {
+    const n = parseFloat(val);
+    return isNaN(n) ? 0 : n;
   };
 
-  // 2. GASTOS DIGITALES
-  const addDigitalGasto = () => {
-    const current = inputs.digitalExpenses || [
-      { n: inputs.nUno || '', v: inputs.uno || 0 },
-      { n: inputs.nDos || '', v: inputs.dos || 0 },
-      { n: inputs.nTres || '', v: inputs.tres || 0 }
-    ];
-    setInputs({ ...inputs, digitalExpenses: [...current, { n: '', v: 0 }] });
-  };
+  // Traspaso de saldo inteligente
+  useEffect(() => {
+    if (getNum(inputs.efInicial) === 0 && DB_FIRE) {
+      const yesterday = DateTime.local(year, month, day).minus({ days: 1 }).toLocaleString(DateTime.DATE_FULL);
+      const ref = doc(db, DB_FIRE, yesterday);
+      getDoc(ref).then((snap) => {
+        if (snap.exists()) {
+          const yesterdayData = snap.data();
+          if (yesterdayData.efFinal) {
+            setInputs(prev => ({ ...prev, efInicial: yesterdayData.efFinal }));
+          }
+        }
+      });
+    }
+  }, []);
 
-  // 3. VENTAS DIGITALES
-  const addDigitalSale = () => {
-    const current = inputs.digitalSales || [
-      { n: 'Mercado Pago', v: inputs.mp || 0, readOnly: true },
-      { n: 'Pago Digital', v: inputs.bsf || 0, readOnly: true }
-    ];
-    setInputs({ ...inputs, digitalSales: [...current, { n: '', v: 0 }] });
-  };
-
-  const handleDynamicInput = (listName, index, field, value) => {
-    const newList = [...(inputs[listName])];
-    newList[index][field] = field === 'v' ? getNum(value) : value;
-    setInputs({ ...inputs, [listName]: newList });
-  };
-
-  // Inicialización de listas para el render
-  const cashList = inputs.cashExpenses || [
-    {n:'nA',v:'a'},{n:'nB',v:'b'},{n:'nC',v:'c'},{n:'nD',v:'d'},{n:'nE',v:'e'},
-    {n:'nF',v:'f'},{n:'nG',v:'g'},{n:'nH',v:'h'},{n:'nI',v:'i'},{n:'nJ',v:'j'}
-  ].map(i => ({ n: inputs[i.n] || '', v: inputs[i.v] || 0 }));
-
-  const digitalExpList = inputs.digitalExpenses || [
-    {n:'nUno',v:'uno'},{n:'nDos',v:'dos'},{n:'nTres',v:'tres'}
-  ].map(i => ({ n: inputs[i.n] || '', v: inputs[i.v] || 0 }));
-
+  // --- LÓGICA DE LISTAS MINIMALISTAS ---
+  // Si no hay datos, empezamos con 1 fila vacía para gastos y 0 extras para ventas
+  const cashList = inputs.cashExpenses || [{ n: '', v: 0 }];
+  const digitalExpList = inputs.digitalExpenses || [{ n: '', v: 0 }];
   const digitalSalesList = inputs.digitalSales || [
     { n: 'Mercado Pago', v: inputs.mp || 0, readOnly: true },
     { n: 'Pago Digital', v: inputs.bsf || 0, readOnly: true }
   ];
 
+  const updateState = (key, newList) => {
+    setInputs(prev => ({ ...prev, [key]: newList }));
+  };
+
+  const addRow = (key, list, defaultItem = { n: '', v: 0 }) => {
+    updateState(key, [...list, defaultItem]);
+  };
+
+  const removeRow = (key, list, index) => {
+    if (list.length <= 1 && key !== 'digitalSales') return; // Mantener al menos uno en gastos
+    const newList = list.filter((_, i) => i !== index);
+    updateState(key, newList);
+  };
+
+  const handleDynamicChange = (key, list, index, field, value) => {
+    const newList = [...list];
+    newList[index][field] = field === 'v' ? getNum(value) : value;
+    updateState(key, newList);
+  };
+
   // --- CÁLCULOS ---
-  const subtotal1 = cashList.reduce((acc, curr) => acc + getNum(curr.v), 0);
-  const subtotal2 = digitalExpList.reduce((acc, curr) => acc + getNum(curr.v), 0);
-  const subtotalSales = digitalSalesList.reduce((acc, curr) => acc + getNum(curr.v), 0);
+  const sub1 = cashList.reduce((acc, curr) => acc + getNum(curr.v), 0);
+  const sub2 = digitalExpList.reduce((acc, curr) => acc + getNum(curr.v), 0);
+  const subSales = digitalSalesList.reduce((acc, curr) => acc + getNum(curr.v), 0);
 
   const total = {
-    ventas: (getNum(inputs.efFinal) + subtotal1 + subtotalSales) - getNum(inputs.efInicial),
-    gastos: subtotal1 + subtotal2,
+    ventas: (getNum(inputs.efFinal) + sub1 + subSales) - getNum(inputs.efInicial),
+    gastos: sub1 + sub2,
   };
 
   const dt = DateTime.local(year, month, day);
   const today = dt.toLocaleString(DateTime.DATE_FULL);
 
-  const handleInput = (event) => {
-    const { name, value } = event.target;
-    setInputs({ ...inputs, [name]: value });
-  };
+  const sendDay = async () => {
+    // Filtramos filas totalmente vacías antes de guardar
+    const cleanCash = cashList.filter(i => i.n || i.v > 0);
+    const cleanDigExp = digitalExpList.filter(i => i.n || i.v > 0);
+    const cleanSales = digitalSalesList.filter(i => i.n || i.v > 0);
 
-  // Función para evitar que el scroll cambie los números
-  const preventScroll = (e) => {
-    e.target.blur();
-  };
+    const finalData = { 
+        ...inputs, 
+        cashExpenses: cleanCash, 
+        digitalExpenses: cleanDigExp, 
+        digitalSales: cleanSales 
+    };
 
-  const sendToSheets = async (ventas, gastos) => {
-    const data = { fecha: today, efInicial: getNum(inputs.efInicial), efFinal: getNum(inputs.efFinal), ventas, gastos };
     try {
-      await fetch(GOOGLE_SHEETS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-    } catch (error) { console.error("Error Sheets:", error); }
+      if (DB_FIRE) {
+        await setDoc(doc(db, DB_FIRE, today), finalData);
+        if (onRefresh) onRefresh(day);
+      }
+      
+      const sheetData = { fecha: today, efInicial: getNum(inputs.efInicial), efFinal: getNum(inputs.efFinal), ventas: total.ventas, gastos: total.gastos };
+      await fetch(GOOGLE_SHEETS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sheetData) });
+      
+      alert("🚀 Sincronización Exitosa");
+      setOn(false);
+    } catch (error) {
+      alert("❌ Error: " + error.message);
+    }
   };
 
-  const sendDay = () => {
-    if (DB_FIRE) setDoc(doc(db, DB_FIRE, today), { ...inputs });
-    sendToSheets(total.ventas, total.gastos);
-    alert("✨ Sincronización exitosa");
-  };
+  const preventScroll = (e) => e.target.blur();
 
   return (
     <div className="days">
       <div>
-        <div onClick={() => setOn(false)} className="dayActive">✕</div>
-        <p className="date">{dt.toLocaleString(DateTime.DATE_HUGE).toUpperCase()}</p>
+        <div className="modal-header">
+          <p className="date">{dt.toLocaleString(DateTime.DATE_HUGE).toUpperCase()}</p>
+          <div onClick={() => setOn(false)} className="dayActive">✕</div>
+        </div>
         
-        <div className="headerDay">
-          <div><label>Efectivo Inicial</label><input className="number" name="efInicial" value={inputs.efInicial} onChange={handleInput} type="number" placeholder="$ 0"/></div>
-          <div><label>Efectivo Final</label><input className="number" name="efFinal" value={inputs.efFinal} onChange={handleInput} type="number" placeholder="$ 0"/></div>
-        </div>
-
-        <div className="gastosContainer">
-          {/* SECCIÓN 1: GASTOS EFECTIVO */}
-          <div style={{ background: '#fff', border: '1px solid var(--border)', padding: '1.5rem', borderRadius: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <p style={{ margin: 0 }}>💸 <strong>Gastos en Efectivo</strong></p>
-              <button onClick={addCashGasto} style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '50%', width: '2rem', height: '2rem', cursor: 'pointer', fontWeight: 'bold' }}>+</button>
+        <div className="modal-content-body">
+          <div className="headerDay">
+            <div className="input-group">
+              <label>Efectivo Inicial</label>
+              <input className="number" value={inputs.efInicial} onChange={(e) => setInputs({...inputs, efInicial: e.target.value})} type="number" onWheel={preventScroll} />
             </div>
-            <ul>
-              {cashList.map((item, idx) => (
-                <li key={idx} style={{ flexDirection: 'column', gap: '0.25rem', marginBottom: '1.25rem' }}>
-                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Gasto {idx + 1}</label>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <input type="text" value={item.n} onChange={(e) => {
-                      const newList = [...cashList]; newList[idx].n = e.target.value; setInputs({...inputs, cashExpenses: newList});
-                    }} className="text" placeholder="Detalle" style={{ flex: '2' }} />
-                    <input className="number" type="number" onWheel={preventScroll} 
- value={item.v} onChange={(e) => {
-                      const newList = [...cashList]; newList[idx].v = getNum(e.target.value); setInputs({...inputs, cashExpenses: newList});
-                    }} placeholder="$ 0" style={{ flex: '1' }} />
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <div className="input-group">
+              <label>Efectivo Final</label>
+              <input className="number" value={inputs.efFinal} onChange={(e) => setInputs({...inputs, efFinal: e.target.value})} type="number" onWheel={preventScroll} />
+            </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            {/* SECCIÓN 2: GASTOS DIGITALES */}
-            <div style={{ background: '#f8fafc', border: '1px solid var(--border)', padding: '1.5rem', borderRadius: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <p style={{ margin: 0 }}>💳 <strong>Gastos Digitales</strong></p>
-                <button onClick={addDigitalGasto} style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '50%', width: '2rem', height: '2rem', cursor: 'pointer', fontWeight: 'bold' }}>+</button>
+          <div className="gastosContainer">
+            {/* SECCIÓN 1: EFECTIVO */}
+            <div className="section-card cash">
+              <div className="section-header">
+                <p>💸 <strong>Gastos Efectivo</strong></p>
+                <button onClick={() => addRow('cashExpenses', cashList)} className="btn-add">+</button>
               </div>
               <ul>
-                {digitalExpList.map((item, idx) => (
-                  <li key={idx} style={{ flexDirection: 'column', gap: '0.25rem', marginBottom: '1.25rem' }}>
-                    <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Gasto Digital {idx + 1}</label>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <input type="text" value={item.n} onChange={(e) => {
-                        const newList = [...digitalExpList]; newList[idx].n = e.target.value; setInputs({...inputs, digitalExpenses: newList});
-                      }} className="text" placeholder="Detalle" style={{ flex: '2' }} />
-                      <input className="number" type="number" onWheel={preventScroll} 
- value={item.v} onChange={(e) => {
-                        const newList = [...digitalExpList]; newList[idx].v = getNum(e.target.value); setInputs({...inputs, digitalExpenses: newList});
-                      }} placeholder="$ 0" style={{ flex: '1' }} />
+                {cashList.map((item, idx) => (
+                  <li key={idx} className="dynamic-row">
+                    <div className="row-inputs">
+                      <input type="text" value={item.n} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" style={{ flex: '2' }} />
+                      <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
+                      <button onClick={() => removeRow('cashExpenses', cashList, idx)} className="btn-remove">🗑️</button>
                     </div>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* SECCIÓN 3: VENTAS DIGITALES */}
-            <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '1.5rem', borderRadius: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <p style={{ margin: 0 }}>💰 <strong>Ventas Digitales</strong></p>
-                <button onClick={addDigitalSale} style={{ background: '#166534', color: 'white', border: 'none', borderRadius: '50%', width: '2rem', height: '2rem', cursor: 'pointer', fontWeight: 'bold' }}>+</button>
+            <div className="vertical-stack">
+              {/* SECCIÓN 2: GASTOS DIGITALES */}
+              <div className="section-card digital-exp">
+                <div className="section-header">
+                  <p><strong>💳 Gastos Digitales</strong></p>
+                  <button onClick={() => addRow('digitalExpenses', digitalExpList)} className="btn-add">+</button>
+                </div>
+                <ul>
+                  {digitalExpList.map((item, idx) => (
+                    <li key={idx} className="dynamic-row">
+                      <div className="row-inputs">
+                        <input type="text" value={item.n} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" style={{ flex: '2' }} />
+                        <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
+                        <button onClick={() => removeRow('digitalExpenses', digitalExpList, idx)} className="btn-remove">🗑️</button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul>
-                {digitalSalesList.map((item, idx) => (
-                  <li key={idx} style={{ flexDirection: 'column', gap: '0.25rem', marginBottom: '1.25rem' }}>
-                    <label style={{ fontSize: '0.75rem', fontWeight: '700', color: '#166534', textTransform: 'uppercase' }}>{item.readOnly ? item.n : `Venta Extra ${idx - 1}`}</label>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <input type="text" value={item.n} readOnly={item.readOnly} onChange={(e) => {
-                        const newList = [...digitalSalesList]; newList[idx].n = e.target.value; setInputs({...inputs, digitalSales: newList});
-                      }} className="text" style={{ flex: '2', fontWeight: '600', background: item.readOnly ? '#f1f5f9' : '#fff' }} />
-                      <input className="number" type="number" onWheel={preventScroll} 
- value={item.v} onChange={(e) => {
-                        const newList = [...digitalSalesList]; newList[idx].v = getNum(e.target.value); setInputs({...inputs, digitalSales: newList});
-                      }} placeholder="$ 0" style={{ flex: '1', background: '#fff' }} />
-                    </div>
-                  </li>
-                ))}
-              </ul>
+
+              {/* SECCIÓN 3: VENTAS DIGITALES */}
+              <div className="section-card sales-card">
+                <div className="section-header">
+                  <p><strong>💰 Ventas Digitales</strong></p>
+                  <button onClick={() => addRow('digitalSales', digitalSalesList)} className="btn-add green">+</button>
+                </div>
+                <ul>
+                  {digitalSalesList.map((item, idx) => (
+                    <li key={idx} className="dynamic-row">
+                      <div className="row-inputs">
+                        <input type="text" value={item.n} readOnly={item.readOnly} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'n', e.target.value)} className="text" style={{ flex: '2', background: item.readOnly ? '#f1f5f9' : '#fff' }} />
+                        <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1', background: '#fff' }} />
+                        {!item.readOnly && <button onClick={() => removeRow('digitalSales', digitalSalesList, idx)} className="btn-remove">🗑️</button>}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="totales">
-          <p>VENTAS DEL DÍA <span>${total.ventas.toLocaleString()}</span></p>
-          <p>GASTOS TOTALES <span>${total.gastos.toLocaleString()}</span></p>
+          <div className="totales">
+            <p>VENTAS <span>${total.ventas.toLocaleString()}</span></p>
+            <p>GASTOS <span>${total.gastos.toLocaleString()}</span></p>
+          </div>
+          <button onClick={sendDay} className="btn-send">GUARDAR Y SINCRONIZAR</button>
         </div>
-        <button onClick={sendDay} className="btn-send">GUARDAR Y SINCRONIZAR</button>
       </div>
     </div>
   );
