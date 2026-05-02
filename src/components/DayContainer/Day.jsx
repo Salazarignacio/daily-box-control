@@ -14,64 +14,41 @@ export default function Day({
   setOn,
 }) {
   
+  const getNum = (val) => parseFloat(val) || 0;
+
   const subtotal = {
     subtotal1:
-      parseInt(inputs.a) +
-      parseInt(inputs.b) +
-      parseInt(inputs.c) +
-      parseInt(inputs.d) +
-      parseInt(inputs.e) +
-      parseInt(inputs.f) +
-      parseInt(inputs.g) +
-      parseInt(inputs.h) +
-      parseInt(inputs.i) +
-      parseInt(inputs.j),
+      getNum(inputs.a) + getNum(inputs.b) + getNum(inputs.c) + getNum(inputs.d) +
+      getNum(inputs.e) + getNum(inputs.f) + getNum(inputs.g) + getNum(inputs.h) +
+      getNum(inputs.i) + getNum(inputs.j),
     subtotal2:
-      parseInt(inputs.uno) + parseInt(inputs.dos) + parseInt(inputs.tres),
+      getNum(inputs.uno) + getNum(inputs.dos) + getNum(inputs.tres),
   };
+
   const suma =
-    parseInt(inputs.efFinal) +
-    parseInt(subtotal.subtotal1) +
-    parseInt(inputs.mp) +
-    parseInt(inputs.bsf);
+    getNum(inputs.efFinal) +
+    subtotal.subtotal1 +
+    getNum(inputs.mp) +
+    getNum(inputs.bsf);
+
   const total = {
-    ventas: suma - parseFloat(inputs.efInicial),
-    gastos: parseFloat(subtotal.subtotal1) + parseFloat(subtotal.subtotal2),
+    ventas: suma - getNum(inputs.efInicial),
+    gastos: subtotal.subtotal1 + subtotal.subtotal2,
   };
-  const today = DateTime.local(year, month, day).toLocaleString(
-    DateTime.DATE_FULL,
-  );
+
+  const dt = DateTime.local(year, month, day);
+  const today = dt.toLocaleString(DateTime.DATE_FULL);
+
   const handleInput = (event) => {
     const { name, value } = event.target;
     setInputs({ ...inputs, [name]: value });
   };
-  const dt = DateTime.local(year, month, day);
-  const {
-    a,
-    b,
-    c,
-    d,
-    e,
-    f,
-    g,
-    h,
-    i,
-    j,
-    uno,
-    dos,
-    tres,
-    efInicial,
-    efFinal,
-    nA,
-    mp,
-    bsf
-  } = inputs;
 
   const sendToSheets = async (ventas, gastos) => {
     const data = {
       fecha: today,
-      efInicial: parseFloat(efInicial) || 0,
-      efFinal: parseFloat(efFinal) || 0,
+      efInicial: getNum(inputs.efInicial),
+      efFinal: getNum(inputs.efFinal),
       ventas: ventas,
       gastos: gastos
     };
@@ -80,9 +57,7 @@ export default function Day({
       await fetch(GOOGLE_SHEETS_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     } catch (error) {
@@ -91,300 +66,160 @@ export default function Day({
   };
 
   const sendDay = () => {
-    const daySale = {
-      ...inputs,
-    };
-    
     if (DB_FIRE) {
-        const docRef = doc(db, DB_FIRE, today);
-        setDoc(docRef, daySale);
+        setDoc(doc(db, DB_FIRE, today), { ...inputs });
     }
-    
     sendToSheets(total.ventas, total.gastos);
-    alert("Datos guardados correctamente");
+    alert("✨ Datos sincronizados correctamente");
   };
 
   return (
     <div className="days">
-      <div onClick={() => setOn(false)} className="dayActive">
-        x
-      </div>
-      <p className="mb-3 date">
-        {dt.toLocaleString(DateTime.DATE_HUGE).toUpperCase()}
-      </p>
-      <div className="headerDay date mb-2">
-        <div>
-          <label style={{ marginRight: "13px" }}>Efectivo Inicial</label>
-          <input
-            className="number"
-            name="efInicial"
-            value={efInicial}
-            onChange={(event) => handleInput(event)}
-            type="number"
-          />
-        </div>
-        <div>
-          <label style={{ marginRight: "13px" }}>Efectivo Final</label>
-          <input
-            className="number"
-            name={"efFinal"}
-            value={efFinal}
-            onChange={(event) => handleInput(event)}
-          />
-        </div>
-      </div>
-      <div className="gastosContainer mb-3">
-        <div className="date">
-          <p>Gastos en Efectivo</p>
-          <ul>
-            <li>
-              <input
-                type="text"
-                name="nA"
-                value={nA}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"a"}
-                value={a}
-                type="number"
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nB"
-                value={inputs.nB}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"b"}
-                value={b}
-                onChange={(event) => handleInput(event)}
-                type="number"
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nC"
-                value={inputs.nC}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"c"}
-                value={c}
-                type="number"
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nD"
-                value={inputs.nD}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"d"}
-                type="number"
-                value={d}
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nE"
-                value={inputs.nE}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"e"}
-                type="number"
-                value={e}
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nF"
-                value={inputs.nF}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"f"}
-                type="number"
-                value={f}
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nG"
-                value={inputs.nG}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"g"}
-                type="number"
-                value={g}
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nH"
-                value={inputs.nH}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"h"}
-                type="number"
-                value={h}
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nI"
-                value={inputs.nI}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"i"}
-                type="number"
-                value={i}
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nJ"
-                value={inputs.nJ}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"j"}
-                type="number"
-                value={j}
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-          </ul>
-        </div>
-        <div className="date">
-          <p>Gastos Transferencia / MP</p>
-          <ul>
-            <li>
-              <input
-                type="text"
-                name="nUno"
-                value={inputs.nUno}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"uno"}
-                value={uno}
-                type="number"
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nDos"
-                value={inputs.nDos}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"dos"}
-                value={dos}
-                type="number"
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-            <li>
-              <input
-                type="text"
-                name="nTres"
-                value={inputs.nTres}
-                onChange={(event) => handleInput(event)}
-                className="text"
-              />
-              <input
-                className="number"
-                name={"tres"}
-                value={tres}
-                type="number"
-                onChange={(event) => handleInput(event)}
-              />
-            </li>
-          </ul>
-          <div style={{ marginTop: "20px" }}>
-            <p>Ventas Digitales</p>
-            <ul>
-              <li>
-                <input type="text" value="Mercado Pago" readOnly className="text" />
-                <input
-                  className="number"
-                  name="mp"
-                  value={mp}
-                  onChange={(event) => handleInput(event)}
-                  type="number"
-                />
-              </li>
-              <li>
-                <input type="text" value="Billetera Sta Fe" readOnly className="text" />
-                <input
-                  className="number"
-                  name="bsf"
-                  value={bsf}
-                  onChange={(event) => handleInput(event)}
-                  type="number"
-                />
-              </li>
-            </ul>
+      <div>
+        <div onClick={() => setOn(false)} className="dayActive">✕</div>
+        
+        <p className="date">
+          {dt.toLocaleString(DateTime.DATE_HUGE).toUpperCase()}
+        </p>
+        
+        <div className="headerDay">
+          <div>
+            <label>Efectivo Inicial</label>
+            <input
+              className="number"
+              name="efInicial"
+              value={inputs.efInicial}
+              onChange={handleInput}
+              type="number"
+              placeholder="$ 0"
+            />
+          </div>
+          <div>
+            <label>Efectivo Final</label>
+            <input
+              className="number"
+              name="efFinal"
+              value={inputs.efFinal}
+              onChange={handleInput}
+              type="number"
+              placeholder="$ 0"
+            />
           </div>
         </div>
-      </div>
-      <div className="footerDay date">
-        <div className="totales">
-          <p>VENTAS: {total.ventas.toLocaleString()}</p>
-          <p>GASTOS: {total.gastos.toLocaleString()}</p>
+
+        <div className="gastosContainer">
+          {/* SECCIÓN 1: GASTOS EFECTIVO */}
+          <div style={{ background: '#fff', border: '1px solid var(--border)', padding: '1.5rem', borderRadius: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+            <p>💸 <strong>Gastos en Efectivo</strong></p>
+            <ul>
+              {[
+                {n: 'nA', v: 'a'}, {n: 'nB', v: 'b'}, {n: 'nC', v: 'c'},
+                {n: 'nD', v: 'd'}, {n: 'nE', v: 'e'}, {n: 'nF', v: 'f'},
+                {n: 'nG', v: 'g'}, {n: 'nH', v: 'h'}, {n: 'nI', v: 'i'},
+                {n: 'nJ', v: 'j'}
+              ].map((item, idx) => (
+                <li key={idx} style={{ flexDirection: 'column', gap: '0.25rem', marginBottom: '1.25rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                    Gasto {idx + 1}
+                  </label>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <input
+                      type="text"
+                      name={item.n}
+                      value={inputs[item.n]}
+                      onChange={handleInput}
+                      className="text"
+                      placeholder="Detalle (ej: Arcor)"
+                      style={{ flex: '2' }}
+                    />
+                    <input
+                      className="number"
+                      name={item.v}
+                      value={inputs[item.v]}
+                      type="number"
+                      onChange={handleInput}
+                      placeholder="$ 0"
+                      style={{ flex: '1' }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {/* SECCIÓN 2: GASTOS DIGITALES */}
+            <div style={{ background: '#f8fafc', border: '1px solid var(--border)', padding: '1.5rem', borderRadius: '1.5rem' }}>
+              <p><strong>💳 Gastos Digitales</strong></p>
+              <ul>
+                {[
+                  {n: 'nUno', v: 'uno', label: 'Gasto Digital 1'},
+                  {n: 'nDos', v: 'dos', label: 'Gasto Digital 2'},
+                  {n: 'nTres', v: 'tres', label: 'Gasto Digital 3'}
+                ].map((item, idx) => (
+                  <li key={idx} style={{ flexDirection: 'column', gap: '0.25rem', marginBottom: '1.25rem' }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                      {item.label}
+                    </label>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <input
+                        type="text"
+                        name={item.n}
+                        value={inputs[item.n]}
+                        onChange={handleInput}
+                        className="text"
+                        placeholder="Detalle"
+                        style={{ flex: '2' }}
+                      />
+                      <input
+                        className="number"
+                        name={item.v}
+                        value={inputs[item.v]}
+                        type="number"
+                        onChange={handleInput}
+                        placeholder="$ 0"
+                        style={{ flex: '1' }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* SECCIÓN 3: VENTAS DIGITALES */}
+            <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '1.5rem', borderRadius: '1.5rem' }}>
+              <p><strong>💰 Ventas Digitales</strong></p>
+              <ul>
+                <li style={{ flexDirection: 'column', gap: '0.25rem', marginBottom: '1.25rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: '#166534', textTransform: 'uppercase' }}>
+                    Mercado Pago
+                  </label>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <input type="text" value="Ventas MP" readOnly className="text" style={{ flex: '2', fontWeight: '600', background: '#fff' }} />
+                    <input className="number" name="mp" value={inputs.mp} type="number" onChange={handleInput} placeholder="$ 0" style={{ flex: '1', background: '#fff' }} />
+                  </div>
+                </li>
+                <li style={{ flexDirection: 'column', gap: '0.25rem', marginBottom: '1.25rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: '#166534', textTransform: 'uppercase' }}>
+                    Pago Digital
+                  </label>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <input type="text" value="Ventas Digital" readOnly className="text" style={{ flex: '2', fontWeight: '600', background: '#fff' }} />
+                    <input className="number" name="bsf" value={inputs.bsf} type="number" onChange={handleInput} placeholder="$ 0" style={{ flex: '1', background: '#fff' }} />
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+
+        <div className="totales">
+          <p>VENTAS DEL DÍA <span>${total.ventas.toLocaleString()}</span></p>
+          <p>GASTOS TOTALES <span>${total.gastos.toLocaleString()}</span></p>
+        </div>
+
         <button onClick={sendDay} className="btn-send">
-          GUARDAR DIA
+          GUARDAR Y SINCRONIZAR
         </button>
       </div>
     </div>
