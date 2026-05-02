@@ -3,7 +3,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
-
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycby_htbCw5Xwu4ImASMEicwTg440_rkN9EiMnLyogQ7f4zEZYWBiTxDSAj9vr80UJFqd5g/exec";
 
 export default function Day({
   month,
@@ -13,7 +13,6 @@ export default function Day({
   setInputs,
   setOn,
 }) {
-  
   
   const subtotal = {
     subtotal1:
@@ -64,18 +63,45 @@ export default function Day({
     efInicial,
     efFinal,
     nA,
+    mp,
+    bsf
   } = inputs;
-  const { subtotal1, subtotal2 } = subtotal;
-  const { ventas, gastos } = total;
+
+  const sendToSheets = async (ventas, gastos) => {
+    const data = {
+      fecha: today,
+      efInicial: parseFloat(efInicial) || 0,
+      efFinal: parseFloat(efFinal) || 0,
+      ventas: ventas,
+      gastos: gastos
+    };
+
+    try {
+      await fetch(GOOGLE_SHEETS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.error("Error al enviar a Sheets:", error);
+    }
+  };
 
   const sendDay = () => {
     const daySale = {
       ...inputs,
     };
-    /* Here you are */
-    const docRef = doc(db, DB_FIRE, today);
-
-    setDoc(docRef, daySale);
+    
+    if (DB_FIRE) {
+        const docRef = doc(db, DB_FIRE, today);
+        setDoc(docRef, daySale);
+    }
+    
+    sendToSheets(total.ventas, total.gastos);
+    alert("Datos guardados correctamente");
   };
 
   return (
@@ -135,7 +161,6 @@ export default function Day({
                 onChange={(event) => handleInput(event)}
                 className="text"
               />
-              {/* hacer esto dinamico con los name hechos con counters */}
               <input
                 className="number"
                 name={"b"}
@@ -202,8 +227,8 @@ export default function Day({
               />
               <input
                 className="number"
-                type="number"
                 name={"f"}
+                type="number"
                 value={f}
                 onChange={(event) => handleInput(event)}
               />
@@ -218,8 +243,8 @@ export default function Day({
               />
               <input
                 className="number"
-                type="number"
                 name={"g"}
+                type="number"
                 value={g}
                 onChange={(event) => handleInput(event)}
               />
@@ -234,8 +259,8 @@ export default function Day({
               />
               <input
                 className="number"
-                type="number"
                 name={"h"}
+                type="number"
                 value={h}
                 onChange={(event) => handleInput(event)}
               />
@@ -250,8 +275,8 @@ export default function Day({
               />
               <input
                 className="number"
-                type="number"
                 name={"i"}
+                type="number"
                 value={i}
                 onChange={(event) => handleInput(event)}
               />
@@ -266,130 +291,100 @@ export default function Day({
               />
               <input
                 className="number"
-                type="number"
                 name={"j"}
+                type="number"
                 value={j}
                 onChange={(event) => handleInput(event)}
               />
             </li>
           </ul>
-          <p>Subtotal ${subtotal1}</p>
         </div>
-        <div className="tranfCont">
-          <div className="date">
-            <p>Gastos en Tranferencias</p>
+        <div className="date">
+          <p>Gastos Transferencia / MP</p>
+          <ul>
+            <li>
+              <input
+                type="text"
+                name="nUno"
+                value={inputs.nUno}
+                onChange={(event) => handleInput(event)}
+                className="text"
+              />
+              <input
+                className="number"
+                name={"uno"}
+                value={uno}
+                type="number"
+                onChange={(event) => handleInput(event)}
+              />
+            </li>
+            <li>
+              <input
+                type="text"
+                name="nDos"
+                value={inputs.nDos}
+                onChange={(event) => handleInput(event)}
+                className="text"
+              />
+              <input
+                className="number"
+                name={"dos"}
+                value={dos}
+                type="number"
+                onChange={(event) => handleInput(event)}
+              />
+            </li>
+            <li>
+              <input
+                type="text"
+                name="nTres"
+                value={inputs.nTres}
+                onChange={(event) => handleInput(event)}
+                className="text"
+              />
+              <input
+                className="number"
+                name={"tres"}
+                value={tres}
+                type="number"
+                onChange={(event) => handleInput(event)}
+              />
+            </li>
+          </ul>
+          <div style={{ marginTop: "20px" }}>
+            <p>Ventas Digitales</p>
             <ul>
               <li>
-                <input
-                  type="text"
-                  name="nUno"
-                  value={inputs.nUno}
-                  onChange={(event) => handleInput(event)}
-                  className="text"
-                />
+                <input type="text" value="Mercado Pago" readOnly className="text" />
                 <input
                   className="number"
-                  name={"uno"}
-                  value={uno}
+                  name="mp"
+                  value={mp}
                   onChange={(event) => handleInput(event)}
                   type="number"
                 />
               </li>
               <li>
-                <input
-                  type="text"
-                  name="nDos"
-                  value={inputs.nDos}
-                  onChange={(event) => handleInput(event)}
-                  className="text"
-                />
+                <input type="text" value="Billetera Sta Fe" readOnly className="text" />
                 <input
                   className="number"
-                  name={"dos"}
-                  value={dos}
-                  onChange={(event) => handleInput(event)}
-                  type="number"
-                />
-              </li>
-              <li>
-                <input
-                  type="text"
-                  name="nTres"
-                  value={inputs.nTres}
-                  onChange={(event) => handleInput(event)}
-                  className="text"
-                />
-                <input
-                  className="number"
-                  name={"tres"}
-                  value={tres}
+                  name="bsf"
+                  value={bsf}
                   onChange={(event) => handleInput(event)}
                   type="number"
                 />
               </li>
             </ul>
-            <p>Subtotal ${subtotal2}</p>
-          </div>
-          <div className="noEf date ">
-            <p>Pagos virtuales</p>
-
-            <li>
-              <label>Mercado Pago</label>
-              <input
-                className="number m-1"
-                name={"mp"}
-                value={inputs.mp}
-                onChange={(event) => handleInput(event)}
-                type="number"
-              />
-            </li>
-            <li>
-              <label>Billetera Sta Fe</label>
-              <input
-                className="number m-1"
-                name={"bsf"}
-                value={inputs.bsf}
-                onChange={(event) => handleInput(event)}
-                type="number"
-              />
-            </li>
           </div>
         </div>
       </div>
-      <div className="headerDay date">
-        <p style={{ fontWeight: "bold" }}>
-          Venta{" "}
-          <span
-            style={{
-              backgroundColor: "black",
-              color: " rgb(122, 209, 122)",
-              padding: "3px",
-              borderRadius: "3px",
-            }}
-          >
-            ${ventas}
-          </span>{" "}
-          Gasto
-          <span
-            style={{
-              backgroundColor: "black",
-              color: "rgb(255, 88, 88)",
-              padding: "3px",
-              borderRadius: "3px",
-            }}
-          >
-            ${gastos}
-          </span>
-        </p>
-        <button
-          className="btn-send"
-          onClick={() => {
-            sendDay(gastos, ventas);
-            setOn(false);
-          }}
-          style={{ border: "none", padding: 7, borderRadius: 5 }}
-        >
-          Cargar día
+      <div className="footerDay date">
+        <div className="totales">
+          <p>VENTAS: {total.ventas.toLocaleString()}</p>
+          <p>GASTOS: {total.gastos.toLocaleString()}</p>
+        </div>
+        <button onClick={sendDay} className="btn-send">
+          GUARDAR DIA
         </button>
       </div>
     </div>

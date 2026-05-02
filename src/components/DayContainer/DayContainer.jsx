@@ -1,3 +1,4 @@
+import React from "react";
 import { DateTime } from "luxon";
 import DayList from "./DayList";
 import EmptyDay from "./EmpityDay";
@@ -18,14 +19,13 @@ export default function DayContainer({ month, year }) {
 
   const howMuchEmpties = (d, a, dia) => {
     if (whatDayIs(a) == dia && a == 1) {
-      const map = (
-        <>
-          {d.map((c) => {
-            return <EmptyDay />;
+      return (
+        <React.Fragment key={`empties-${dia}`}>
+          {d.map((c, index) => {
+            return <EmptyDay key={`empty-${dia}-${index}`} />;
           })}
-        </>
+        </React.Fragment>
       );
-      return map;
     }
   };
 
@@ -43,21 +43,20 @@ export default function DayContainer({ month, year }) {
         <div className="DaysContainer">
           {componentsQuantity(monthNumber.daysInMonth).map((a, b) => {
             return (
-              <>
-                {howMuchEmpties(domingo, a, "domingo")}{" "}
+              <React.Fragment key={`day-wrapper-${b}`}>
+                {howMuchEmpties(domingo, a, "domingo")}
                 {howMuchEmpties(sabado, a, "sábado")}
                 {howMuchEmpties(viernes, a, "viernes")}
                 {howMuchEmpties(jueves, a, "jueves")}
                 {howMuchEmpties(miercoles, a, "miércoles")}
                 {howMuchEmpties(martes, a, "martes")}
                 <DayList
-                  key={b}
                   day={a}
                   month={month}
                   year={year}
                   dayName={whatDayIs(a)}
-                />{" "}
-              </>
+                />
+              </React.Fragment>
             );
           })}
         </div>

@@ -46,6 +46,12 @@ export default function DayList({ month, dayName, day, year }) {
   const theme = useContext(ThemeContext)
 const {off, setOff} = theme
   useEffect(() => {
+    if (!DB_FIRE) {
+      console.warn("VITE_DB_FIRE is not defined. Firebase sync is disabled.");
+      setGetDay({ ...inputs });
+      return;
+    }
+
     const ref = doc(
       db,
       DB_FIRE,
@@ -56,7 +62,7 @@ const {off, setOff} = theme
         setGetDay({ ...snapShot.data() });
       } else setGetDay({ ...inputs });
     });
-  }, []);
+  }, [DB_FIRE, year, month, day]);
 
   return (
     <>
