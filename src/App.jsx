@@ -1,42 +1,28 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import YearsContainer from "./components/YearsContainer/YearsContainer";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import MonthsContainer from "./components/MonthContainer/MonthContainer";
 import { createContext, useState } from "react";
+import { DateTime } from "luxon";
 
 export const ThemeContext = createContext();
+
 function App() {
   const [off, setOff] = useState(false);
-  return (
-    <>
-      <ThemeContext.Provider value={{ off, setOff }}>
-        <BrowserRouter>
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={
-                <>
-                  {/* <h2>Elige un año</h2> */}
-                  <YearsContainer year={2023} /> <YearsContainer year={2024} />
-                  <YearsContainer year={2025} /> <YearsContainer year={2026} />
-                  <YearsContainer year={2027} />
-                  <YearsContainer year={2028} />
-                  <YearsContainer year={2029} />
-                  <YearsContainer year={2031} />
-                  <YearsContainer year={2032} />
-                  <YearsContainer year={2033} />
-                  <YearsContainer year={2034} />
-                  <YearsContainer year={2035} />
-                  <YearsContainer year={2036} />
-                </>
-              }
-            />
+  
+  // Obtenemos el año actual automáticamente
+  const currentYear = DateTime.now().year;
 
-            <Route exact path="/months/:yearId" element={<MonthsContainer />} />
-          </Routes>
-        </BrowserRouter>
-      </ThemeContext.Provider>
-    </>
+  return (
+    <ThemeContext.Provider value={{ off, setOff }}>
+      <BrowserRouter>
+        <Routes>
+          {/* Si entran a la raíz, redirigimos al año actual */}
+          <Route path="/" element={<Navigate to={`/months/${currentYear}`} replace />} />
+          
+          {/* La vista principal ahora es el calendario del año elegido */}
+          <Route exact path="/months/:yearId" element={<MonthsContainer />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeContext.Provider>
   );
 }
 
