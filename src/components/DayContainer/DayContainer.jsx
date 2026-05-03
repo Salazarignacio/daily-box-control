@@ -14,6 +14,7 @@ export default function DayContainer({ month, year }) {
   const [daysData, setDaysData] = useState({});
   const [fixedExpenses, setFixedExpenses] = useState(0);
   const [showFixedModal, setShowFixedModal] = useState(false);
+  const [showTotals, setShowTotals] = useState(false);
 
   const monthNumber = DateTime.local(year, month);
   const monthName = DateTime.local(year, month, 1).monthLong.charAt(0).toUpperCase() + DateTime.local(year, month, 1).monthLong.slice(1);
@@ -86,21 +87,31 @@ export default function DayContainer({ month, year }) {
     <div className="Contenedor">
       <div className="MonthHeader" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', background: 'var(--primary)', padding: '0.5rem 1rem', borderRadius: '0.75rem' }}>
         <h1 style={{ margin: 0, background: 'transparent', fontSize: '1rem' }}>{monthName.toUpperCase()}</h1>
-        <button onClick={() => setShowFixedModal(true)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', borderRadius: '50%', width: '1.8rem', height: '1.8rem', cursor: 'pointer', fontWeight: 'bold' }}>+</button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button 
+            onClick={() => setShowTotals(!showTotals)} 
+            style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', borderRadius: '8px', padding: '4px 8px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 'bold' }}
+          >
+            {showTotals ? '👁️' : '📊'}
+          </button>
+          <button onClick={() => setShowFixedModal(true)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', borderRadius: '50%', width: '1.8rem', height: '1.8rem', cursor: 'pointer', fontWeight: 'bold' }}>+</button>
+        </div>
       </div>
       
-      <div className="MonthlySummary">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <span className="v-total">V: ${monthlyTotals.ventas.toLocaleString()}</span>
-            <span className="g-total">G: ${monthlyTotals.gastos.toLocaleString()}</span>
+      {showTotals && (
+        <div className="MonthlySummary" style={{ animation: 'modalShow 0.3s ease' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span className="v-total">V: ${monthlyTotals.ventas.toLocaleString()}</span>
+              <span className="g-total">G: ${monthlyTotals.gastos.toLocaleString()}</span>
+          </div>
+          <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>FIJOS: ${fixedExpenses.toLocaleString()}</span>
+              <span style={{ color: rendimientoNeto >= 0 ? 'var(--success)' : 'var(--danger)', borderTop: '1px solid #ddd', paddingTop: '2px' }}>
+                  NETO: ${rendimientoNeto.toLocaleString()}
+              </span>
+          </div>
         </div>
-        <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>FIJOS: ${fixedExpenses.toLocaleString()}</span>
-            <span style={{ color: rendimientoNeto >= 0 ? 'var(--success)' : 'var(--danger)', borderTop: '1px solid #ddd', paddingTop: '2px' }}>
-                NETO: ${rendimientoNeto.toLocaleString()}
-            </span>
-        </div>
-      </div>
+      )}
 
       <div className="DaysContainer">{renderCalendarItems()}</div>
 
