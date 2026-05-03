@@ -122,11 +122,11 @@ export default function Day({
           <div className="headerDay">
             <div className="input-group">
               <label>Efectivo Inicial</label>
-              <input className="number" value={inputs.efInicial} onChange={(e) => setInputs({...inputs, efInicial: e.target.value})} type="number" onWheel={preventScroll} />
+              <input className="number" value={inputs.efInicial} onChange={(e) => setInputs({...inputs, efInicial: e.target.value})} type="number" onWheel={preventScroll} placeholder="$ 0" />
             </div>
             <div className="input-group">
               <label>Efectivo Final</label>
-              <input className="number" value={inputs.efFinal} onChange={(e) => setInputs({...inputs, efFinal: e.target.value})} type="number" onWheel={preventScroll} />
+              <input className="number" value={inputs.efFinal} onChange={(e) => setInputs({...inputs, efFinal: e.target.value})} type="number" onWheel={preventScroll} placeholder="$ 0" />
             </div>
           </div>
 

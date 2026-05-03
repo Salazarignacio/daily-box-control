@@ -71,7 +71,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f1f5f9;
+  background: #f1f5f9 !important;
   padding: 0.75rem 1rem;
   border-radius: 1.25rem;
   margin-bottom: 1rem;
@@ -225,6 +225,34 @@ body {
   border: none;
 }
 
+/* --- SECCIÓN CABECERA (CORREGIDA) --- */
+.headerDay {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1.5rem !important;
+  margin-bottom: 2rem;
+  background: #f1f5f9;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  width: 100%;
+}
+
+.input-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* --- SECCIONES DINÁMICAS --- */
 .section-card {
   background: white;
   border-radius: 1.5rem;
@@ -254,7 +282,6 @@ body {
   height: 2.2rem;
   cursor: pointer;
   font-weight: 900;
-  font-size: 1.2rem;
 }
 
 .dynamic-row {
@@ -336,8 +363,16 @@ input.number, input.text {
   cursor: pointer;
 }
 
+.vertical-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 @media (max-width: 900px) {
   .gastosContainer { grid-template-columns: 1fr; }
-  .headerDay { grid-template-columns: 1fr; }
+  .headerDay { 
+    grid-template-columns: 1fr !important; /* En celular sí se apilan */
+  }
   .modal-header, .modal-content-body { padding: 1.5rem; }
 }
