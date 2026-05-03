@@ -47,7 +47,6 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
         await setDoc(doc(db, DB_FIRE, docId), { expenses: cleanExpenses });
       }
 
-      // Sincronización opcional con Sheets (podemos adaptar el script luego si querés)
       if (GOOGLE_SHEETS_URL) {
         const data = { 
             type: 'monthly_fixed',
@@ -71,19 +70,20 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
     <div className="days">
       <div>
         <div className="modal-header">
-          <p className="date">GASTOS MENSUALES: {monthName}</p>
+          <p className="date">GASTOS FIJOS: {monthName.toUpperCase()}</p>
           <div onClick={onClose} className="dayActive">✕</div>
         </div>
         
         <div className="modal-content-body">
-          <div className="section-card fixed-expenses" style={{ background: '#f1f5f9' }}>
+          <div className="section-card">
             <div className="section-header">
-              <p>🏢 <strong>Impuestos, Servicios y Sueldos</strong></p>
+              <p>🏢 <strong>Impuestos y Servicios</strong></p>
               <button onClick={addRow} className="btn-add">+</button>
             </div>
             <ul>
               {expenses.map((item, idx) => (
                 <li key={idx} className="dynamic-row">
+                  <label className="row-label">Gasto Fijo {idx + 1}</label>
                   <div className="row-inputs">
                     <input type="text" value={item.n} onChange={(e) => handleChange(idx, 'n', e.target.value)} className="text" placeholder="Ej: Luz, Alquiler..." style={{ flex: '2' }} />
                     <input className="number" type="number" value={item.v || ''} onChange={(e) => handleChange(idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
@@ -94,11 +94,11 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
             </ul>
           </div>
 
-          <div className="totales" style={{ background: 'var(--accent)' }}>
-            <p>TOTAL GASTOS FIJOS <span>${totalFixed.toLocaleString()}</span></p>
+          <div className="totales">
+            <p>TOTAL FIJOS <span>${totalFixed.toLocaleString()}</span></p>
           </div>
           
-          <button onClick={saveMonthly} className="btn-send" style={{ background: 'var(--accent)' }}>
+          <button onClick={saveMonthly} className="btn-send">
             GUARDAR GASTOS DEL MES
           </button>
         </div>

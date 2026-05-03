@@ -85,16 +85,23 @@ export default function DayContainer({ month, year }) {
 
   return (
     <div className="Contenedor">
-      <div className="MonthHeader" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', background: 'var(--primary)', padding: '0.5rem 1rem', borderRadius: '0.75rem' }}>
-        <h1 style={{ margin: 0, background: 'transparent', fontSize: '1rem' }}>{monthName.toUpperCase()}</h1>
-        <div style={{ display: 'flex', gap: '8px' }}>
+      <div className="MonthHeader">
+        <h1>{monthName.toUpperCase()}</h1>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button 
             onClick={() => setShowTotals(!showTotals)} 
-            style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', borderRadius: '8px', padding: '4px 8px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 'bold' }}
+            className="btn-toggle-stats"
+            title="Ver totales del mes"
           >
             {showTotals ? '👁️' : '📊'}
           </button>
-          <button onClick={() => setShowFixedModal(true)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', borderRadius: '50%', width: '1.8rem', height: '1.8rem', cursor: 'pointer', fontWeight: 'bold' }}>+</button>
+          <button 
+            onClick={() => setShowFixedModal(true)} 
+            className="btn-add-monthly"
+            title="Añadir gastos fijos"
+          >
+            +
+          </button>
         </div>
       </div>
       
