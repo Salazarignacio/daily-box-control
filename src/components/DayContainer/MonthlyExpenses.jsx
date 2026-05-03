@@ -1,0 +1,108 @@
+import { useState, useEffect } from "react";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../SendData/fbConfig";
+
+const DB_FIRE = import.meta.env.VITE_DB_FIRE;
+const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL;
+
+export default function MonthlyExpenses({ monthName, year, onClose, onRefresh }) {
+  const [expenses, setExpenses] = useState([{ n: '', v: 0 }]);
+  const docId = `${monthName} ${year}_FIXED`;
+
+  const getNum = (val) => {
+    const n = parseFloat(val);
+    return isNaN(n) ? 0 : n;
+  };
+
+  useEffect(() => {
+    if (DB_FIRE) {
+      const ref = doc(db, DB_FIRE, docId);
+      getDoc(ref).then((snap) => {
+        if (snap.exists()) {
+          setExpenses(snap.data().expenses || [{ n: '', v: 0 }]);
+        }
+      });
+    }
+  }, []);
+
+  const addRow = () => setExpenses([...expenses, { n: '', v: 0 }]);
+  
+  const removeRow = (index) => {
+    if (expenses.length <= 1) return;
+    setExpenses(expenses.filter((_, i) => i !== index));
+  };
+
+  const handleChange = (index, field, value) => {
+    const newList = [...expenses];
+    newList[index][field] = field === 'v' ? getNum(value) : value;
+    setExpenses(newList);
+  };
+
+  const totalFixed = expenses.reduce((acc, curr) => acc + getNum(curr.v), 0);
+
+  const saveMonthly = async () => {
+    try {
+      const cleanExpenses = expenses.filter(i => i.n || i.v > 0);
+      if (DB_FIRE) {
+        await setDoc(doc(db, DB_FIRE, docId), { expenses: cleanExpenses });
+      }
+
+      // Sincronización opcional con Sheets (podemos adaptar el script luego si querés)
+      if (GOOGLE_SHEETS_URL) {
+        const data = { 
+            type: 'monthly_fixed',
+            month: monthName, 
+            year: year, 
+            expenses: cleanExpenses,
+            total: totalFixed 
+        };
+        await fetch(GOOGLE_SHEETS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      }
+
+      alert("📋 Gastos mensuales actualizados");
+      if (onRefresh) onRefresh();
+      onClose();
+    } catch (e) {
+      alert("❌ Error: " + e.message);
+    }
+  };
+
+  return (
+    <div className="days">
+      <div>
+        <div className="modal-header">
+          <p className="date">GASTOS MENSUALES: {monthName}</p>
+          <div onClick={onClose} className="dayActive">✕</div>
+        </div>
+        
+        <div className="modal-content-body">
+          <div className="section-card fixed-expenses" style={{ background: '#f1f5f9' }}>
+            <div className="section-header">
+              <p>🏢 <strong>Impuestos, Servicios y Sueldos</strong></p>
+              <button onClick={addRow} className="btn-add">+</button>
+            </div>
+            <ul>
+              {expenses.map((item, idx) => (
+                <li key={idx} className="dynamic-row">
+                  <div className="row-inputs">
+                    <input type="text" value={item.n} onChange={(e) => handleChange(idx, 'n', e.target.value)} className="text" placeholder="Ej: Luz, Alquiler..." style={{ flex: '2' }} />
+                    <input className="number" type="number" value={item.v || ''} onChange={(e) => handleChange(idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
+                    <button onClick={() => removeRow(idx)} className="btn-remove">🗑️</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="totales" style={{ background: 'var(--accent)' }}>
+            <p>TOTAL GASTOS FIJOS <span>${totalFixed.toLocaleString()}</span></p>
+          </div>
+          
+          <button onClick={saveMonthly} className="btn-send" style={{ background: 'var(--accent)' }}>
+            GUARDAR GASTOS DEL MES
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
