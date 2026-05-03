@@ -4,7 +4,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
-const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycby_htbCw5Xwu4ImASMEicwTg440_rkN9EiMnLyogQ7f4zEZYWBiTxDSAj9vr80UJFqd5g/exec";
+const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL;
 
 export default function Day({
   month,
