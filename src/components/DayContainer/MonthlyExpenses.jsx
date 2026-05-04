@@ -7,6 +7,7 @@ const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL;
 
 export default function MonthlyExpenses({ monthName, year, onClose, onRefresh }) {
   const [expenses, setExpenses] = useState([{ n: '', v: 0 }]);
+  const [loading, setLoading] = useState(false);
   const docId = `${monthName} ${year}_FIXED`;
 
   const getNum = (val) => {
@@ -41,6 +42,7 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
   const totalFixed = expenses.reduce((acc, curr) => acc + getNum(curr.v), 0);
 
   const saveMonthly = async () => {
+    setLoading(true);
     try {
       const cleanExpenses = expenses.filter(i => i.n || i.v > 0);
       if (DB_FIRE) {
@@ -63,6 +65,8 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
       onClose();
     } catch (e) {
       alert("❌ Error: " + e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,8 +102,8 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
             <p>TOTAL FIJOS <span>${totalFixed.toLocaleString()}</span></p>
           </div>
           
-          <button onClick={saveMonthly} className="btn-send">
-            GUARDAR GASTOS DEL MES
+          <button onClick={saveMonthly} className="btn-send" disabled={loading}>
+            {loading ? "GUARDANDO..." : "GUARDAR GASTOS DEL MES"}
           </button>
         </div>
       </div>

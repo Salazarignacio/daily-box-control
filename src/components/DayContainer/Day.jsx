@@ -15,6 +15,7 @@ export default function Day({
   setOn,
   onRefresh,
 }) {
+  const [loading, setLoading] = useState(false);
   
   const getNum = (val) => {
     const n = parseFloat(val);
@@ -80,6 +81,7 @@ export default function Day({
   const today = dt.toLocaleString(DateTime.DATE_FULL);
 
   const sendDay = async () => {
+    setLoading(true);
     // Filtramos filas totalmente vacías antes de guardar
     const cleanCash = cashList.filter(i => i.n || i.v > 0);
     const cleanDigExp = digitalExpList.filter(i => i.n || i.v > 0);
@@ -105,6 +107,8 @@ export default function Day({
       setOn(false);
     } catch (error) {
       alert("❌ Error: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -195,7 +199,9 @@ export default function Day({
             <p>VENTAS <span>${total.ventas.toLocaleString()}</span></p>
             <p>GASTOS <span>${total.gastos.toLocaleString()}</span></p>
           </div>
-          <button onClick={sendDay} className="btn-send">GUARDAR Y SINCRONIZAR</button>
+          <button onClick={sendDay} className="btn-send" disabled={loading}>
+            {loading ? "SINCRONIZANDO..." : "GUARDAR Y SINCRONIZAR"}
+          </button>
         </div>
       </div>
     </div>
