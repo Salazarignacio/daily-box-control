@@ -347,6 +347,8 @@ input.number, input.text {
   background: #f8fafc;
   color: var(--text-main);
   transition: all 0.2s;
+  width: 100%; /* Asegura que tomen el espacio disponible */
+  min-width: 0; /* 🔥 CRÍTICO: Permite que el input se encoja en flexbox */
 }
 
 input:focus {
@@ -365,6 +367,7 @@ input:focus {
   display: flex;
   justify-content: space-around;
   margin-top: 0.5rem;
+  width: 100%;
 }
 
 .totales p {
@@ -436,6 +439,7 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 2.2rem; /* Evita que el botón desaparezca */
 }
 
 .btn-remove:hover {
@@ -452,5 +456,9 @@ input:focus {
 @media (max-width: 900px) {
   .gastosContainer { grid-template-columns: 1fr; }
   .headerDay { grid-template-columns: 1fr !important; }
-  .modal-header, .modal-content-body { padding: 1.5rem; }
+  .modal-header { padding: 1rem 1.5rem; }
+  .modal-content-body { padding: 1rem; }
+  .days > div { border-radius: 1rem; }
+  .section-card { padding: 1rem; }
+  .row-inputs { gap: 0.35rem; }
 }
