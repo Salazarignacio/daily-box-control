@@ -16,20 +16,46 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  scroll-behavior: smooth; /* 🔥 Desplazamiento suave */
 }
 
 body {
   background-color: var(--primary-dark);
   color: white;
   min-height: 100vh;
-  overflow-x: hidden;
+}
+
+/* --- BARRA DE SCROLL ESTÉTICA --- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* Gris suave que combina con el modal */
+  border-radius: 10px;
+  border: 2px solid #e2e8f0; /* Espacio para que parezca flotante */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
 #root {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 1rem;
+  padding: 3rem 2rem;
   width: 100%;
 }
 
@@ -71,42 +97,17 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f1f5f9 !important;
-  padding: 0.75rem 1rem;
-  border-radius: 1.25rem;
+  background: #f1f5f9;
+  padding: 0.6rem 1rem;
+  border-radius: 1rem;
   margin-bottom: 1rem;
 }
 
 .MonthHeader h1 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--text-main);
   font-weight: 800;
-}
-
-.btn-toggle-stats {
-  background: rgba(30, 41, 59, 0.1);
-  border: none;
-  color: var(--primary-dark);
-  padding: 0.4rem 0.6rem;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn-add-monthly {
-  background: var(--accent-gold);
-  border: none;
-  color: white;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  cursor: pointer;
-  font-weight: 900;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .MonthlySummary {
@@ -183,7 +184,7 @@ body {
   padding: 1rem;
 }
 
-.days > div:not(.dayActive) {
+.days > div {
   background: #e2e8f0; 
   width: 100%;
   max-width: 850px;
@@ -192,7 +193,7 @@ body {
   overflow-x: hidden;
   border-radius: 2.5rem;
   position: relative;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
 }
@@ -207,25 +208,33 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .modal-content-body { padding: 2rem 3rem; width: 100%; }
 
 .dayActive {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  min-width: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent-gold);
+  background: var(--accent-gold) !important;
   border-radius: 50%;
-  color: white;
+  color: white !important;
   font-weight: bold;
   cursor: pointer;
-  border: none;
+  border: none !important;
 }
 
-/* --- SECCIÓN CABECERA (CORREGIDA) --- */
+.date {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+/* Formulario */
 .headerDay {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
@@ -252,7 +261,6 @@ body {
   text-transform: uppercase;
 }
 
-/* --- SECCIONES DINÁMICAS --- */
 .section-card {
   background: white;
   border-radius: 1.5rem;
@@ -261,17 +269,7 @@ body {
   width: 100%;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.section-header p {
-    color: var(--primary-dark);
-    font-size: 1.1rem;
-}
+ul { list-style: none; }
 
 .btn-add {
   background: var(--accent-gold);
@@ -282,6 +280,7 @@ body {
   height: 2.2rem;
   cursor: pointer;
   font-weight: 900;
+  font-size: 1.2rem;
 }
 
 .dynamic-row {
@@ -354,6 +353,31 @@ input.number, input.text {
   cursor: pointer;
 }
 
+.btn-toggle-stats {
+  background: rgba(30, 41, 59, 0.1);
+  border: none;
+  color: var(--primary-dark);
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-add-monthly {
+  background: var(--accent-gold);
+  border: none;
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .btn-remove {
   background: #fee2e2;
   color: var(--danger);
@@ -361,6 +385,14 @@ input.number, input.text {
   padding: 0.5rem;
   border-radius: 0.75rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-remove:hover {
+  background: var(--danger);
+  color: white;
 }
 
 .vertical-stack {
@@ -371,8 +403,6 @@ input.number, input.text {
 
 @media (max-width: 900px) {
   .gastosContainer { grid-template-columns: 1fr; }
-  .headerDay { 
-    grid-template-columns: 1fr !important; /* En celular sí se apilan */
-  }
+  .headerDay { grid-template-columns: 1fr !important; }
   .modal-header, .modal-content-body { padding: 1.5rem; }
 }
