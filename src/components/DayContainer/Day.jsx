@@ -100,7 +100,17 @@ export default function Day({
         if (onRefresh) onRefresh(day);
       }
       
-      const sheetData = { fecha: today, efInicial: getNum(inputs.efInicial), efFinal: getNum(inputs.efFinal), ventas: total.ventas, gastos: total.gastos };
+      const monthName = dt.monthLong.charAt(0).toUpperCase() + dt.monthLong.slice(1);
+      const sheetData = { 
+        fecha: today, 
+        month: monthName, 
+        year: year, 
+        efInicial: getNum(inputs.efInicial), 
+        efFinal: getNum(inputs.efFinal), 
+        ventas: total.ventas, 
+        gastos: total.gastos 
+      };
+      
       await fetch(GOOGLE_SHEETS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sheetData) });
       
       alert("🚀 Sincronización Exitosa");
