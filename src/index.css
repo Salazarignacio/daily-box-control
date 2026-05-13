@@ -25,6 +25,13 @@ body {
   min-height: 100vh;
 }
 
+/* Prevenir zoom en móviles (iOS/Android) al enfocar inputs */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
 /* --- BARRA DE SCROLL ESTÉTICA --- */
 ::-webkit-scrollbar {
   width: 10px;
