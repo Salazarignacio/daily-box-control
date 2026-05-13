@@ -7,7 +7,7 @@ import { ThemeContext } from "../../App";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 
-export default function DayList({ month, day, year, onDataLoaded, onRefresh }) {
+export default function DayList({ month, day, year, data, onDataLoaded, onRefresh }) {
   const [inputs] = useState({
     a: 0, b: 0, c: 0, d: 0, e: 0, f: 0, g: 0, h: 0, i: 0, j: 0,
     nA: "", nB: "", nC: "", nD: "", nE: "", nF: "", nG: "", nH: "", nI: "", nJ: "",
@@ -20,21 +20,28 @@ export default function DayList({ month, day, year, onDataLoaded, onRefresh }) {
   const [hasData, setHasData] = useState(false);
   const { setOff } = useContext(ThemeContext);
 
+  // Sincronizar el estado local con la data que viene por props (global)
   useEffect(() => {
-    if (!DB_FIRE) return;
+    if (data) {
+      setGetDay({ ...data });
+      setHasData(true);
+    } else {
+      setGetDay({ ...inputs });
+      setHasData(false);
+    }
+  }, [data, inputs]);
+
+  // Carga inicial si no hay data (fallback)
+  useEffect(() => {
+    if (!DB_FIRE || data) return;
     const ref = doc(db, DB_FIRE, DateTime.local(year, month, day).toLocaleString(DateTime.DATE_FULL));
     getDoc(ref).then((snap) => {
       if (snap.exists()) {
-        const data = snap.data();
-        setGetDay({ ...data });
-        setHasData(true);
-        if (onDataLoaded) onDataLoaded(day, data);
-      } else {
-        setGetDay({ ...inputs });
-        setHasData(false);
+        const snapData = snap.data();
+        if (onDataLoaded) onDataLoaded(day, snapData);
       }
     });
-  }, [DB_FIRE, year, month, day]);
+  }, [DB_FIRE, year, month, day, data, onDataLoaded]);
 
   return (
     <div className="day-wrapper">

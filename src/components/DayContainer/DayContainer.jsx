@@ -76,7 +76,7 @@ export default function DayContainer({ month, year }) {
     const emptiesCount = emptyMap[whatDayIs(1)] || 0;
     for (let i = 0; i < emptiesCount; i++) items.push(<EmptyDay key={`empty-${i}`} />);
     componentsQuantity(monthNumber.daysInMonth).forEach((d) => {
-      items.push(<DayList key={`day-${d}`} day={d} month={month} year={year} onDataLoaded={handleDataLoaded} onRefresh={refreshDay} />);
+      items.push(<DayList key={`day-${d}`} day={d} month={month} year={year} data={daysData[d]} onDataLoaded={handleDataLoaded} onRefresh={refreshDay} />);
     });
     return items;
   };
