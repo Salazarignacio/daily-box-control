@@ -14,7 +14,7 @@ export const componentsQuantity = (date) => {
 export default function MonthsContainer() {
   const { yearId } = useParams();
   const navigate = useNavigate();
-  const [activeView, setActiveView] = useState('year'); // 'year' or 'day'
+  const [activeView, setActiveView] = useState('day'); // 'day' is now the default
   const currentYear = parseInt(yearId);
 
   // Generamos una lista de años (desde el 2023 hasta 10 años en el futuro)
