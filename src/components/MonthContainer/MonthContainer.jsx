@@ -32,51 +32,31 @@ export default function MonthsContainer() {
   const realCurrentYear = now.year;
 
   return (
-    <div className={activeView === 'day' ? 'day-view-layout' : ''} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', transition: 'padding 0.3s ease' }}>
-      <div className="AppHeader" style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        marginBottom: activeView === 'day' ? '1rem' : '3rem', 
-        width: '100%',
-        transition: 'margin-bottom 0.3s ease'
-      }}>
-        
-        <div className="ViewSelector" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', background: '#f1f5f9', padding: '0.5rem', borderRadius: '1rem' }}>
+    <div className={activeView === 'day' ? 'day-view-layout' : 'year-view-layout'}>
+      <div className="AppHeader">
+        <div className="ViewSelector">
           <button 
             onClick={() => setActiveView('day')}
-            style={{ 
-              display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '0.75rem', border: 'none', cursor: 'pointer',
-              background: activeView === 'day' ? 'white' : 'transparent',
-              boxShadow: activeView === 'day' ? '0 4px 6px -1px rgba(0,0,0,0.1)' : 'none',
-              fontWeight: '600', color: activeView === 'day' ? 'var(--primary)' : '#64748b', transition: 'all 0.2s'
-            }}
+            className={activeView === 'day' ? 'active' : ''}
           >
-            <span style={{ fontSize: '1.2rem' }}>☀️</span> Mes Actual
+            <span className="icon">☀️</span> 
+            <span className="text">Mes Actual</span>
           </button>
           <button 
             onClick={() => setActiveView('year')}
-            style={{ 
-              display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '0.75rem', border: 'none', cursor: 'pointer',
-              background: activeView === 'year' ? 'white' : 'transparent',
-              boxShadow: activeView === 'year' ? '0 4px 6px -1px rgba(0,0,0,0.1)' : 'none',
-              fontWeight: '600', color: activeView === 'year' ? 'var(--primary)' : '#64748b', transition: 'all 0.2s'
-            }}
+            className={activeView === 'year' ? 'active' : ''}
           >
-            <span style={{ fontSize: '1.2rem' }}>📅</span> Vista Anual
+            <span className="icon">📅</span> 
+            <span className="text">Vista Anual</span>
           </button>
         </div>
 
-        <h1 style={{ marginBottom: activeView === 'day' ? '0.5rem' : '1rem' }}>Control de Caja Diario</h1>
+        <h1>Control de Caja Diario</h1>
         
         {activeView === 'year' && (
-          <div className="YearSelector" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'white', padding: '0.75rem 1.5rem', borderRadius: '1rem', border: '1px solid var(--border)', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
-            <label style={{ fontWeight: '700', color: 'var(--text-muted)', fontSize: '0.9rem', textTransform: 'uppercase' }}>Viendo el Año:</label>
-            <select 
-              value={currentYear} 
-              onChange={handleYearChange}
-              style={{ padding: '0.5rem 1rem', fontSize: '1.2rem', fontWeight: '800', border: 'none', background: 'transparent', color: 'var(--primary)', cursor: 'pointer', outline: 'none' }}
-            >
+          <div className="YearSelector">
+            <label>Viendo el Año:</label>
+            <select value={currentYear} onChange={handleYearChange}>
               {years.map(y => (
                 <option key={y} value={y}>{y}</option>
               ))}
