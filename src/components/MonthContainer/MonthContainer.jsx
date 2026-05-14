@@ -85,7 +85,7 @@ export default function MonthsContainer() {
           })}
         </div>
       ) : (
-        <div className="SingleMonthView" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <div className="SingleMonthView">
           <DayContainer month={currentMonth} year={realCurrentYear} />
         </div>
       )}

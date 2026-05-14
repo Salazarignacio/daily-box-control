@@ -32,6 +32,60 @@ body {
   }
 }
 
+.SingleMonthView {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
+  animation: modalShow 0.4s ease-out;
+}
+
+.SingleMonthView .Contenedor {
+  width: 550px; /* Mucho más grande que los 340px estándar */
+  padding: 2.5rem;
+  border-radius: 3rem;
+}
+
+.SingleMonthView .MonthHeader h1 {
+  font-size: 1.8rem;
+}
+
+.SingleMonthView .dayListButton {
+  font-size: 1.1rem;
+  border-radius: 0.8rem;
+}
+
+.SingleMonthView .MonthlySummary {
+  padding: 1.5rem;
+  font-size: 1rem;
+  border-radius: 1.25rem;
+}
+
+.SingleMonthView .indicator {
+  width: 8px;
+  height: 8px;
+  top: 6px;
+  right: 6px;
+}
+
+.SingleMonthView .btn-add-monthly {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+}
+
+.SingleMonthView .btn-toggle-stats {
+  padding: 0.6rem 0.8rem;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .SingleMonthView .Contenedor {
+    width: 95%;
+    padding: 1.5rem;
+  }
+}
+
 /* --- BARRA DE SCROLL ESTÉTICA --- */
 ::-webkit-scrollbar {
   width: 10px;
