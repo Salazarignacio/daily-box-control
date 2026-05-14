@@ -32,8 +32,8 @@ export default function MonthsContainer() {
   const realCurrentYear = now.year;
 
   return (
-    <>
-      <div className="AppHeader" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem', width: '100%' }}>
+    <div className={activeView === 'day' ? 'day-view-layout' : ''} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div className="AppHeader" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: activeView === 'day' ? '1rem' : '3rem', width: '100%' }}>
         
         <div className="ViewSelector" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', background: '#f1f5f9', padding: '0.5rem', borderRadius: '1rem' }}>
           <button 
@@ -60,7 +60,7 @@ export default function MonthsContainer() {
           </button>
         </div>
 
-        <h1 style={{ marginBottom: '1rem' }}>Control de Caja Diario</h1>
+        <h1 style={{ marginBottom: activeView === 'day' ? '0.5rem' : '1rem' }}>Control de Caja Diario</h1>
         
         {activeView === 'year' && (
           <div className="YearSelector" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'white', padding: '0.75rem 1.5rem', borderRadius: '1rem', border: '1px solid var(--border)', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
@@ -89,6 +89,6 @@ export default function MonthsContainer() {
           <DayContainer month={currentMonth} year={realCurrentYear} />
         </div>
       )}
-    </>
+    </div>
   );
 }

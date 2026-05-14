@@ -32,57 +32,67 @@ body {
   }
 }
 
+.day-view-layout {
+  height: 100vh;
+  overflow: hidden;
+  padding-top: 1rem;
+}
+
+.day-view-layout .AppHeader {
+  margin-bottom: 0.5rem !important;
+}
+
+.day-view-layout .AppHeader h1 {
+  font-size: 1.5rem;
+}
+
 .SingleMonthView {
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 2rem 0;
+  padding: 0.5rem 0; /* Reducido para ahorrar espacio */
   animation: modalShow 0.4s ease-out;
+  flex: 1; /* Ocupa el espacio restante */
+  overflow: hidden;
 }
 
 .SingleMonthView .Contenedor {
-  width: 550px; /* Mucho más grande que los 340px estándar */
-  padding: 2.5rem;
-  border-radius: 3rem;
+  width: 500px; /* Ajustado ligeramente para mejor balance */
+  max-height: calc(100vh - 200px); /* Límite de altura dinámico */
+  padding: 1.5rem 2rem;
+  border-radius: 2.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.SingleMonthView .MonthHeader h1 {
-  font-size: 1.8rem;
+.SingleMonthView .DaysContainer {
+  gap: 4px; /* Días más juntos */
+  flex: 1;
 }
 
 .SingleMonthView .dayListButton {
-  font-size: 1.1rem;
-  border-radius: 0.8rem;
+  font-size: 1rem;
+}
+
+.SingleMonthView .MonthHeader {
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 0.75rem;
 }
 
 .SingleMonthView .MonthlySummary {
-  padding: 1.5rem;
-  font-size: 1rem;
-  border-radius: 1.25rem;
-}
-
-.SingleMonthView .indicator {
-  width: 8px;
-  height: 8px;
-  top: 6px;
-  right: 6px;
-}
-
-.SingleMonthView .btn-add-monthly {
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: 1.5rem;
-}
-
-.SingleMonthView .btn-toggle-stats {
-  padding: 0.6rem 0.8rem;
-  font-size: 1.2rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 600px) {
+  .day-view-layout {
+    overflow-y: auto; /* Permitir scroll en móviles si es necesario */
+    height: auto;
+  }
   .SingleMonthView .Contenedor {
     width: 95%;
-    padding: 1.5rem;
+    max-height: none;
   }
 }
 
