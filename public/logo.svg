@@ -1,120 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+<svg width="100%" viewBox="0 0 680 680" role="img" xmlns="http://www.w3.org/2000/svg" style="">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Logo CajaDiaria</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Ícono de acceso directo para app de control de caja diaria</desc>
+
   <defs>
-    <linearGradient id="calTopGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFD84A"/>
-      <stop offset="100%" style="stop-color:#F5A800"/>
-    </linearGradient>
-    <linearGradient id="paperGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFFFFF"/>
-      <stop offset="100%" style="stop-color:#EEF2F8"/>
-    </linearGradient>
-    <linearGradient id="walletGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#2E4270"/>
-      <stop offset="100%" style="stop-color:#162035"/>
-    </linearGradient>
-    <linearGradient id="billGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#5EC97A"/>
-      <stop offset="100%" style="stop-color:#2A7A48"/>
-    </linearGradient>
-    <linearGradient id="coinFaceGrad" x1="20%" y1="10%" x2="80%" y2="90%">
-      <stop offset="0%" style="stop-color:#FFE96A"/>
-      <stop offset="100%" style="stop-color:#E89A00"/>
-    </linearGradient>
-    <linearGradient id="coinEdgeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#C47F00"/>
-      <stop offset="100%" style="stop-color:#8A5500"/>
-    </linearGradient>
+    <clipPath id="roundClip">
+      <rect x="140" y="140" width="400" height="400" rx="88"/>
+    </clipPath>
+  <mask id="imagine-text-gaps-4kjulh" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="680" height="680" fill="white"/><rect x="325.4296875" y="222" width="29.140625" height="46" fill="black" rx="2"/></mask></defs>
 
-    <filter id="shadow1" x="-15%" y="-15%" width="140%" height="150%">
-      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#00000045"/>
-    </filter>
-    <filter id="shadow2" x="-20%" y="-20%" width="150%" height="160%">
-      <feDropShadow dx="6" dy="16" stdDeviation="18" flood-color="#00000060"/>
-    </filter>
-    <filter id="shadow3" x="-25%" y="-25%" width="160%" height="170%">
-      <feDropShadow dx="-6" dy="12" stdDeviation="16" flood-color="#00000055"/>
-    </filter>
-  </defs>
+  <!-- App icon background -->
+  <rect x="140" y="140" width="400" height="400" rx="88" fill="#1a2340" style="fill:rgb(26, 35, 64);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
 
-  <!-- ═══════════════════════════════ -->
-  <!--           CALENDARIO           -->
-  <!-- ═══════════════════════════════ -->
-  <g filter="url(#shadow1)">
-    <!-- Cuerpo blanco del calendario -->
-    <rect x="160" y="130" width="640" height="500" rx="56" fill="url(#paperGrad)"/>
-    <!-- Encabezado amarillo -->
-    <rect x="160" y="130" width="640" height="155" rx="56" fill="url(#calTopGrad)"/>
-    <rect x="160" y="220" width="640" height="68" fill="url(#calTopGrad)"/>
-
-    <!-- Argollas -->
-    <rect x="334" y="86" width="40" height="96" rx="20" fill="#1A2A42"/>
-    <rect x="614" y="86" width="40" height="96" rx="20" fill="#1A2A42"/>
-
-    <!-- Grilla de días -->
-    <!-- Fila 1: 2 grises + 5 amarillos -->
-    <rect x="210" y="318" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
-    <rect x="296" y="318" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
-    <rect x="382" y="318" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <rect x="468" y="318" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <rect x="554" y="318" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <rect x="640" y="318" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <!-- Fila 2: todos amarillos -->
-    <rect x="210" y="388" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <rect x="296" y="388" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <rect x="382" y="388" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <rect x="468" y="388" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <rect x="554" y="388" width="70" height="56" rx="14" fill="#FFD04A" opacity="0.9"/>
-    <rect x="640" y="388" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
-    <!-- Fila 3: todos grises -->
-    <rect x="210" y="458" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
-    <rect x="296" y="458" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
-    <rect x="382" y="458" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
-    <rect x="468" y="458" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
-    <rect x="554" y="458" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
-    <rect x="640" y="458" width="70" height="56" rx="14" fill="#D0DAF0" opacity="0.55"/>
+  <!-- Excel-style grid lines (subtle) -->
+  <g clip-path="url(#roundClip)" opacity="0.08" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.08;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+    <line x1="140" y1="260" x2="540" y2="260" stroke="#ffffff" stroke-width="1" mask="url(#imagine-text-gaps-4kjulh)" style="fill:rgb(0, 0, 0);stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="140" y1="310" x2="540" y2="310" stroke="#ffffff" stroke-width="1" style="fill:rgb(0, 0, 0);stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="140" y1="360" x2="540" y2="360" stroke="#ffffff" stroke-width="1" style="fill:rgb(0, 0, 0);stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="140" y1="410" x2="540" y2="410" stroke="#ffffff" stroke-width="1" style="fill:rgb(0, 0, 0);stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="280" y1="210" x2="280" y2="540" stroke="#ffffff" stroke-width="1" style="fill:rgb(0, 0, 0);stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="370" y1="210" x2="370" y2="540" stroke="#ffffff" stroke-width="1" style="fill:rgb(0, 0, 0);stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <line x1="460" y1="210" x2="460" y2="540" stroke="#ffffff" stroke-width="1" style="fill:rgb(0, 0, 0);stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
   </g>
 
-  <!-- ═══════════════════════════════ -->
-  <!--            BILLETERA           -->
-  <!-- ═══════════════════════════════ -->
-  <g filter="url(#shadow2)">
-    <!-- Billetes verdes saliendo de la billetera (detrás) -->
-    <rect x="330" y="555" width="310" height="72" rx="16" fill="url(#billGrad)"/>
-    <!-- Líneas del billete -->
-    <rect x="356" y="574" width="200" height="10" rx="5" fill="#FFFFFF25"/>
-    <rect x="356" y="595" width="140" height="10" rx="5" fill="#FFFFFF20"/>
+  <!-- Bar chart (sales/expenses visual) -->
+  <!-- Bar 1 - expenses, muted blue -->
+  <rect x="215" y="355" width="52" height="100" rx="6" fill="#3a5a8a" clip-path="url(#roundClip)" style="fill:rgb(58, 90, 138);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Bar 2 - income, yellow/gold -->
+  <rect x="283" y="300" width="52" height="155" rx="6" fill="#f5c518" clip-path="url(#roundClip)" style="fill:rgb(245, 197, 24);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Bar 3 - balance, teal/green -->
+  <rect x="351" y="325" width="52" height="130" rx="6" fill="#2ec4a4" clip-path="url(#roundClip)" style="fill:rgb(46, 196, 164);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Bar 4 - comparison, muted -->
+  <rect x="419" y="375" width="52" height="80" rx="6" fill="#3a5a8a" clip-path="url(#roundClip)" style="fill:rgb(58, 90, 138);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
 
-    <!-- Cuerpo de la billetera -->
-    <rect x="265" y="598" width="480" height="260" rx="42" fill="url(#walletGrad)"/>
+  <!-- Baseline -->
+  <line x1="190" y1="458" x2="490" y2="458" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
 
-    <!-- Bolsillo interior (efecto de profundidad) -->
-    <rect x="290" y="622" width="430" height="210" rx="30" fill="#1A2840"/>
+  <!-- Coin / $ symbol overlay (top center, prominent) -->
+  <circle cx="340" cy="248" r="44" fill="#f5c518" style="fill:rgb(245, 197, 24);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="340" cy="248" r="36" fill="none" stroke="#1a2340" stroke-width="3" opacity="0.15" style="fill:none;stroke:rgb(26, 35, 64);color:rgb(255, 255, 255);stroke-width:3px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.15;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
 
-    <!-- Tarjetero lateral derecho -->
-    <rect x="560" y="622" width="140" height="210" rx="24" fill="#243558"/>
-    <!-- Punto del cierre -->
-    <circle cx="628" cy="727" r="22" fill="url(#calTopGrad)"/>
-    <circle cx="628" cy="727" r="12" fill="#C47F00" opacity="0.5"/>
-  </g>
+  <!-- $ symbol -->
+  <text x="340" y="258" text-anchor="middle" font-family="'Arial', sans-serif" font-size="38" font-weight="700" fill="#1a2340" style="fill:rgb(26, 35, 64);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Arial, sans-serif;font-size:38px;font-weight:700;text-anchor:middle;dominant-baseline:auto">$</text>
 
-  <!-- ═══════════════════════════════ -->
-  <!--              MONEDA            -->
-  <!-- ═══════════════════════════════ -->
-  <g filter="url(#shadow3)">
-    <!-- Borde / canto de la moneda (efecto 3D) -->
-    <ellipse cx="296" cy="660" rx="118" ry="24" fill="url(#coinEdgeGrad)"/>
-    <!-- Cara principal de la moneda -->
-    <circle cx="296" cy="630" r="118" fill="url(#coinFaceGrad)"/>
-    <!-- Anillo interior decorativo -->
-    <circle cx="296" cy="630" r="96" fill="none" stroke="#C47F00" stroke-width="7" opacity="0.5"/>
-    <!-- Símbolo $ -->
-    <text
-      x="296" y="672"
-      font-family="Georgia, 'Times New Roman', serif"
-      font-size="116"
-      font-weight="bold"
-      text-anchor="middle"
-      fill="#1A2840"
-    >$</text>
-  </g>
+  <!-- Tiny checkmark badge on coin -->
+  <circle cx="374" cy="218" r="13" fill="#2ec4a4" style="fill:rgb(46, 196, 164);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <polyline points="368,218 372,223 381,214" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:2.5px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
 </svg>

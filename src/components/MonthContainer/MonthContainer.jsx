@@ -28,6 +28,7 @@ export default function MonthsContainer() {
   return (
     <>
       <div className="AppHeader" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '3rem', width: '100%' }}>
+        <img src="/logo.svg" alt="Daily Box Control Logo" style={{ width: '80px', height: '80px', marginBottom: '1rem', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} />
         <h1 style={{ marginBottom: '1rem' }}>Control de Caja Diario</h1>
         
         <div className="YearSelector" style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'white', padding: '0.75rem 1.5rem', borderRadius: '1rem', border: '1px solid var(--border)', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
