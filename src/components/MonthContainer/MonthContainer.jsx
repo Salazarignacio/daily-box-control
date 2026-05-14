@@ -32,8 +32,15 @@ export default function MonthsContainer() {
   const realCurrentYear = now.year;
 
   return (
-    <div className={activeView === 'day' ? 'day-view-layout' : ''} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div className="AppHeader" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: activeView === 'day' ? '1rem' : '3rem', width: '100%' }}>
+    <div className={activeView === 'day' ? 'day-view-layout' : ''} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', transition: 'padding 0.3s ease' }}>
+      <div className="AppHeader" style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        marginBottom: activeView === 'day' ? '1rem' : '3rem', 
+        width: '100%',
+        transition: 'margin-bottom 0.3s ease'
+      }}>
         
         <div className="ViewSelector" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', background: '#f1f5f9', padding: '0.5rem', borderRadius: '1rem' }}>
           <button 

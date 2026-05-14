@@ -32,67 +32,61 @@ body {
   }
 }
 
+.ViewSelector button:hover {
+  background: rgba(255, 255, 255, 0.5) !important;
+  color: var(--primary-dark) !important;
+}
+
 .day-view-layout {
   height: 100vh;
   overflow: hidden;
   padding-top: 1rem;
-}
-
-.day-view-layout .AppHeader {
-  margin-bottom: 0.5rem !important;
-}
-
-.day-view-layout .AppHeader h1 {
-  font-size: 1.5rem;
-}
-
-.SingleMonthView {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 0.5rem 0; /* Reducido para ahorrar espacio */
-  animation: modalShow 0.4s ease-out;
-  flex: 1; /* Ocupa el espacio restante */
-  overflow: hidden;
-}
-
-.SingleMonthView .Contenedor {
-  width: 500px; /* Ajustado ligeramente para mejor balance */
-  max-height: calc(100vh - 200px); /* Límite de altura dinámico */
-  padding: 1.5rem 2rem;
-  border-radius: 2.5rem;
   display: flex;
   flex-direction: column;
 }
 
-.SingleMonthView .DaysContainer {
-  gap: 4px; /* Días más juntos */
-  flex: 1;
+.SingleMonthView .Contenedor {
+  width: 500px; 
+  max-height: calc(100vh - 180px); /* Límite de altura dinámico ajustado */
+  padding: 1.5rem 2rem;
+  border-radius: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
 }
 
-.SingleMonthView .dayListButton {
-  font-size: 1rem;
+/* Forzar que el modal ignore el overflow:hidden del padre */
+.days {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000; /* Asegurar que esté por encima de todo */
+  padding: 1rem;
 }
 
-.SingleMonthView .MonthHeader {
-  padding: 0.4rem 0.8rem;
-  margin-bottom: 0.75rem;
+.SingleMonthView .dayListButton:active {
+  transform: scale(0.95);
 }
 
-.SingleMonthView .MonthlySummary {
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
+.SingleMonthView .MonthHeader h1 {
+  font-size: 1.25rem; /* Un poco más de presencia */
 }
 
 @media (max-width: 600px) {
   .day-view-layout {
-    overflow-y: auto; /* Permitir scroll en móviles si es necesario */
+    overflow-y: auto; 
     height: auto;
+    min-height: 100vh;
   }
   .SingleMonthView .Contenedor {
     width: 95%;
     max-height: none;
+    margin-bottom: 2rem;
   }
 }
 
