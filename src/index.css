@@ -8,7 +8,7 @@
   --text-muted: #64748b;
   --success: #10b981;
   --danger: #ef4444;
-  --border-color: #e2e8f0;
+  --border-color: #cbd5e1;
   --header-text: white;
   --selector-bg: rgba(255, 255, 255, 0.1);
   --selector-border: rgba(255, 255, 255, 0.1);
@@ -35,16 +35,28 @@ body.light-mode {
   padding: 0;
   box-sizing: border-box;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  scroll-behavior: smooth; /* 🔥 Desplazamiento suave */
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 body {
   background-color: var(--bg-main);
   color: var(--header-text);
-  height: 100vh;
-  margin: 0;
-  overflow: hidden; /* Evitamos scroll global */
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 
 .year-view-layout, .day-view-layout {
@@ -56,12 +68,14 @@ body {
 }
 
 .day-view-layout {
-  overflow: hidden; /* Sin scroll para la vista mensual */
+  overflow: hidden;
+  justify-content: flex-start;
+  padding: 0;
 }
 
 .year-view-layout {
-  overflow-y: auto; /* Con scroll para la vista anual */
-  padding-bottom: 2rem;
+  overflow-y: auto;
+  padding-bottom: 3rem;
 }
 
 .AppHeader {
@@ -69,7 +83,8 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 1.5rem;
+  padding-top: 2rem;
+  margin-bottom: 2rem;
   position: relative;
   flex-shrink: 0;
 }
@@ -78,7 +93,7 @@ body {
   color: var(--header-text);
   font-weight: 200;
   letter-spacing: 1px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   text-align: center;
   font-size: 1.6rem;
 }
@@ -90,7 +105,7 @@ body {
   padding: 4px;
   border-radius: 12px;
   border: 1px solid var(--selector-border);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .ViewSelector button {
@@ -154,8 +169,10 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: auto;
-  gap: 1.5rem;
+  flex: 1;
+  min-height: 0;
+  justify-content: space-between;
+  padding-bottom: 2rem;
 }
 
 .MainNavigationRow {
@@ -164,10 +181,12 @@ body {
   justify-content: center;
   gap: 3rem;
   width: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 .side-arrow {
-  display: none; /* Ocultas por defecto (mobile) */
+  display: none;
 }
 
 @media (min-width: 768px) {
@@ -186,10 +205,11 @@ body {
   align-items: center;
   gap: 2rem;
   background: var(--selector-bg);
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   border-radius: 2rem;
   border: 1px solid var(--selector-border);
   width: auto;
+  flex-shrink: 0;
 }
 
 .nav-month-label {
@@ -262,7 +282,7 @@ body {
 
 @media (min-width: 768px) {
   .SingleMonthView .Contenedor {
-    width: 480px; /* Incremento significativo pero elegante */
+    width: 480px;
     padding: 2rem;
   }
 
@@ -309,9 +329,9 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1; /* Gris suave que combina con el modal */
+  background: #cbd5e1;
   border-radius: 10px;
-  border: 2px solid #e2e8f0; /* Espacio para que parezca flotante */
+  border: 2px solid #e2e8f0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -322,21 +342,6 @@ body {
 * {
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3rem 1rem;
-  width: 100%;
-}
-
-.AppHeader h1 {
-  color: var(--header-text);
-  font-weight: 200;
-  letter-spacing: 2px;
-  margin-bottom: 2rem;
 }
 
 .YearSelector {
@@ -367,7 +372,7 @@ body {
 .YearSelector select {
   background: transparent;
   border: none;
-  color: white;
+  color: var(--header-text);
   font-size: 1.1rem;
   font-weight: 900;
   cursor: pointer;
@@ -539,7 +544,7 @@ body {
 .date {
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--primary-dark);
+  color: var(--text-main);
 }
 
 /* Formulario */
@@ -654,8 +659,8 @@ input.number, input.text {
   background: #f8fafc;
   color: var(--text-main);
   transition: all 0.2s;
-  width: 100%; /* Asegura que tomen el espacio disponible */
-  min-width: 0; /* 🔥 CRÍTICO: Permite que el input se encoja en flexbox */
+  width: 100%;
+  min-width: 0;
 }
 
 input:focus {
@@ -746,7 +751,7 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 2.2rem; /* Evita que el botón desaparezca */
+  min-width: 2.2rem;
 }
 
 .btn-remove:hover {
