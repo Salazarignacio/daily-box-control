@@ -117,23 +117,29 @@ export default function MonthsContainer() {
         </div>
       ) : (
         <div 
-          className="MonthNavigationContainer"
+          className="MonthNavigationWrapper"
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          <div className={`SingleMonthView ${animationClass}`}>
-            <DayContainer 
-              key={`${navDate.month}-${navDate.year}`} 
-              month={navDate.month} 
-              year={navDate.year} 
-            />
+          <div className="MainNavigationRow">
+            <button className="nav-arrow side-arrow left" onClick={prevMonth}>‹</button>
+            
+            <div className={`SingleMonthView ${animationClass}`}>
+              <DayContainer 
+                key={`${navDate.month}-${navDate.year}`} 
+                month={navDate.month} 
+                year={navDate.year} 
+              />
+            </div>
+            
+            <button className="nav-arrow side-arrow right" onClick={nextMonth}>›</button>
           </div>
           
           <div className="BottomNavigation">
-            <button className="nav-arrow" onClick={prevMonth}>‹</button>
+            <button className="nav-arrow bottom-only" onClick={prevMonth}>‹</button>
             <span className="nav-month-label">{navDate.monthLong.toUpperCase()} {navDate.year}</span>
-            <button className="nav-arrow" onClick={nextMonth}>›</button>
+            <button className="nav-arrow bottom-only" onClick={nextMonth}>›</button>
           </div>
         </div>
       )}

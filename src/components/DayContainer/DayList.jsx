@@ -18,7 +18,7 @@ export default function DayList({ month, day, year, data, onDataLoaded, onRefres
   const [on, setOn] = useState(false);
   const [getDay, setGetDay] = useState({ ...inputs });
   const [hasData, setHasData] = useState(false);
-  const { setOff } = useContext(ThemeContext);
+  const { setIsDarkMode } = useContext(ThemeContext);
 
   // Sincronizar el estado local con la data que viene por props (global)
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function DayList({ month, day, year, data, onDataLoaded, onRefres
   return (
     <div className="day-wrapper">
       <button
-        onClick={() => { setOn(true); setOff(true); }}
+        onClick={() => { setOn(true); }}
         className={`dayListButton ${hasData ? 'has-data' : ''}`}
       >
         {day}

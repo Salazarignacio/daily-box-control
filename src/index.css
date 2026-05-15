@@ -41,16 +41,27 @@ body.light-mode {
 body {
   background-color: var(--bg-main);
   color: var(--header-text);
-  min-height: 100vh;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden; /* Evitamos scroll global */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .year-view-layout, .day-view-layout {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.day-view-layout {
+  overflow: hidden; /* Sin scroll para la vista mensual */
+}
+
+.year-view-layout {
+  overflow-y: auto; /* Con scroll para la vista anual */
+  padding-bottom: 2rem;
 }
 
 .AppHeader {
@@ -58,17 +69,18 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   position: relative;
+  flex-shrink: 0;
 }
 
 .AppHeader h1 {
   color: var(--header-text);
   font-weight: 200;
   letter-spacing: 1px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
 
 /* ViewSelector refined */
@@ -78,7 +90,7 @@ body {
   padding: 4px;
   border-radius: 12px;
   border: 1px solid var(--selector-border);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .ViewSelector button {
@@ -86,7 +98,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 10px 24px;
+  padding: 8px 24px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
@@ -94,7 +106,7 @@ body {
   font-weight: 600;
   color: var(--selector-text);
   transition: all 0.2s ease;
-  min-height: 44px;
+  min-height: 40px;
 }
 
 .ViewSelector button.active {
@@ -137,14 +149,36 @@ body {
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.MonthNavigationContainer {
+.MonthNavigationWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
   width: 100%;
-  position: relative;
-  overflow: hidden;
+  height: auto;
+  gap: 1.5rem;
+}
+
+.MainNavigationRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  width: 100%;
+}
+
+.side-arrow {
+  display: none; /* Ocultas por defecto (mobile) */
+}
+
+@media (min-width: 768px) {
+  .side-arrow {
+    display: flex;
+    flex-shrink: 0;
+  }
+  
+  .nav-arrow.bottom-only {
+    display: none;
+  }
 }
 
 .BottomNavigation {
@@ -224,6 +258,44 @@ body {
 
 .SingleMonthView .Contenedor {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+  .SingleMonthView .Contenedor {
+    width: 480px; /* Incremento significativo pero elegante */
+    padding: 2rem;
+  }
+
+  .SingleMonthView .MonthHeader {
+    padding: 0.8rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .SingleMonthView .MonthHeader h1 {
+    font-size: 1.3rem;
+  }
+
+  .SingleMonthView .MonthlySummary {
+    padding: 1.25rem;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  .SingleMonthView .DaysContainer {
+    gap: 10px;
+  }
+
+  .SingleMonthView .dayListButton {
+    font-size: 1.1rem;
+    border-radius: 0.8rem;
+  }
+
+  .SingleMonthView .indicator {
+    width: 7px;
+    height: 7px;
+    top: 5px;
+    right: 5px;
+  }
 }
 
 /* --- BARRA DE SCROLL ESTÉTICA --- */
