@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import DayContainer from '../DayContainer/DayContainer'
 import { useParams, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
@@ -34,7 +34,15 @@ export default function MonthsContainer() {
     navigate(`/months/${e.target.value}`);
   };
 
+  // Audio effects
+  const playClick = () => {
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+    audio.volume = 0.15;
+    audio.play().catch(() => {});
+  };
+
   const nextMonth = () => {
+    playClick();
     setAnimationClass('slide-left');
     setTimeout(() => {
       setNavDate(navDate.plus({ months: 1 }));
@@ -43,12 +51,28 @@ export default function MonthsContainer() {
   };
 
   const prevMonth = () => {
+    playClick();
     setAnimationClass('slide-right');
     setTimeout(() => {
       setNavDate(navDate.minus({ months: 1 }));
       setAnimationClass('slide-in-left');
     }, 200);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      const key = e.key.toLowerCase();
+      if (key === 'm') { playClick(); setActiveView('day'); }
+      if (key === 'a') { playClick(); setActiveView('year'); }
+      if (activeView === 'day') {
+        if (e.key === 'ArrowLeft') prevMonth();
+        if (e.key === 'ArrowRight') nextMonth();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeView, navDate]);
 
   const minSwipeDistance = 50;
 

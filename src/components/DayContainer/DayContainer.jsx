@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { DateTime } from "luxon";
 import DayList from "./DayList";
 import EmptyDay from "./EmpityDay";
@@ -15,6 +15,38 @@ export default function DayContainer({ month, year }) {
   const [fixedExpenses, setFixedExpenses] = useState(0);
   const [showFixedModal, setShowFixedModal] = useState(false);
   const [showTotals, setShowTotals] = useState(false);
+  const [animatedTotals, setAnimatedTotals] = useState({ ventas: 0, gastos: 0 });
+
+  // Audio effects
+  const playPop = () => {
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2569-preview.mp3');
+    audio.volume = 0.1;
+    audio.play().catch(() => {});
+  };
+
+  // Animación de contadores
+  useEffect(() => {
+    if (showTotals) {
+      const duration = 800;
+      const startTime = performance.now();
+      const startV = animatedTotals.ventas;
+      const startG = animatedTotals.gastos;
+
+      const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+
+        setAnimatedTotals({
+          ventas: Math.floor(startV + (monthlyTotals.ventas - startV) * ease),
+          gastos: Math.floor(startG + (monthlyTotals.gastos - startG) * ease)
+        });
+
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    }
+  }, [showTotals, monthlyTotals]);
 
   const monthNumber = DateTime.local(year, month);
   const monthName = DateTime.local(year, month, 1).monthLong.charAt(0).toUpperCase() + DateTime.local(year, month, 1).monthLong.slice(1);
@@ -82,6 +114,7 @@ export default function DayContainer({ month, year }) {
   };
 
   const rendimientoNeto = monthlyTotals.ventas - monthlyTotals.gastos - fixedExpenses;
+  const gastoPorcentaje = monthlyTotals.ventas > 0 ? Math.min((monthlyTotals.gastos / monthlyTotals.ventas) * 100, 100) : 0;
 
   return (
     <div className="Contenedor">
@@ -89,14 +122,14 @@ export default function DayContainer({ month, year }) {
         <h1>{monthName.toUpperCase()}</h1>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <button 
-            onClick={() => setShowTotals(!showTotals)} 
+            onClick={() => { playPop(); setShowTotals(!showTotals); }} 
             className="btn-toggle-stats"
             title="Ver totales del mes"
           >
             {showTotals ? '👁️' : '📊'}
           </button>
           <button 
-            onClick={() => setShowFixedModal(true)} 
+            onClick={() => { playPop(); setShowFixedModal(true); }} 
             className="btn-add-monthly"
             title="Añadir gastos fijos"
           >
@@ -106,16 +139,22 @@ export default function DayContainer({ month, year }) {
       </div>
       
       {showTotals && (
-        <div className="MonthlySummary" style={{ animation: 'modalShow 0.3s ease' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span className="v-total">V: ${monthlyTotals.ventas.toLocaleString()}</span>
-              <span className="g-total">G: ${monthlyTotals.gastos.toLocaleString()}</span>
+        <div className="MonthlySummary" style={{ animation: 'modalShow 0.3s ease', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <span className="v-total">V: ${animatedTotals.ventas.toLocaleString()}</span>
+                <span className="g-total">G: ${animatedTotals.gastos.toLocaleString()}</span>
+            </div>
+            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>FIJOS: ${fixedExpenses.toLocaleString()}</span>
+                <span style={{ color: rendimientoNeto >= 0 ? 'var(--success)' : 'var(--danger)', borderTop: '1px solid var(--border-color)', paddingTop: '2px' }}>
+                    NETO: ${rendimientoNeto.toLocaleString()}
+                </span>
+            </div>
           </div>
-          <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>FIJOS: ${fixedExpenses.toLocaleString()}</span>
-              <span style={{ color: rendimientoNeto >= 0 ? 'var(--success)' : 'var(--danger)', borderTop: '1px solid #ddd', paddingTop: '2px' }}>
-                  NETO: ${rendimientoNeto.toLocaleString()}
-              </span>
+          
+          <div className="ProgressContainer" title={`${gastoPorcentaje.toFixed(1)}% de ventas en gastos`}>
+            <div className="ProgressBar" style={{ width: `${gastoPorcentaje}%`, backgroundColor: gastoPorcentaje > 80 ? 'var(--danger)' : 'var(--accent-gold)' }}></div>
           </div>
         </div>
       )}

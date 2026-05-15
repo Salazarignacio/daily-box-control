@@ -18,7 +18,7 @@ export default function DayList({ month, day, year, data, onDataLoaded, onRefres
   const [on, setOn] = useState(false);
   const [getDay, setGetDay] = useState({ ...inputs });
   const [hasData, setHasData] = useState(false);
-  const { setIsDarkMode } = useContext(ThemeContext);
+  const {} = useContext(ThemeContext);
 
   // Sincronizar el estado local con la data que viene por props (global)
   useEffect(() => {

@@ -68,9 +68,10 @@ body {
 }
 
 .day-view-layout {
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-y: auto;
   justify-content: flex-start;
-  padding: 0;
+  padding: 0 0 2rem 0;
 }
 
 .year-view-layout {
@@ -276,8 +277,41 @@ body {
   to { transform: translateX(0); opacity: 1; }
 }
 
-.SingleMonthView .Contenedor {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+/* Dashboard Premium Styles */
+.ProgressContainer {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.ProgressBar {
+  height: 100%;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+}
+
+.v-total, .g-total {
+  font-family: 'JetBrains Mono', monospace; /* Para que los números no salten */
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.v-total { color: var(--success); }
+.g-total { color: var(--danger); }
+
+/* Shortcut Hint */
+@media (min-width: 1024px) {
+  .ViewSelector::after {
+    content: 'Atajos: M (Mensual) | A (Anual) | Flechas mes';
+    position: absolute;
+    bottom: -1.5rem;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+    white-space: nowrap;
+  }
 }
 
 @media (min-width: 768px) {
