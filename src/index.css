@@ -105,9 +105,9 @@ body {
 
 /* Theme Toggle Button */
 .ThemeToggle {
-  position: absolute;
-  top: 0;
-  right: 2rem;
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
   background: var(--selector-bg);
   border: 1px solid var(--selector-border);
   color: var(--header-text);
@@ -120,6 +120,8 @@ body {
   justify-content: center;
   font-size: 1.2rem;
   transition: all 0.2s;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
 .ThemeToggle:hover {
@@ -259,7 +261,7 @@ body {
 }
 
 .AppHeader h1 {
-  color: white;
+  color: var(--header-text);
   font-weight: 200;
   letter-spacing: 2px;
   margin-bottom: 2rem;
