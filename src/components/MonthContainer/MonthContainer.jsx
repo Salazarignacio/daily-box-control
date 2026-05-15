@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import DayContainer from '../DayContainer/DayContainer'
 import { useParams, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { ThemeContext } from '../../App';
 
 export const componentsQuantity = (date) => {
   const time = [];
@@ -16,6 +17,7 @@ export default function MonthsContainer() {
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState('day'); 
   const currentYear = parseInt(yearId);
+  const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
 
   const [navDate, setNavDate] = useState(DateTime.now());
   const [touchStart, setTouchStart] = useState(null);
@@ -69,6 +71,13 @@ export default function MonthsContainer() {
   return (
     <div className={activeView === 'day' ? 'day-view-layout' : 'year-view-layout'}>
       <div className="AppHeader">
+        <button 
+          className="ThemeToggle" 
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          title={isDarkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+        >
+          {isDarkMode ? '☀️' : '🌙'}
+        </button>
         <div className="ViewSelector">
           <button 
             onClick={() => setActiveView('day')}
