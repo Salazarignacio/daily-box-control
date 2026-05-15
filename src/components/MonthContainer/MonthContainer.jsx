@@ -14,10 +14,15 @@ export const componentsQuantity = (date) => {
 export default function MonthsContainer() {
   const { yearId } = useParams();
   const navigate = useNavigate();
-  const [activeView, setActiveView] = useState('day'); // 'day' is now the default
+  const [activeView, setActiveView] = useState('day'); 
   const currentYear = parseInt(yearId);
 
-  // Generamos una lista de años (desde el 2023 hasta 10 años en el futuro)
+  const [navDate, setNavDate] = useState(DateTime.now());
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const [animationClass, setAnimationClass] = useState('');
+
+  // Generamos una lista de años
   const years = [];
   for (let i = 2023; i <= DateTime.now().year + 10; i++) {
     years.push(i);
@@ -27,9 +32,39 @@ export default function MonthsContainer() {
     navigate(`/months/${e.target.value}`);
   };
 
-  const now = DateTime.now();
-  const currentMonth = now.month;
-  const realCurrentYear = now.year;
+  const nextMonth = () => {
+    setAnimationClass('slide-left');
+    setTimeout(() => {
+      setNavDate(navDate.plus({ months: 1 }));
+      setAnimationClass('slide-in-right');
+    }, 200);
+  };
+
+  const prevMonth = () => {
+    setAnimationClass('slide-right');
+    setTimeout(() => {
+      setNavDate(navDate.minus({ months: 1 }));
+      setAnimationClass('slide-in-left');
+    }, 200);
+  };
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) nextMonth();
+    if (isRightSwipe) prevMonth();
+  };
 
   return (
     <div className={activeView === 'day' ? 'day-view-layout' : 'year-view-layout'}>
@@ -52,7 +87,7 @@ export default function MonthsContainer() {
         </div>
 
         <h1>Control de Caja Diario</h1>
-        
+
         {activeView === 'year' && (
           <div className="YearSelector">
             <label>Viendo el Año:</label>
@@ -72,10 +107,28 @@ export default function MonthsContainer() {
           })}
         </div>
       ) : (
-        <div className="SingleMonthView">
-          <DayContainer month={currentMonth} year={realCurrentYear} />
+        <div 
+          className="MonthNavigationContainer"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <div className={`SingleMonthView ${animationClass}`}>
+            <DayContainer 
+              key={`${navDate.month}-${navDate.year}`} 
+              month={navDate.month} 
+              year={navDate.year} 
+            />
+          </div>
+          
+          <div className="BottomNavigation">
+            <button className="nav-arrow" onClick={prevMonth}>‹</button>
+            <span className="nav-month-label">{navDate.monthLong.toUpperCase()} {navDate.year}</span>
+            <button className="nav-arrow" onClick={nextMonth}>›</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
+

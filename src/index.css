@@ -86,6 +86,109 @@ body {
   display: flex;
   justify-content: center;
   width: 100%;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.MonthNavigationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.BottomNavigation {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-month-label {
+  color: white;
+  font-weight: 800;
+  font-size: 0.9rem;
+  min-width: 150px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.nav-arrow {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.nav-arrow:hover {
+  background: white;
+  color: var(--primary-dark);
+  transform: scale(1.1);
+}
+
+.nav-arrow:active {
+  transform: scale(0.9);
+}
+
+/* Animaciones de Slide */
+.slide-left {
+  transform: translateX(-50px);
+  opacity: 0;
+}
+
+.slide-right {
+  transform: translateX(50px);
+  opacity: 0;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s forwards;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .MonthNavigationContainer {
+    gap: 0.5rem;
+  }
+  
+  .nav-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-arrow.left { left: 10px; }
+  .nav-arrow.right { right: 10px; }
 }
 
 .SingleMonthView .Contenedor {
