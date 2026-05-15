@@ -40,14 +40,14 @@ export default function MonthsContainer() {
             className={activeView === 'day' ? 'active' : ''}
           >
             <span className="icon">☀️</span> 
-            <span className="text">Mes Actual</span>
+            <span className="text">Mensual</span>
           </button>
           <button 
             onClick={() => setActiveView('year')}
             className={activeView === 'year' ? 'active' : ''}
           >
             <span className="icon">📅</span> 
-            <span className="text">Vista Anual</span>
+            <span className="text">Anual</span>
           </button>
         </div>
 

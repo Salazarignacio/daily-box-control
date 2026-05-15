@@ -25,13 +25,6 @@ body {
   min-height: 100vh;
 }
 
-/* Prevenir zoom en móviles (iOS/Android) al enfocar inputs */
-@media screen and (max-width: 768px) {
-  input, select, textarea {
-    font-size: 16px !important;
-  }
-}
-
 .year-view-layout, .day-view-layout {
   width: 100%;
   min-height: 100vh;
@@ -40,17 +33,12 @@ body {
   align-items: center;
 }
 
-.day-view-layout {
-  padding: 2rem 1rem;
-  justify-content: flex-start; /* Alineado arriba como la vista anual */
-}
-
 .AppHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 3rem; /* Igual que la vista anual */
+  margin-bottom: 3rem;
 }
 
 .AppHeader h1 {
@@ -60,10 +48,6 @@ body {
   margin-bottom: 1rem;
   text-align: center;
   font-size: 1.8rem;
-}
-
-.day-view-layout .AppHeader h1 {
-  font-size: 1.6rem;
 }
 
 /* ViewSelector refined */
@@ -102,42 +86,10 @@ body {
   display: flex;
   justify-content: center;
   width: 100%;
-  animation: modalShow 0.4s ease-out;
 }
 
 .SingleMonthView .Contenedor {
-  width: 340px; /* IDÉNTICO a la vista anual */
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 600px) {
-  #root {
-    padding: 1rem;
-  }
-
-  .day-view-layout {
-    padding-top: 2rem;
-  }
-
-  .AppHeader h1 {
-    font-size: 1.3rem;
-    padding: 0 1rem;
-  }
-
-  .ViewSelector {
-    width: 95%;
-  }
-
-  .ViewSelector button {
-    flex: 1;
-    padding: 8px;
-    font-size: 0.85rem;
-    gap: 6px;
-  }
-
-  .SingleMonthView .Contenedor {
-    width: 100%;
-  }
 }
 
 /* --- BARRA DE SCROLL ESTÉTICA --- */
@@ -170,7 +122,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem 2rem;
+  padding: 3rem 1rem;
   width: 100%;
 }
 
@@ -182,11 +134,45 @@ body {
 }
 
 .YearSelector {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  color: white !important;
-  border-radius: 1rem !important;
-  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.6rem 1.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.YearSelector:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.YearSelector label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.YearSelector select {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  outline: none;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+}
+
+.YearSelector select option {
+  background: var(--primary-dark);
+  color: white;
 }
 
 .Months {

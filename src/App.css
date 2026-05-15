@@ -184,9 +184,3 @@ input:focus {
   border-radius: 1.25rem;
   margin-top: 2rem;
 }
-
-@media (max-width: 768px) {
-  .gastosContainer { grid-template-columns: 1fr; }
-  .headerDay { grid-template-columns: 1fr; }
-  .days > div:not(.dayActive) { padding: 1.5rem; border-radius: 1.5rem; }
-}
