@@ -143,31 +143,69 @@ body {
   display: flex;
   background: var(--selector-bg);
   padding: 4px;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1px solid var(--selector-border);
   margin-bottom: 1.5rem;
+  position: relative;
+  width: 320px; /* Ancho fijo para control total */
+  z-index: 10;
 }
 
+.active-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: calc(33.33% - 4px);
+  background: var(--selector-active-bg);
+  border-radius: 10px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: -1;
+}
+
+/* Día es un botón de acción, no cambia la vista, pero movemos el indicador si se quiere */
+/* Pero como el usuario pidió que fuera acción, el indicador solo se mueve entre Mes y Año */
+.active-indicator.view-day { transform: translateX(calc(100% + 2px)); }
+.active-indicator.view-year { transform: translateX(calc(200% + 4px)); }
+
 .ViewSelector button {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 8px 24px;
+  gap: 8px;
+  padding: 8px 12px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
   background: transparent;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--selector-text);
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
   min-height: 40px;
+  z-index: 1;
 }
 
 .ViewSelector button.active {
-  background: var(--selector-active-bg);
   color: var(--selector-active-text);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 600px) {
+  .ViewSelector {
+    width: 280px; /* Más angosto en mobile */
+    padding: 3px;
+  }
+  
+  .ViewSelector button {
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+  
+  .ViewSelector .text {
+    display: inline-block; /* Mantener texto pero compacto */
+  }
 }
 
 /* Theme Toggle Button */

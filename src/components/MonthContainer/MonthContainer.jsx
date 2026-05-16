@@ -173,6 +173,9 @@ export default function MonthsContainer() {
     <div className={activeView === 'day' ? 'day-view-layout' : 'year-view-layout'}>
       <div className="AppHeader">
         <div className="ViewSelector">
+          <div 
+            className={`active-indicator view-${activeView}`} 
+          />
           <button 
             onClick={handleOpenToday}
             className="btn-today-action"
@@ -185,14 +188,14 @@ export default function MonthsContainer() {
             className={activeView === 'day' ? 'active' : ''}
           >
             <span className="icon">🗓️</span> 
-            <span className="text">Mensual</span>
+            <span className="text">Mes</span>
           </button>
           <button 
             onClick={() => setActiveView('year')}
             className={activeView === 'year' ? 'active' : ''}
           >
             <span className="icon">📅</span> 
-            <span className="text">Anual</span>
+            <span className="text">Año</span>
           </button>
         </div>
 
