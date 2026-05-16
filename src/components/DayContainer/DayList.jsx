@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 import { ThemeContext } from "../../App";
+import { formatNumber } from "../../utils/format";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 
@@ -20,10 +21,42 @@ export default function DayList({ month, day, year, data, onDataLoaded, onRefres
   const [hasData, setHasData] = useState(false);
   const {} = useContext(ThemeContext);
 
+  const formatInitialData = (raw) => {
+    if (!raw) return raw;
+    const formatted = { ...raw };
+    
+    if (raw.efInicial !== undefined && raw.efInicial !== "") {
+      formatted.efInicial = formatNumber(raw.efInicial);
+    }
+    if (raw.efFinal !== undefined && raw.efFinal !== "") {
+      formatted.efFinal = formatNumber(raw.efFinal);
+    }
+    
+    if (raw.cashExpenses) {
+      formatted.cashExpenses = raw.cashExpenses.map(item => ({
+        ...item,
+        v: (item.v !== undefined && item.v !== "") ? formatNumber(item.v) : item.v
+      }));
+    }
+    if (raw.digitalExpenses) {
+      formatted.digitalExpenses = raw.digitalExpenses.map(item => ({
+        ...item,
+        v: (item.v !== undefined && item.v !== "") ? formatNumber(item.v) : item.v
+      }));
+    }
+    if (raw.digitalSales) {
+      formatted.digitalSales = raw.digitalSales.map(item => ({
+        ...item,
+        v: (item.v !== undefined && item.v !== "") ? formatNumber(item.v) : item.v
+      }));
+    }
+    return formatted;
+  };
+
   // Sincronizar el estado local con la data que viene por props (global)
   useEffect(() => {
     if (data) {
-      setGetDay({ ...data });
+      setGetDay(formatInitialData(data));
       setHasData(true);
     } else {
       setGetDay({ ...inputs });

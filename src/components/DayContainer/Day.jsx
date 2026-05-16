@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { DateTime } from "luxon";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
+import { formatNumber, parseNumber, getNum } from "../../utils/format";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL;
@@ -16,11 +17,6 @@ export default function Day({
   onRefresh,
 }) {
   const [loading, setLoading] = useState(false);
-  
-  const getNum = (val) => {
-    const n = parseFloat(val);
-    return isNaN(n) ? 0 : n;
-  };
 
   // Traspaso de saldo inteligente
   useEffect(() => {
@@ -31,7 +27,7 @@ export default function Day({
         if (snap.exists()) {
           const yesterdayData = snap.data();
           if (yesterdayData.efFinal) {
-            setInputs(prev => ({ ...prev, efInicial: yesterdayData.efFinal }));
+            setInputs(prev => ({ ...prev, efInicial: formatNumber(yesterdayData.efFinal) }));
           }
         }
       });
@@ -63,8 +59,26 @@ export default function Day({
 
   const handleDynamicChange = (key, list, index, field, value) => {
     const newList = [...list];
-    newList[index][field] = field === 'v' ? getNum(value) : value;
+    newList[index][field] = value;
     updateState(key, newList);
+  };
+
+  const handleBlur = (key, list, index, field, value) => {
+    const newList = [...list];
+    if (field === 'v') {
+      const num = parseNumber(value);
+      newList[index][field] = num !== 0 ? formatNumber(num) : '';
+      updateState(key, newList);
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setInputs({ ...inputs, [field]: value });
+  };
+
+  const handleInputBlur = (field, value) => {
+    const num = parseNumber(value);
+    setInputs({ ...inputs, [field]: num !== 0 ? formatNumber(num) : '' });
   };
 
   // --- CÁLCULOS ---
@@ -82,13 +96,15 @@ export default function Day({
 
   const sendDay = async () => {
     setLoading(true);
-    // Filtramos filas totalmente vacías antes de guardar
-    const cleanCash = cashList.filter(i => i.n || i.v > 0);
-    const cleanDigExp = digitalExpList.filter(i => i.n || i.v > 0);
-    const cleanSales = digitalSalesList.filter(i => i.n || i.v > 0);
+    // Filtramos filas totalmente vacías antes de guardar y convertimos a número para la DB
+    const cleanCash = cashList.filter(i => i.n || getNum(i.v) > 0).map(i => ({...i, v: getNum(i.v)}));
+    const cleanDigExp = digitalExpList.filter(i => i.n || getNum(i.v) > 0).map(i => ({...i, v: getNum(i.v)}));
+    const cleanSales = digitalSalesList.filter(i => i.n || getNum(i.v) > 0).map(i => ({...i, v: getNum(i.v)}));
 
     const finalData = { 
         ...inputs, 
+        efInicial: getNum(inputs.efInicial),
+        efFinal: getNum(inputs.efFinal),
         cashExpenses: cleanCash, 
         digitalExpenses: cleanDigExp, 
         digitalSales: cleanSales 
@@ -137,13 +153,13 @@ export default function Day({
             <div className="input-group">
               <label>Efectivo Inicial</label>
               <div className="currency-input">
-                <input className="number" value={inputs.efInicial || ''} onChange={(e) => setInputs({...inputs, efInicial: e.target.value})} type="number" onWheel={preventScroll} placeholder="0" />
+                <input className="number" value={inputs.efInicial || ''} onChange={(e) => handleInputChange('efInicial', e.target.value)} onBlur={(e) => handleInputBlur('efInicial', e.target.value)} type="text" placeholder="0" />
               </div>
             </div>
             <div className="input-group">
               <label>Efectivo Final</label>
               <div className="currency-input">
-                <input className="number" value={inputs.efFinal || ''} onChange={(e) => setInputs({...inputs, efFinal: e.target.value})} type="number" onWheel={preventScroll} placeholder="0" />
+                <input className="number" value={inputs.efFinal || ''} onChange={(e) => handleInputChange('efFinal', e.target.value)} onBlur={(e) => handleInputBlur('efFinal', e.target.value)} type="text" placeholder="0" />
               </div>
             </div>
           </div>
@@ -161,7 +177,7 @@ export default function Day({
                       <div className="row-inputs">
                         <input type="text" value={item.n} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" />
                         <div className="currency-input">
-                          <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} placeholder="0" />
+                          <input className="number" type="text" value={item.v || ''} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} onBlur={(e) => handleBlur('cashExpenses', cashList, idx, 'v', e.target.value)} placeholder="0" />
                         </div>
                         <button onClick={() => removeRow('cashExpenses', cashList, idx)} className="btn-remove">🗑️</button>
                       </div>
@@ -183,7 +199,7 @@ export default function Day({
                         <div className="row-inputs">
                           <input type="text" value={item.n} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" />
                           <div className="currency-input">
-                            <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} placeholder="0" />
+                            <input className="number" type="text" value={item.v || ''} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} onBlur={(e) => handleBlur('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} placeholder="0" />
                           </div>
                           <button onClick={() => removeRow('digitalExpenses', digitalExpList, idx)} className="btn-remove">🗑️</button>
                         </div>
@@ -204,7 +220,7 @@ export default function Day({
                       <div className="row-inputs">
                         <input type="text" value={item.n} readOnly={item.readOnly} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'n', e.target.value)} className="text" />
                         <div className="currency-input">
-                          <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} placeholder="0" />
+                          <input className="number" type="text" value={item.v || ''} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} onBlur={(e) => handleBlur('digitalSales', digitalSalesList, idx, 'v', e.target.value)} placeholder="0" />
                         </div>
                         {!item.readOnly && <button onClick={() => removeRow('digitalSales', digitalSalesList, idx)} className="btn-remove">🗑️</button>}
                       </div>
@@ -216,8 +232,8 @@ export default function Day({
           </div>
 
           <div className="totales">
-            <p>VENTAS <span>${total.ventas.toLocaleString()}</span></p>
-            <p>GASTOS <span>${total.gastos.toLocaleString()}</span></p>
+            <p>VENTAS <span>${formatNumber(total.ventas)}</span></p>
+            <p>GASTOS <span>${formatNumber(total.gastos)}</span></p>
           </div>
           <button onClick={sendDay} className="btn-send" disabled={loading}>
             {loading ? "SINCRONIZANDO..." : "GUARDAR Y SINCRONIZAR"}

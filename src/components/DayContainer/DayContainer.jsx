@@ -6,6 +6,7 @@ import MonthlyExpenses from "./MonthlyExpenses";
 import { componentsQuantity } from "../MonthContainer/MonthContainer";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
+import { formatNumber, parseNumber, getNum } from "../../utils/format";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 const SHEET_URL = import.meta.env.VITE_SHEET_URL;
@@ -79,7 +80,7 @@ export default function DayContainer({ month, year }) {
       const ref = doc(db, DB_FIRE, `${fullMonthName}_FIXED`);
       getDoc(ref).then((snap) => {
         if (snap.exists()) {
-          const total = snap.data().expenses.reduce((acc, curr) => acc + (parseFloat(curr.v) || 0), 0);
+          const total = snap.data().expenses.reduce((acc, curr) => acc + getNum(curr.v), 0);
           setFixedExpenses(total);
         } else {
           setFixedExpenses(0);
@@ -101,7 +102,6 @@ export default function DayContainer({ month, year }) {
 
   useEffect(() => {
     let v = 0; let g = 0;
-    const getNum = (val) => parseFloat(val) || 0;
 
     Object.values(daysData).forEach(day => {
       let gEfe = day.cashExpenses ? day.cashExpenses.reduce((acc, curr) => acc + getNum(curr.v), 0) : getNum(day.a) + getNum(day.b) + getNum(day.c) + getNum(day.d) + getNum(day.e) + getNum(day.f) + getNum(day.g) + getNum(day.h) + getNum(day.i) + getNum(day.j);
@@ -167,13 +167,13 @@ export default function DayContainer({ month, year }) {
         <div className="MonthlySummary" style={{ animation: 'modalShow 0.3s ease', flexDirection: 'column', gap: '12px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                <span className="v-total">V: ${animatedTotals.ventas.toLocaleString()}</span>
-                <span className="g-total">G: ${animatedTotals.gastos.toLocaleString()}</span>
+                <span className="v-total">V: ${formatNumber(animatedTotals.ventas)}</span>
+                <span className="g-total">G: ${formatNumber(animatedTotals.gastos)}</span>
             </div>
             <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>FIJOS: ${fixedExpenses.toLocaleString()}</span>
+                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>FIJOS: ${formatNumber(fixedExpenses)}</span>
                 <span style={{ color: rendimientoNeto >= 0 ? 'var(--success)' : 'var(--danger)', borderTop: '1px solid var(--border-color)', paddingTop: '2px' }}>
-                    NETO: ${rendimientoNeto.toLocaleString()}
+                    NETO: ${formatNumber(rendimientoNeto)}
                 </span>
             </div>
           </div>
