@@ -9,10 +9,10 @@ const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 
 export default function DayList({ month, day, year, data, onDataLoaded, onRefresh }) {
   const [inputs] = useState({
-    a: 0, b: 0, c: 0, d: 0, e: 0, f: 0, g: 0, h: 0, i: 0, j: 0,
+    a: "", b: "", c: "", d: "", e: "", f: "", g: "", h: "", i: "", j: "",
     nA: "", nB: "", nC: "", nD: "", nE: "", nF: "", nG: "", nH: "", nI: "", nJ: "",
-    uno: 0, dos: 0, tres: 0, nUno: "", nDos: "", nTres: "",
-    bsf: 0, mp: 0, efInicial: 0, efFinal: 0,
+    uno: "", dos: "", tres: "", nUno: "", nDos: "", nTres: "",
+    bsf: "", mp: "", efInicial: "", efFinal: "",
   });
 
   const [on, setOn] = useState(false);

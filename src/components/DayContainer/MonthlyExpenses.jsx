@@ -6,7 +6,7 @@ const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL;
 
 export default function MonthlyExpenses({ monthName, year, onClose, onRefresh }) {
-  const [expenses, setExpenses] = useState([{ n: '', v: 0 }]);
+  const [expenses, setExpenses] = useState([{ n: '', v: '' }]);
   const [loading, setLoading] = useState(false);
   const docId = `${monthName} ${year}_FIXED`;
 
@@ -20,13 +20,13 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
       const ref = doc(db, DB_FIRE, docId);
       getDoc(ref).then((snap) => {
         if (snap.exists()) {
-          setExpenses(snap.data().expenses || [{ n: '', v: 0 }]);
+          setExpenses(snap.data().expenses || [{ n: '', v: '' }]);
         }
       });
     }
   }, []);
 
-  const addRow = () => setExpenses([...expenses, { n: '', v: 0 }]);
+  const addRow = () => setExpenses([...expenses, { n: '', v: '' }]);
   
   const removeRow = (index) => {
     if (expenses.length <= 1) return;

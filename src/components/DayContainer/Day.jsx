@@ -40,18 +40,18 @@ export default function Day({
 
   // --- LÓGICA DE LISTAS MINIMALISTAS ---
   // Si no hay datos, empezamos con 1 fila vacía para gastos y 0 extras para ventas
-  const cashList = inputs.cashExpenses || [{ n: '', v: 0 }];
-  const digitalExpList = inputs.digitalExpenses || [{ n: '', v: 0 }];
+  const cashList = inputs.cashExpenses || [{ n: '', v: '' }];
+  const digitalExpList = inputs.digitalExpenses || [{ n: '', v: '' }];
   const digitalSalesList = inputs.digitalSales || [
-    { n: 'Mercado Pago', v: inputs.mp || 0, readOnly: true },
-    { n: 'Pago Digital', v: inputs.bsf || 0, readOnly: true }
+    { n: 'Mercado Pago', v: inputs.mp || '', readOnly: true },
+    { n: 'Pago Digital', v: inputs.bsf || '', readOnly: true }
   ];
 
   const updateState = (key, newList) => {
     setInputs(prev => ({ ...prev, [key]: newList }));
   };
 
-  const addRow = (key, list, defaultItem = { n: '', v: 0 }) => {
+  const addRow = (key, list, defaultItem = { n: '', v: '' }) => {
     updateState(key, [...list, defaultItem]);
   };
 
@@ -136,11 +136,11 @@ export default function Day({
           <div className="headerDay">
             <div className="input-group">
               <label>Efectivo Inicial</label>
-              <input className="number" value={inputs.efInicial} onChange={(e) => setInputs({...inputs, efInicial: e.target.value})} type="number" onWheel={preventScroll} placeholder="$ 0" />
+              <input className="number" value={inputs.efInicial || ''} onChange={(e) => setInputs({...inputs, efInicial: e.target.value})} type="number" onWheel={preventScroll} placeholder="$ 0" />
             </div>
             <div className="input-group">
               <label>Efectivo Final</label>
-              <input className="number" value={inputs.efFinal} onChange={(e) => setInputs({...inputs, efFinal: e.target.value})} type="number" onWheel={preventScroll} placeholder="$ 0" />
+              <input className="number" value={inputs.efFinal || ''} onChange={(e) => setInputs({...inputs, efFinal: e.target.value})} type="number" onWheel={preventScroll} placeholder="$ 0" />
             </div>
           </div>
 
