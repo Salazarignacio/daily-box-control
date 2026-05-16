@@ -107,7 +107,7 @@ export default function MonthsContainer() {
             onClick={() => setActiveView('day')}
             className={activeView === 'day' ? 'active' : ''}
           >
-            <span className="icon">☀️</span> 
+            <span className="icon">🗓️</span> 
             <span className="text">Mensual</span>
           </button>
           <button 
