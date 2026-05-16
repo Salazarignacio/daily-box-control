@@ -1,8 +1,9 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import DayContainer from '../DayContainer/DayContainer'
 import { useParams, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { ThemeContext } from '../../App';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 
 export const componentsQuantity = (date) => {
   const time = [];
@@ -26,13 +27,26 @@ export default function MonthsContainer() {
   const [touchEnd, setTouchEnd] = useState(null);
   const [animationClass, setAnimationClass] = useState('');
 
+  // Lógica para el arrastre del selector
+  const selectorRef = useRef(null);
+  const x = useMotionValue(0);
+
   const handleOpenToday = () => {
     playClick();
-    // Forzamos el mes y año de hoy en la navegación para que el componente Day exista
     setNavDate(DateTime.now());
     setAutoOpenToday(true);
-    // Un pequeño timeout para que si ya estamos en el mes actual, se fuerce la apertura
     setTimeout(() => setAutoOpenToday(false), 100);
+  };
+
+  const handleDragEnd = (event, info) => {
+    const threshold = 50;
+    if (info.offset.x > threshold && activeView === 'day') {
+      setActiveView('year');
+      playClick();
+    } else if (info.offset.x < -threshold && activeView === 'year') {
+      setActiveView('day');
+      playClick();
+    }
   };
 
   // Generamos una lista de años
@@ -172,28 +186,48 @@ export default function MonthsContainer() {
   return (
     <div className={activeView === 'day' ? 'day-view-layout' : 'year-view-layout'}>
       <div className="AppHeader">
-        <div className="ViewSelector">
-          <div 
-            className={`active-indicator view-${activeView}`} 
-          />
+        <div className="ViewSelector" ref={selectorRef}>
           <button 
             onClick={handleOpenToday}
-            className="btn-today-action"
+            className={`btn-today-action ${autoOpenToday ? 'active' : ''}`}
           >
+            {autoOpenToday && (
+              <motion.div 
+                layoutId="active-pill"
+                className="active-indicator-pill"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+              />
+            )}
             <span className="icon">🕒</span> 
             <span className="text">Día</span>
           </button>
+          
           <button 
             onClick={() => setActiveView('day')}
             className={activeView === 'day' ? 'active' : ''}
           >
+            {activeView === 'day' && (
+              <motion.div 
+                layoutId="active-pill"
+                className="active-indicator-pill"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+              />
+            )}
             <span className="icon">🗓️</span> 
             <span className="text">Mes</span>
           </button>
+          
           <button 
             onClick={() => setActiveView('year')}
             className={activeView === 'year' ? 'active' : ''}
           >
+            {activeView === 'year' && (
+              <motion.div 
+                layoutId="active-pill"
+                className="active-indicator-pill"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+              />
+            )}
             <span className="icon">📅</span> 
             <span className="text">Año</span>
           </button>

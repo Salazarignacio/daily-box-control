@@ -151,22 +151,14 @@ body {
   z-index: 10;
 }
 
-.active-indicator {
+.active-indicator-pill {
   position: absolute;
-  top: 4px;
-  bottom: 4px;
-  width: calc(33.33% - 4px);
+  inset: 4px;
   background: var(--selector-active-bg);
   border-radius: 10px;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   z-index: -1;
 }
-
-/* Día es un botón de acción, no cambia la vista, pero movemos el indicador si se quiere */
-/* Pero como el usuario pidió que fuera acción, el indicador solo se mueve entre Mes y Año */
-.active-indicator.view-day { transform: translateX(calc(100% + 2px)); }
-.active-indicator.view-year { transform: translateX(calc(200% + 4px)); }
 
 .ViewSelector button {
   flex: 1;
@@ -184,6 +176,7 @@ body {
   transition: color 0.2s ease;
   min-height: 40px;
   z-index: 1;
+  position: relative; /* Importante para que el layoutId funcione */
 }
 
 .ViewSelector button.active {
