@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { DateTime } from "luxon";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
@@ -138,9 +139,7 @@ export default function Day({
     }
   };
 
-  const preventScroll = (e) => e.target.blur();
-
-  return (
+  return createPortal(
     <div className="days">
       <div>
         <div className="modal-header">
@@ -240,6 +239,7 @@ export default function Day({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
