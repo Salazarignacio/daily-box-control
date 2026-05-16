@@ -761,7 +761,7 @@ input.number {
 .currency-input::before {
   content: '$';
   position: absolute;
-  left: 0.75rem;
+  left: 0.65rem;
   color: var(--text-muted);
   font-weight: 800;
   font-size: 0.9rem;
@@ -770,11 +770,11 @@ input.number {
 }
 
 .currency-input input {
-  padding-left: 1.6rem !important;
+  padding-left: 1.5rem !important;
 }
 
 input.number, input.text {
-  padding: 0.65rem 0.85rem;
+  padding: 0.45rem 0.65rem;
   border: 1.5px solid var(--border-color);
   border-radius: 0.6rem;
   font-size: 0.9rem;

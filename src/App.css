@@ -146,7 +146,7 @@ body {
 /* Mejoras en inputs para que resalten */
 input.number, input.text {
   width: 100%;
-  padding: 1rem;
+  padding: 0.5rem;
   border: 2px solid #cbd5e1;
   border-radius: 1rem;
   font-size: 1.1rem;
