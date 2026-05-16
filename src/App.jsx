@@ -7,27 +7,35 @@ export const ThemeContext = createContext();
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('theme');
-    return saved ? saved === 'dark' : false; // Light mode by default now
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const handleChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    // Escuchamos cambios en la preferencia del sistema
+    mediaQuery.addEventListener('change', handleChange);
+
     if (isDarkMode) {
       document.body.classList.add('dark-mode');
       document.body.classList.remove('light-mode');
-      localStorage.setItem('theme', 'dark');
     } else {
       document.body.classList.add('light-mode');
       document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
     }
+
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, [isDarkMode]);
   
   // Obtenemos el año actual automáticamente
   const currentYear = DateTime.now().year;
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, setIsDarkMode }}>
+    <ThemeContext.Provider value={{ isDarkMode }}>
       <BrowserRouter>
         <Routes>
           {/* Si entran a la raíz, redirigimos al año actual */}

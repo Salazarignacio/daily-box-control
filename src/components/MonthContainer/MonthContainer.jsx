@@ -17,7 +17,7 @@ export default function MonthsContainer() {
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState('day'); 
   const currentYear = parseInt(yearId);
-  const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
 
   const [navDate, setNavDate] = useState(DateTime.now());
   const [touchStart, setTouchStart] = useState(null);
@@ -95,13 +95,6 @@ export default function MonthsContainer() {
   return (
     <div className={activeView === 'day' ? 'day-view-layout' : 'year-view-layout'}>
       <div className="AppHeader">
-        <button 
-          className="ThemeToggle" 
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          title={isDarkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-        >
-          {isDarkMode ? '☀️' : '🌙'}
-        </button>
         <div className="ViewSelector">
           <button 
             onClick={() => setActiveView('day')}
