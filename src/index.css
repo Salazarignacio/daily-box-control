@@ -908,5 +908,3 @@ input:focus:not(:read-only) {
   .gastosContainer { grid-template-columns: 1fr; }
   .headerDay { grid-template-columns: 1fr !important; }
 }
-plate-columns: 1fr !important; }
-}
