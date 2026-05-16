@@ -1,15 +1,7 @@
 export default function EmptyDay() {
   return (
-    <>
-      <div>
-        <div >
-          <div>
-            <div className={"dayListButton"}>
-              <p></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+    <div className="day-wrapper">
+      <div className="dayListButton empty"></div>
+    </div>
   );
 }
