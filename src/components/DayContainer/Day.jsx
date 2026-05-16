@@ -136,11 +136,15 @@ export default function Day({
           <div className="headerDay">
             <div className="input-group">
               <label>Efectivo Inicial</label>
-              <input className="number" value={inputs.efInicial || ''} onChange={(e) => setInputs({...inputs, efInicial: e.target.value})} type="number" onWheel={preventScroll} placeholder="$ 0" />
+              <div className="currency-input">
+                <input className="number" value={inputs.efInicial || ''} onChange={(e) => setInputs({...inputs, efInicial: e.target.value})} type="number" onWheel={preventScroll} placeholder="0" />
+              </div>
             </div>
             <div className="input-group">
               <label>Efectivo Final</label>
-              <input className="number" value={inputs.efFinal || ''} onChange={(e) => setInputs({...inputs, efFinal: e.target.value})} type="number" onWheel={preventScroll} placeholder="$ 0" />
+              <div className="currency-input">
+                <input className="number" value={inputs.efFinal || ''} onChange={(e) => setInputs({...inputs, efFinal: e.target.value})} type="number" onWheel={preventScroll} placeholder="0" />
+              </div>
             </div>
           </div>
 
@@ -156,7 +160,9 @@ export default function Day({
                     <li key={idx} className="dynamic-row">
                       <div className="row-inputs">
                         <input type="text" value={item.n} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" />
-                        <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} placeholder="$ 0" />
+                        <div className="currency-input">
+                          <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} placeholder="0" />
+                        </div>
                         <button onClick={() => removeRow('cashExpenses', cashList, idx)} className="btn-remove">🗑️</button>
                       </div>
                     </li>
@@ -176,7 +182,9 @@ export default function Day({
                       <li key={idx} className="dynamic-row">
                         <div className="row-inputs">
                           <input type="text" value={item.n} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" />
-                          <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} placeholder="$ 0" />
+                          <div className="currency-input">
+                            <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} placeholder="0" />
+                          </div>
                           <button onClick={() => removeRow('digitalExpenses', digitalExpList, idx)} className="btn-remove">🗑️</button>
                         </div>
                       </li>
@@ -195,7 +203,9 @@ export default function Day({
                     <li key={idx} className="dynamic-row">
                       <div className="row-inputs">
                         <input type="text" value={item.n} readOnly={item.readOnly} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'n', e.target.value)} className="text" />
-                        <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} placeholder="$ 0" />
+                        <div className="currency-input">
+                          <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} placeholder="0" />
+                        </div>
                         {!item.readOnly && <button onClick={() => removeRow('digitalSales', digitalSalesList, idx)} className="btn-remove">🗑️</button>}
                       </div>
                     </li>
