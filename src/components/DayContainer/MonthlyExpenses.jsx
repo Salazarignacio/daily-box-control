@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 import { formatNumber, parseNumber, getNum } from "../../utils/format";
@@ -17,7 +18,6 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
       getDoc(ref).then((snap) => {
         if (snap.exists()) {
           const data = snap.data().expenses || [{ n: '', v: '' }];
-          // Formateamos los valores al cargar
           const formattedData = data.map(item => ({
             ...item,
             v: item.v ? formatNumber(item.v) : ''
@@ -84,7 +84,7 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
     }
   };
 
-  return (
+  return createPortal(
     <div className="days">
       <div>
         <div className="modal-header">
@@ -123,6 +123,7 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
