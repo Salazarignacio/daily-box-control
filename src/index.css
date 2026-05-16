@@ -6,8 +6,8 @@
   --card-bg: #f8fafc;
   --text-main: #1e293b;
   --text-muted: #64748b;
-  --success: #10b981;
-  --danger: #ef4444;
+  --success: #22c55e;         /* El verde vivo que te gustó */
+  --danger: #fb7185;          /* El rojo-rosado moderno que te gustó */
   --border-color: #cbd5e1;
   --header-text: white;
   --selector-bg: rgba(255, 255, 255, 0.1);
