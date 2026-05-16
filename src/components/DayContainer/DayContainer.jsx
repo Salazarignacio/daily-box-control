@@ -20,6 +20,15 @@ export default function DayContainer({ month, year, autoOpenToday }) {
   const [animatedTotals, setAnimatedTotals] = useState({ ventas: 0, gastos: 0 });
   const today = DateTime.now();
 
+  // RESET DE DATOS AL CAMBIAR DE MES/AÑO
+  // Este fix es crucial para que no se mezclen datos de distintos años o meses al navegar
+  useEffect(() => {
+    setDaysData({});
+    setMonthlyTotals({ ventas: 0, gastos: 0 });
+    setFixedExpenses(0);
+    setAnimatedTotals({ ventas: 0, gastos: 0 });
+  }, [month, year]);
+
   // Audio effects using Web Audio API (No external files needed)
   const playPop = () => {
     try {
