@@ -799,8 +799,8 @@ input.number, input.text {
   }
   
   .row-inputs { gap: 0.25rem; }
-  .row-inputs .text { flex: 5.5; } 
-  .row-inputs .currency-input { flex: 2; }
+  .row-inputs .text { flex: 4.5; } 
+  .row-inputs .currency-input { flex: 3; }
 
   .currency-input::before {
     left: 0.5rem;
