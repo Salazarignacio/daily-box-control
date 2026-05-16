@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
+const SHEET_URL = import.meta.env.VITE_SHEET_URL;
 
 export default function DayContainer({ month, year }) {
   const [monthlyTotals, setMonthlyTotals] = useState({ ventas: 0, gastos: 0 });
@@ -127,6 +128,13 @@ export default function DayContainer({ month, year }) {
             title="Ver totales del mes"
           >
             {showTotals ? '👁️' : '📊'}
+          </button>
+          <button 
+            onClick={() => { playPop(); window.open(SHEET_URL, '_blank'); }} 
+            className="btn-open-sheet"
+            title="Abrir Planilla Google"
+          >
+            📄
           </button>
           <button 
             onClick={() => { playPop(); setShowFixedModal(true); }} 

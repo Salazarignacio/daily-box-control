@@ -738,7 +738,7 @@ input:focus {
   opacity: 0.7;
 }
 
-.btn-toggle-stats {
+.btn-toggle-stats, .btn-open-sheet {
   background: rgba(30, 41, 59, 0.1);
   border: none;
   color: var(--primary-dark);
@@ -747,9 +747,12 @@ input:focus {
   cursor: pointer;
   font-weight: bold;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn-toggle-stats:hover {
+.btn-toggle-stats:hover, .btn-open-sheet:hover {
   background: rgba(30, 41, 59, 0.2);
   transform: scale(1.05);
 }
