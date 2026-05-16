@@ -189,8 +189,12 @@ export default function MonthsContainer() {
         <div className="ViewSelector" ref={selectorRef}>
           <button 
             onClick={handleOpenToday}
-            className={`btn-today-action ${autoOpenToday ? 'active' : ''}`}
+            className={`view-btn ${autoOpenToday ? 'active' : ''}`}
           >
+            <span className="btn-content">
+                <span className="icon">🕒</span> 
+                <span className="text">Día</span>
+            </span>
             {autoOpenToday && (
               <motion.div 
                 layoutId="active-pill"
@@ -198,14 +202,16 @@ export default function MonthsContainer() {
                 transition={{ type: "spring", stiffness: 500, damping: 35 }}
               />
             )}
-            <span className="icon">🕒</span> 
-            <span className="text">Día</span>
           </button>
           
           <button 
             onClick={() => setActiveView('day')}
-            className={activeView === 'day' ? 'active' : ''}
+            className={`view-btn ${activeView === 'day' ? 'active' : ''}`}
           >
+            <span className="btn-content">
+                <span className="icon">🗓️</span> 
+                <span className="text">Mes</span>
+            </span>
             {activeView === 'day' && (
               <motion.div 
                 layoutId="active-pill"
@@ -213,14 +219,16 @@ export default function MonthsContainer() {
                 transition={{ type: "spring", stiffness: 500, damping: 35 }}
               />
             )}
-            <span className="icon">🗓️</span> 
-            <span className="text">Mes</span>
           </button>
           
           <button 
             onClick={() => setActiveView('year')}
-            className={activeView === 'year' ? 'active' : ''}
+            className={`view-btn ${activeView === 'year' ? 'active' : ''}`}
           >
+            <span className="btn-content">
+                <span className="icon">📅</span> 
+                <span className="text">Año</span>
+            </span>
             {activeView === 'year' && (
               <motion.div 
                 layoutId="active-pill"
@@ -228,8 +236,6 @@ export default function MonthsContainer() {
                 transition={{ type: "spring", stiffness: 500, damping: 35 }}
               />
             )}
-            <span className="icon">📅</span> 
-            <span className="text">Año</span>
           </button>
         </div>
 

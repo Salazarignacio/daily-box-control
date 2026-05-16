@@ -147,42 +147,49 @@ body {
   border: 1px solid var(--selector-border);
   margin-bottom: 1.5rem;
   position: relative;
-  width: 320px; /* Ancho fijo para control total */
+  width: 300px;
   z-index: 10;
+}
+
+.view-btn {
+  flex: 1;
+  border: none;
+  background: transparent !important;
+  cursor: pointer;
+  position: relative;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Limpiamos padding para control total */
+  border-radius: 10px;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  z-index: 2; /* Por encima de la píldora */
+  position: relative;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--selector-text);
+  transition: color 0.2s ease;
+  pointer-events: none; /* Dejamos que el clic pase al botón */
+}
+
+.view-btn.active .btn-content {
+  color: var(--selector-active-text);
 }
 
 .active-indicator-pill {
   position: absolute;
-  inset: 4px;
+  inset: 0; /* Ocupa todo el botón */
   background: var(--selector-active-bg);
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  z-index: -1;
-}
-
-.ViewSelector button {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  background: transparent;
-  font-weight: 700;
-  color: var(--selector-text);
-  transition: color 0.2s ease;
-  min-height: 40px;
   z-index: 1;
-  position: relative; /* Importante para que el layoutId funcione */
-}
-
-.ViewSelector button.active {
-  color: var(--selector-active-text);
-  background: transparent !important;
-  box-shadow: none !important;
 }
 
 @media (max-width: 600px) {
