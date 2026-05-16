@@ -146,56 +146,56 @@ export default function Day({
 
           <div className="gastosContainer">
             {/* SECCIÓN 1: EFECTIVO */}
-            <div className="section-card cash">
-              <div className="section-header">
-                <p>💸 <strong>Gastos Efectivo</strong></p>
-                <button onClick={() => addRow('cashExpenses', cashList)} className="btn-add">+</button>
-              </div>
-              <ul>
-                {cashList.map((item, idx) => (
-                  <li key={idx} className="dynamic-row">
-                    <div className="row-inputs">
-                      <input type="text" value={item.n} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" style={{ flex: '2' }} />
-                      <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
-                      <button onClick={() => removeRow('cashExpenses', cashList, idx)} className="btn-remove">🗑️</button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="vertical-stack">
-              {/* SECCIÓN 2: GASTOS DIGITALES */}
-              <div className="section-card digital-exp">
+              <div className="section-card cash">
                 <div className="section-header">
-                  <p><strong>💳 Gastos Digitales</strong></p>
-                  <button onClick={() => addRow('digitalExpenses', digitalExpList)} className="btn-add">+</button>
+                  <p>💸 <strong>Gastos Efectivo</strong></p>
+                  <button onClick={() => addRow('cashExpenses', cashList)} className="btn-add">+</button>
                 </div>
                 <ul>
-                  {digitalExpList.map((item, idx) => (
+                  {cashList.map((item, idx) => (
                     <li key={idx} className="dynamic-row">
                       <div className="row-inputs">
-                        <input type="text" value={item.n} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" style={{ flex: '2' }} />
-                        <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
-                        <button onClick={() => removeRow('digitalExpenses', digitalExpList, idx)} className="btn-remove">🗑️</button>
+                        <input type="text" value={item.n} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" style={{ flex: '2' }} />
+                        <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
+                        <button onClick={() => removeRow('cashExpenses', cashList, idx)} className="btn-remove">🗑️</button>
                       </div>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* SECCIÓN 3: VENTAS DIGITALES */}
-              <div className="section-card sales-card">
-                <div className="section-header">
-                  <p><strong>💰 Ventas Digitales</strong></p>
-                  <button onClick={() => addRow('digitalSales', digitalSalesList)} className="btn-add green">+</button>
+              <div className="vertical-stack">
+                {/* SECCIÓN 2: GASTOS DIGITALES */}
+                <div className="section-card digital-exp">
+                  <div className="section-header">
+                    <p>💳 <strong>Gastos Digitales</strong></p>
+                    <button onClick={() => addRow('digitalExpenses', digitalExpList)} className="btn-add">+</button>
+                  </div>
+                  <ul>
+                    {digitalExpList.map((item, idx) => (
+                      <li key={idx} className="dynamic-row">
+                        <div className="row-inputs">
+                          <input type="text" value={item.n} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" style={{ flex: '2' }} />
+                          <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
+                          <button onClick={() => removeRow('digitalExpenses', digitalExpList, idx)} className="btn-remove">🗑️</button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
+
+                {/* SECCIÓN 3: VENTAS DIGITALES */}
+                <div className="section-card sales-card">
+                  <div className="section-header">
+                    <p>💰 <strong>Ventas Digitales</strong></p>
+                    <button onClick={() => addRow('digitalSales', digitalSalesList)} className="btn-add green">+</button>
+                  </div>
                 <ul>
                   {digitalSalesList.map((item, idx) => (
                     <li key={idx} className="dynamic-row">
                       <div className="row-inputs">
-                        <input type="text" value={item.n} readOnly={item.readOnly} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'n', e.target.value)} className="text" style={{ flex: '2', background: item.readOnly ? '#f1f5f9' : '#fff' }} />
-                        <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1', background: '#fff' }} />
+                        <input type="text" value={item.n} readOnly={item.readOnly} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'n', e.target.value)} className="text" style={{ flex: '2' }} />
+                        <input className="number" type="number" onWheel={preventScroll} value={item.v || ''} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
                         {!item.readOnly && <button onClick={() => removeRow('digitalSales', digitalSalesList, idx)} className="btn-remove">🗑️</button>}
                       </div>
                     </li>

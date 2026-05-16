@@ -30,10 +30,12 @@ body.light-mode {
   --border-color: #cbd5e1;
   --text-main: #1e293b;
   --month-header-bg: #f1f5f9;
+  --input-bg: white;
+  --input-readonly-bg: #f1f5f9;
 }
 
 body.dark-mode {
-  --bg-main: #334155;        /* Slate 700: Un gris azulado mucho más suave */
+  --bg-main: #334155;        /* Slate 700: El gris suave que estaba "perfecto" */
   --primary-dark: #475569;   /* Slate 600 */
   --header-text: #f8fafc;
   --selector-bg: rgba(255, 255, 255, 0.12);
@@ -41,11 +43,31 @@ body.dark-mode {
   --selector-text: #cbd5e1;
   --selector-active-bg: #eab308; 
   --selector-active-text: #1e293b;
-  --card-bg: #1e293b;        /* Slate 900: Para que la tarjeta destaque con elegancia */
+  --card-bg: #1e293b;        /* Color oscuro para las cards */
   --border-color: #475569;
   --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
   --month-header-bg: #475569;
   --accent-gold: #eab308;
+  --input-bg: white;         /* Default light mode input */
+  --input-readonly-bg: #f1f5f9;
+}
+
+/* Solo para el modo oscuro, ajustamos los inputs de los formularios */
+body.dark-mode .days .section-card {
+  background: #1e293b;       /* Contenedor oscuro */
+}
+
+body.dark-mode .days input.number, 
+body.dark-mode .days input.text {
+  background: #334155 !important; /* Input más claro que el contenedor */
+  border-color: #475569;
+  color: #f8fafc;
+}
+
+body.dark-mode .days input:read-only {
+  background: #1e293b !important; /* Readonly igual al contenedor */
+  opacity: 0.8;
 }
 
 * {
@@ -619,11 +641,29 @@ body {
 
 .section-card {
   background: var(--card-bg);
-  border-radius: 1rem;
-  padding: 1.25rem;
-  margin-bottom: 1.25rem;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   width: 100%;
   border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.section-header p {
+  font-size: 1rem;
+  color: var(--text-main);
+  font-weight: 800;
+  margin: 0;
 }
 
 ul { list-style: none; }
@@ -700,18 +740,29 @@ input.number, input.text {
   border-radius: 0.6rem;
   font-size: 0.9rem;
   font-weight: 600;
-  background: var(--card-bg);
+  background: var(--input-bg);
   color: var(--text-main);
   transition: all 0.2s;
   width: 100%;
   min-width: 0;
 }
 
-input:focus {
+input.number:read-only, input.text:read-only {
+  background: var(--input-readonly-bg) !important;
+  border-color: var(--border-color);
+  cursor: default;
+}
+
+input:focus:not(:read-only) {
   background: var(--bg-main);
   border-color: var(--accent-gold);
   box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.1);
   outline: none;
+}
+
+::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
 }
 
 .totales {
