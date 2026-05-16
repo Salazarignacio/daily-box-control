@@ -20,9 +20,20 @@ export default function MonthsContainer() {
   const { isDarkMode } = useContext(ThemeContext);
 
   const [navDate, setNavDate] = useState(DateTime.now());
+  const today = DateTime.now();
+  const [autoOpenToday, setAutoOpenToday] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const [animationClass, setAnimationClass] = useState('');
+
+  const handleOpenToday = () => {
+    playClick();
+    // Forzamos el mes y año de hoy en la navegación para que el componente Day exista
+    setNavDate(DateTime.now());
+    setAutoOpenToday(true);
+    // Un pequeño timeout para que si ya estamos en el mes actual, se fuerce la apertura
+    setTimeout(() => setAutoOpenToday(false), 100);
+  };
 
   // Generamos una lista de años
   const years = [];
@@ -80,6 +91,7 @@ export default function MonthsContainer() {
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       const key = e.key.toLowerCase();
+      if (key === 'd') { handleOpenToday(); }
       if (key === 'm') { playClick(); setActiveView('day'); }
       if (key === 'a') { playClick(); setActiveView('year'); }
       if (activeView === 'day') {
@@ -109,10 +121,65 @@ export default function MonthsContainer() {
     if (isRightSwipe) prevMonth();
   };
 
+  const renderActiveView = () => {
+    if (activeView === 'year') {
+      return (
+        <div className="Months">
+          {componentsQuantity(12).map((a, b) => {
+            const isCurrentMonth = a === today.month && currentYear === today.year;
+            return <DayContainer 
+              key={b} 
+              month={a} 
+              year={currentYear} 
+              autoOpenToday={isCurrentMonth ? autoOpenToday : false} 
+            />;
+          })}
+        </div>
+      );
+    }
+
+    return (
+      <div 
+        className="MonthNavigationWrapper"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        <div className="MainNavigationRow">
+          <button className="nav-arrow side-arrow left" onClick={prevMonth}>‹</button>
+          
+          <div className={`SingleMonthView ${animationClass}`}>
+            <DayContainer 
+              key={`${navDate.month}-${navDate.year}`} 
+              month={navDate.month} 
+              year={navDate.year} 
+              autoOpenToday={navDate.month === today.month && navDate.year === today.year ? autoOpenToday : false}
+            />
+          </div>
+          
+          <button className="nav-arrow side-arrow right" onClick={nextMonth}>›</button>
+        </div>
+        
+        <div className="BottomNavigation">
+          <button className="nav-arrow bottom-only" onClick={prevMonth}>‹</button>
+          <span className="nav-month-label">{navDate.monthLong.toUpperCase()} {navDate.year}</span>
+          <button className="nav-arrow bottom-only" onClick={nextMonth}>›</button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={activeView === 'day' ? 'day-view-layout' : 'year-view-layout'}>
       <div className="AppHeader">
         <div className="ViewSelector">
+          <button 
+            onClick={handleOpenToday}
+            className="btn-today-action"
+          >
+            <span className="icon">🕒</span> 
+            <span className="text">Día</span>
+          </button>
           <button 
             onClick={() => setActiveView('day')}
             className={activeView === 'day' ? 'active' : ''}
@@ -143,40 +210,7 @@ export default function MonthsContainer() {
         )}
       </div>
 
-      {activeView === 'year' ? (
-        <div className="Months">
-          {componentsQuantity(12).map((a, b) => {
-            return <DayContainer key={b} month={a} year={currentYear}/>;
-          })}
-        </div>
-      ) : (
-        <div 
-          className="MonthNavigationWrapper"
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-        >
-          <div className="MainNavigationRow">
-            <button className="nav-arrow side-arrow left" onClick={prevMonth}>‹</button>
-            
-            <div className={`SingleMonthView ${animationClass}`}>
-              <DayContainer 
-                key={`${navDate.month}-${navDate.year}`} 
-                month={navDate.month} 
-                year={navDate.year} 
-              />
-            </div>
-            
-            <button className="nav-arrow side-arrow right" onClick={nextMonth}>›</button>
-          </div>
-          
-          <div className="BottomNavigation">
-            <button className="nav-arrow bottom-only" onClick={prevMonth}>‹</button>
-            <span className="nav-month-label">{navDate.monthLong.toUpperCase()} {navDate.year}</span>
-            <button className="nav-arrow bottom-only" onClick={nextMonth}>›</button>
-          </div>
-        </div>
-      )}
+      {renderActiveView()}
     </div>
   );
 }

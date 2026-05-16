@@ -8,7 +8,7 @@ import { formatNumber } from "../../utils/format";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 
-export default function DayList({ month, day, year, data, onDataLoaded, onRefresh }) {
+export default function DayList({ month, day, year, data, onDataLoaded, onRefresh, autoOpen }) {
   const [inputs] = useState({
     a: "", b: "", c: "", d: "", e: "", f: "", g: "", h: "", i: "", j: "",
     nA: "", nB: "", nC: "", nD: "", nE: "", nF: "", nG: "", nH: "", nI: "", nJ: "",
@@ -20,6 +20,12 @@ export default function DayList({ month, day, year, data, onDataLoaded, onRefres
   const [getDay, setGetDay] = useState({ ...inputs });
   const [hasData, setHasData] = useState(false);
   const {} = useContext(ThemeContext);
+
+  useEffect(() => {
+    if (autoOpen) {
+      setOn(true);
+    }
+  }, [autoOpen]);
 
   const formatInitialData = (raw) => {
     if (!raw) return raw;

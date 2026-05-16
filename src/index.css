@@ -500,6 +500,20 @@ body {
   width: 100%;
 }
 
+.TodayContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.TodayContainer .dayListButton {
+  width: 80px;
+  height: 80px;
+  font-size: 1.5rem;
+}
+
 .day-wrapper { display: contents; }
 
 .dayListButton {

@@ -11,13 +11,14 @@ import { formatNumber, parseNumber, getNum } from "../../utils/format";
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 const SHEET_URL = import.meta.env.VITE_SHEET_URL;
 
-export default function DayContainer({ month, year }) {
+export default function DayContainer({ month, year, autoOpenToday }) {
   const [monthlyTotals, setMonthlyTotals] = useState({ ventas: 0, gastos: 0 });
   const [daysData, setDaysData] = useState({});
   const [fixedExpenses, setFixedExpenses] = useState(0);
   const [showFixedModal, setShowFixedModal] = useState(false);
   const [showTotals, setShowTotals] = useState(false);
   const [animatedTotals, setAnimatedTotals] = useState({ ventas: 0, gastos: 0 });
+  const today = DateTime.now();
 
   // Audio effects using Web Audio API (No external files needed)
   const playPop = () => {
@@ -126,7 +127,8 @@ export default function DayContainer({ month, year }) {
     const emptiesCount = emptyMap[whatDayIs(1)] || 0;
     for (let i = 0; i < emptiesCount; i++) items.push(<EmptyDay key={`empty-${i}`} />);
     componentsQuantity(monthNumber.daysInMonth).forEach((d) => {
-      items.push(<DayList key={`day-${d}`} day={d} month={month} year={year} data={daysData[d]} onDataLoaded={handleDataLoaded} onRefresh={refreshDay} />);
+      const isToday = d === today.day && month === today.month && year === today.year;
+      items.push(<DayList key={`day-${d}`} day={d} month={month} year={year} data={daysData[d]} onDataLoaded={handleDataLoaded} onRefresh={refreshDay} autoOpen={isToday ? autoOpenToday : false} />);
     });
     return items;
   };
