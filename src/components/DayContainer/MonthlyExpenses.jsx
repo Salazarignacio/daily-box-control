@@ -89,8 +89,8 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
                 <li key={idx} className="dynamic-row">
                   <label className="row-label">Gasto Fijo {idx + 1}</label>
                   <div className="row-inputs">
-                    <input type="text" value={item.n} onChange={(e) => handleChange(idx, 'n', e.target.value)} className="text" placeholder="Ej: Luz, Alquiler..." style={{ flex: '2' }} />
-                    <input className="number" type="number" value={item.v || ''} onChange={(e) => handleChange(idx, 'v', e.target.value)} placeholder="$ 0" style={{ flex: '1' }} />
+                    <input type="text" value={item.n} onChange={(e) => handleChange(idx, 'n', e.target.value)} className="text" placeholder="Ej: Luz, Alquiler..." />
+                    <input className="number" type="number" value={item.v || ''} onChange={(e) => handleChange(idx, 'v', e.target.value)} placeholder="$ 0" />
                     <button onClick={() => removeRow(idx)} className="btn-remove">🗑️</button>
                   </div>
                 </li>
