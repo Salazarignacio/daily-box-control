@@ -36,8 +36,8 @@ export default function MonthsContainer() {
 
   // Audio effects
   const playClick = () => {
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
-    audio.volume = 0.15;
+    const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-21.mp3');
+    audio.volume = 0.05;
     audio.play().catch(() => {});
   };
 

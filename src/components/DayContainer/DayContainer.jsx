@@ -20,8 +20,8 @@ export default function DayContainer({ month, year }) {
 
   // Audio effects
   const playPop = () => {
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2569-preview.mp3');
-    audio.volume = 0.1;
+    const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-20.mp3');
+    audio.volume = 0.05;
     audio.play().catch(() => {});
   };
 
