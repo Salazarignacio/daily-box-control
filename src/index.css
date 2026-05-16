@@ -533,7 +533,7 @@ body {
 }
 
 .days > div {
-  background: #e2e8f0; 
+  background: var(--bg-main); 
   width: 100%;
   max-width: 650px;
   max-height: 95vh;
@@ -549,10 +549,10 @@ body {
 .modal-header {
   position: sticky;
   top: 0;
-  background: white;
+  background: var(--card-bg);
   padding: 1rem 2rem;
   z-index: 100;
-  border-bottom: 2px solid #cbd5e1;
+  border-bottom: 2px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -570,7 +570,7 @@ body {
   justify-content: center;
   background: var(--accent-gold) !important;
   border-radius: 50%;
-  color: white !important;
+  color: #1e293b !important;
   font-weight: bold;
   cursor: pointer;
   border: none !important;
@@ -589,7 +589,7 @@ body {
   grid-template-columns: 1fr 1fr !important;
   gap: 1rem !important;
   margin-bottom: 1.25rem;
-  background: #f1f5f9;
+  background: var(--month-header-bg);
   padding: 1.25rem;
   border-radius: 1rem;
   width: 100%;
@@ -611,11 +611,12 @@ body {
 }
 
 .section-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 1rem;
   padding: 1.25rem;
   margin-bottom: 1.25rem;
   width: 100%;
+  border: 1px solid var(--border-color);
 }
 
 ul { list-style: none; }
