@@ -31,31 +31,61 @@ export default function DayList({ month, day, year, data, onDataLoaded, onRefres
     if (!raw) return raw;
     const formatted = { ...raw };
     
-    if (raw.efInicial !== undefined && raw.efInicial !== "") {
-      formatted.efInicial = formatNumber(raw.efInicial);
-    }
-    if (raw.efFinal !== undefined && raw.efFinal !== "") {
-      formatted.efFinal = formatNumber(raw.efFinal);
-    }
+    // 1. Mapeo de Efectivo Inicial/Final
+    if (raw.efInicial !== undefined && raw.efInicial !== "") formatted.efInicial = formatNumber(raw.efInicial);
+    if (raw.efFinal !== undefined && raw.efFinal !== "") formatted.efFinal = formatNumber(raw.efFinal);
     
+    // 2. Mapeo de Gastos Efectivo (Nuevo -> Nuevo / Viejo -> Nuevo)
     if (raw.cashExpenses) {
       formatted.cashExpenses = raw.cashExpenses.map(item => ({
         ...item,
         v: (item.v !== undefined && item.v !== "") ? formatNumber(item.v) : item.v
       }));
+    } else {
+      // Compatibilidad con datos viejos (a-j)
+      const oldCash = [];
+      const keys = ['a','b','c','d','e','f','g','h','i','j'];
+      keys.forEach(k => {
+        if (raw[k] && raw[k] > 0) {
+          oldCash.push({ n: raw['n' + k.toUpperCase()] || 'Gasto', v: formatNumber(raw[k]) });
+        }
+      });
+      if (oldCash.length > 0) formatted.cashExpenses = oldCash;
     }
+
+    // 3. Mapeo de Gastos Digitales (Nuevo -> Nuevo / Viejo -> Nuevo)
     if (raw.digitalExpenses) {
       formatted.digitalExpenses = raw.digitalExpenses.map(item => ({
         ...item,
         v: (item.v !== undefined && item.v !== "") ? formatNumber(item.v) : item.v
       }));
+    } else {
+      // Compatibilidad con datos viejos (uno-tres)
+      const oldDigExp = [];
+      const keys = ['uno','dos','tres'];
+      keys.forEach(k => {
+        if (raw[k] && raw[k] > 0) {
+          const names = { uno: raw.nUno, dos: raw.nDos, tres: raw.nTres };
+          oldDigExp.push({ n: names[k] || 'Gasto Digital', v: formatNumber(raw[k]) });
+        }
+      });
+      if (oldDigExp.length > 0) formatted.digitalExpenses = oldDigExp;
     }
+
+    // 4. Mapeo de Ventas Digitales
     if (raw.digitalSales) {
       formatted.digitalSales = raw.digitalSales.map(item => ({
         ...item,
         v: (item.v !== undefined && item.v !== "") ? formatNumber(item.v) : item.v
       }));
+    } else if (raw.mp || raw.bsf) {
+      // Compatibilidad MP / BSF
+      formatted.digitalSales = [
+        { n: 'Mercado Pago', v: raw.mp ? formatNumber(raw.mp) : '', readOnly: true },
+        { n: 'Pago Digital', v: raw.bsf ? formatNumber(raw.bsf) : '', readOnly: true }
+      ];
     }
+
     return formatted;
   };
 
