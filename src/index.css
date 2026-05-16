@@ -239,7 +239,6 @@ body {
   display: flex;
   justify-content: center;
   width: 100%;
-  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .MonthNavigationWrapper {
