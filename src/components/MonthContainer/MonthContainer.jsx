@@ -34,11 +34,28 @@ export default function MonthsContainer() {
     navigate(`/months/${e.target.value}`);
   };
 
-  // Audio effects
+  // Audio effects using Web Audio API (No external files needed)
   const playClick = () => {
-    const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-21.mp3');
-    audio.volume = 0.05;
-    audio.play().catch(() => {});
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+
+      gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.05);
+    } catch (e) {
+      console.log('Audio API not supported');
+    }
   };
 
   const nextMonth = () => {
