@@ -74,6 +74,6 @@ Esta aplicación está diseñada como un **Producto Mínimo Viable (MVP)** con a
 *   [ ] Reportes mensuales exportables en PDF.
 
 ---
-
+DEMO: https://balance-five-gamma.vercel.app/months/2026
 Desarrollado por [Ignacio Salazar](https://github.com/ignaciosalazar986) 🇦🇷
 
