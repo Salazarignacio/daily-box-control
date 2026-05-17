@@ -10,70 +10,51 @@
 
 ## ✨ Características Principales
 
+*   **🔐 Sistema de Roles (RBAC):** Diferenciación entre perfiles **ADMIN** y **CLIENT**.
+    *   *ADMIN:* Control total, visualización de ventas totales, gastos mensuales y acceso a planillas.
+    *   *CLIENT:* Interfaz operativa simplificada, carga de movimientos sin acceso a cifras de rentabilidad total.
 *   **⚡ Carga Rápida (Vista "Día"):** Botón de acción directa para abrir el formulario del día de la fecha sin clics innecesarios.
 *   **🗓️ Navegación Inteligente:** Selector de vistas (Día / Mes / Año) con interfaz táctil deslizable (drag & swipe).
 *   **🇦🇷 Formato Localizado:** Manejo automático de moneda argentina (punto para miles, coma para decimales).
 *   **📑 Sincronización en Tiempo Real:** Todos los datos se guardan en **Firebase Firestore** y se exportan automáticamente a una **Planilla de Google Sheets**.
-*   **📈 Resumen Mensual Visual:** Barra de progreso de gastos vs. ventas y cálculo automático de **Rendimiento Neto** (restando gastos fijos como alquiler y servicios).
+*   **📈 Resumen Mensual Visual:** Barra de progreso de gastos vs. ventas y cálculo automático de **Rendimiento Neto**.
 *   **📱 Mobile First:** Interfaz optimizada para el uso diario desde celulares en el punto de venta.
 
 ## 🛠️ Stack Tecnológico
 
 *   **Frontend:** React (Vite)
-*   **Animaciones:** Framer Motion (para el selector y transiciones)
+*   **Autenticación:** Firebase Auth
+*   **Animaciones:** Framer Motion
 *   **Backend & DB:** Firebase Firestore
 *   **Fechas:** Luxon
-*   **Integración:** Google Apps Script (para volcado a Sheets)
+*   **Integración:** Google Apps Script
 
 ---
 
 ## 🚀 Instalación y Configuración
 
-### 1. Clonar el repositorio
-```bash
-git clone https://github.com/tu-usuario/daily-box-control.git
-cd daily-box-control
-```
-
-### 2. Instalar dependencias
-```bash
-npm install
-```
-
-### 3. Variables de Entorno
+### Variables de Entorno
 Crea un archivo `.env` en la raíz del proyecto con tus credenciales:
 ```env
 VITE_DB_FIRE=tu_coleccion_de_firebase
 VITE_GOOGLE_SHEETS_URL=tu_url_de_google_script
 VITE_SHEET_URL=tu_url_de_la_planilla_de_visualizacion
-```
-
-### 4. Ejecutar en local
-```bash
-npm run dev
+VITE_ENABLE_AUTH=true (Activa/Desactiva el login para demos)
 ```
 
 ---
 
-## 💼 Visión Comercial (MVP)
+## 💼 Visión Comercial
 
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
-
-
-Esta aplicación está diseñada como un **Producto Mínimo Viable (MVP)** con alto potencial para ser comercializada como una solución SaaS (Software as a Service) para:
+Esta aplicación está diseñada como una solución SaaS (Software as a Service) para:
+*   Kioscos y almacenes.
 *   Cafeterías y Gastronomía.
 *   Showrooms y locales de ropa.
-*   Kioscos y almacenes.
 
-**Próximos pasos para escalar:**
-*   [ ] Sistema de autenticación multi-usuario.
-*   [ ] Categorización personalizada de gastos.
-*   [ ] Reportes mensuales exportables en PDF.
+**Diferenciales:**
+*   **Privacidad:** El dueño puede delegar la carga de datos sin exponer la rentabilidad real del negocio.
+*   **Modo Demo:** Posibilidad de desplegar versiones de prueba sin login para potenciales clientes mediante configuración.
 
 ---
-DEMO: https://balance-five-gamma.vercel.app/months/2026
+DEMO: https://balance-five-gamma.vercel.app/
 Desarrollado por [Ignacio Salazar](https://github.com/ignaciosalazar986) 🇦🇷
-
