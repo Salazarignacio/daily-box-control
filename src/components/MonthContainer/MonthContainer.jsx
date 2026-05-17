@@ -18,7 +18,7 @@ export default function MonthsContainer() {
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState('day'); 
   const currentYear = parseInt(yearId);
-  const { isDarkMode } = useContext(ThemeContext);
+  const { isDarkMode, isModalOpen } = useContext(ThemeContext);
 
   const [navDate, setNavDate] = useState(DateTime.now());
   const today = DateTime.now();
@@ -39,6 +39,7 @@ export default function MonthsContainer() {
   };
 
   const handleDragEnd = (event, info) => {
+    if (isModalOpen) return;
     const threshold = 50;
     if (info.offset.x > threshold && activeView === 'day') {
       setActiveView('year');
@@ -84,6 +85,7 @@ export default function MonthsContainer() {
   };
 
   const nextMonth = () => {
+    if (isModalOpen) return;
     playClick();
     setAnimationClass('slide-left');
     setTimeout(() => {
@@ -93,6 +95,7 @@ export default function MonthsContainer() {
   };
 
   const prevMonth = () => {
+    if (isModalOpen) return;
     playClick();
     setAnimationClass('slide-right');
     setTimeout(() => {
@@ -103,6 +106,7 @@ export default function MonthsContainer() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (isModalOpen) return;
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       const key = e.key.toLowerCase();
       if (key === 'd') { handleOpenToday(); }
@@ -115,18 +119,23 @@ export default function MonthsContainer() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeView, navDate]);
+  }, [activeView, navDate, isModalOpen]);
 
   const minSwipeDistance = 50;
 
   const onTouchStart = (e) => {
+    if (isModalOpen) return;
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
   };
 
-  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+  const onTouchMove = (e) => {
+    if (isModalOpen) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
 
   const onTouchEnd = () => {
+    if (isModalOpen) return;
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
@@ -193,7 +202,7 @@ export default function MonthsContainer() {
           >
             <span className="btn-content">
                 <span className="icon">🕒</span> 
-                <span className="text">Día</span>
+                <span className="text">Hoy</span>
             </span>
             {autoOpenToday && (
               <motion.div 

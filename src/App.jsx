@@ -10,6 +10,8 @@ function App() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
@@ -35,7 +37,7 @@ function App() {
   const currentYear = DateTime.now().year;
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode }}>
+    <ThemeContext.Provider value={{ isDarkMode, isModalOpen, setIsModalOpen }}>
       <BrowserRouter>
         <Routes>
           {/* Si entran a la raíz, redirigimos al año actual */}

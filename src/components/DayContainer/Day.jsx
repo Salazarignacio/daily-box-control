@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { createPortal } from "react-dom";
 import { DateTime } from "luxon";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 import { formatNumber, parseNumber, getNum } from "../../utils/format";
+import { ThemeContext } from "../../App";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL;
@@ -18,6 +19,12 @@ export default function Day({
   onRefresh,
 }) {
   const [loading, setLoading] = useState(false);
+  const { setIsModalOpen } = useContext(ThemeContext);
+
+  useEffect(() => {
+    setIsModalOpen(true);
+    return () => setIsModalOpen(false);
+  }, [setIsModalOpen]);
 
   // Traspaso de saldo inteligente
   useEffect(() => {
