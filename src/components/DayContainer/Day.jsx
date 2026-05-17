@@ -47,8 +47,7 @@ export default function Day({
   const cashList = inputs.cashExpenses || [{ n: '', v: '' }];
   const digitalExpList = inputs.digitalExpenses || [{ n: '', v: '' }];
   const digitalSalesList = inputs.digitalSales || [
-    { n: 'Mercado Pago', v: inputs.mp || '', readOnly: true },
-    { n: 'Pago Digital', v: inputs.bsf || '', readOnly: true }
+    { n: 'Mercado Pago', v: inputs.mp || '', readOnly: true }
   ];
 
   const updateState = (key, newList) => {
@@ -159,13 +158,31 @@ export default function Day({
             <div className="input-group">
               <label>Efectivo Inicial</label>
               <div className="currency-input">
-                <input className="number" value={inputs.efInicial || ''} onChange={(e) => handleInputChange('efInicial', e.target.value)} onBlur={(e) => handleInputBlur('efInicial', e.target.value)} type="text" placeholder="0" />
+                <input 
+                  className="number" 
+                  value={getNum(inputs.efInicial) || ''} 
+                  onChange={(e) => handleInputChange('efInicial', e.target.value)} 
+                  onBlur={(e) => handleInputBlur('efInicial', e.target.value)} 
+                  onFocus={(e) => e.target.select()}
+                  type="number" 
+                  inputMode="decimal"
+                  placeholder="0" 
+                />
               </div>
             </div>
             <div className="input-group">
               <label>Efectivo Final</label>
               <div className="currency-input">
-                <input className="number" value={inputs.efFinal || ''} onChange={(e) => handleInputChange('efFinal', e.target.value)} onBlur={(e) => handleInputBlur('efFinal', e.target.value)} type="text" placeholder="0" />
+                <input 
+                  className="number" 
+                  value={getNum(inputs.efFinal) || ''} 
+                  onChange={(e) => handleInputChange('efFinal', e.target.value)} 
+                  onBlur={(e) => handleInputBlur('efFinal', e.target.value)} 
+                  onFocus={(e) => e.target.select()}
+                  type="number" 
+                  inputMode="decimal"
+                  placeholder="0" 
+                />
               </div>
             </div>
           </div>
@@ -183,7 +200,16 @@ export default function Day({
                       <div className="row-inputs">
                         <input type="text" value={item.n} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" />
                         <div className="currency-input">
-                          <input className="number" type="text" value={item.v || ''} onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} onBlur={(e) => handleBlur('cashExpenses', cashList, idx, 'v', e.target.value)} placeholder="0" />
+                          <input 
+                            className="number" 
+                            type="number" 
+                            inputMode="decimal"
+                            value={getNum(item.v) || ''} 
+                            onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} 
+                            onBlur={(e) => handleBlur('cashExpenses', cashList, idx, 'v', e.target.value)} 
+                            onFocus={(e) => e.target.select()}
+                            placeholder="0" 
+                          />
                         </div>
                         <button onClick={() => removeRow('cashExpenses', cashList, idx)} className="btn-remove">🗑️</button>
                       </div>
@@ -205,8 +231,18 @@ export default function Day({
                         <div className="row-inputs">
                           <input type="text" value={item.n} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'n', e.target.value)} className="text" placeholder="Detalle" />
                           <div className="currency-input">
-                            <input className="number" type="text" value={item.v || ''} onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} onBlur={(e) => handleBlur('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} placeholder="0" />
+                            <input 
+                              className="number" 
+                              type="number" 
+                              inputMode="decimal"
+                              value={getNum(item.v) || ''} 
+                              onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} 
+                              onBlur={(e) => handleBlur('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} 
+                              onFocus={(e) => e.target.select()}
+                              placeholder="0" 
+                            />
                           </div>
+
                           <button onClick={() => removeRow('digitalExpenses', digitalExpList, idx)} className="btn-remove">🗑️</button>
                         </div>
                       </li>
@@ -226,7 +262,16 @@ export default function Day({
                       <div className="row-inputs">
                         <input type="text" value={item.n} readOnly={item.readOnly} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'n', e.target.value)} className="text" />
                         <div className="currency-input">
-                          <input className="number" type="text" value={item.v || ''} onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} onBlur={(e) => handleBlur('digitalSales', digitalSalesList, idx, 'v', e.target.value)} placeholder="0" />
+                          <input 
+                            className="number" 
+                            type="number" 
+                            inputMode="decimal"
+                            value={getNum(item.v) || ''} 
+                            onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} 
+                            onBlur={(e) => handleBlur('digitalSales', digitalSalesList, idx, 'v', e.target.value)} 
+                            onFocus={(e) => e.target.select()}
+                            placeholder="0" 
+                          />
                         </div>
                         {!item.readOnly && <button onClick={() => removeRow('digitalSales', digitalSalesList, idx)} className="btn-remove">🗑️</button>}
                       </div>

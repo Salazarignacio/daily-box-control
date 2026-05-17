@@ -32,8 +32,11 @@ export default function DayList({ month, day, year, data, onDataLoaded, onRefres
     const formatted = { ...raw };
     
     // 1. Mapeo de Efectivo Inicial/Final
-    if (raw.efInicial !== undefined && raw.efInicial !== "") formatted.efInicial = formatNumber(raw.efInicial);
-    if (raw.efFinal !== undefined && raw.efFinal !== "") formatted.efFinal = formatNumber(raw.efFinal);
+    if (raw.efInicial) formatted.efInicial = formatNumber(raw.efInicial);
+    else formatted.efInicial = "";
+
+    if (raw.efFinal) formatted.efFinal = formatNumber(raw.efFinal);
+    else formatted.efFinal = "";
     
     // 2. Mapeo de Gastos Efectivo (Nuevo -> Nuevo / Viejo -> Nuevo)
     if (raw.cashExpenses) {

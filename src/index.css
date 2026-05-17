@@ -846,6 +846,18 @@ input.number, input.text {
   min-width: 0;
 }
 
+/* Ocultar flechas en inputs de tipo número */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 @media (max-width: 600px) {
   .days { padding: 0.25rem; }
   .days > div { border-radius: 1rem; }
