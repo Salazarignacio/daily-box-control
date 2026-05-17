@@ -160,11 +160,11 @@ export default function Day({
               <div className="currency-input">
                 <input 
                   className="number" 
-                  value={getNum(inputs.efInicial) || ''} 
+                  value={inputs.efInicial || ''} 
                   onChange={(e) => handleInputChange('efInicial', e.target.value)} 
                   onBlur={(e) => handleInputBlur('efInicial', e.target.value)} 
                   onFocus={(e) => e.target.select()}
-                  type="number" 
+                  type="text" 
                   inputMode="decimal"
                   placeholder="0" 
                 />
@@ -175,11 +175,11 @@ export default function Day({
               <div className="currency-input">
                 <input 
                   className="number" 
-                  value={getNum(inputs.efFinal) || ''} 
+                  value={inputs.efFinal || ''} 
                   onChange={(e) => handleInputChange('efFinal', e.target.value)} 
                   onBlur={(e) => handleInputBlur('efFinal', e.target.value)} 
                   onFocus={(e) => e.target.select()}
-                  type="number" 
+                  type="text" 
                   inputMode="decimal"
                   placeholder="0" 
                 />
@@ -202,9 +202,9 @@ export default function Day({
                         <div className="currency-input">
                           <input 
                             className="number" 
-                            type="number" 
+                            type="text" 
                             inputMode="decimal"
-                            value={getNum(item.v) || ''} 
+                            value={item.v || ''} 
                             onChange={(e) => handleDynamicChange('cashExpenses', cashList, idx, 'v', e.target.value)} 
                             onBlur={(e) => handleBlur('cashExpenses', cashList, idx, 'v', e.target.value)} 
                             onFocus={(e) => e.target.select()}
@@ -233,16 +233,15 @@ export default function Day({
                           <div className="currency-input">
                             <input 
                               className="number" 
-                              type="number" 
+                              type="text" 
                               inputMode="decimal"
-                              value={getNum(item.v) || ''} 
+                              value={item.v || ''} 
                               onChange={(e) => handleDynamicChange('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} 
                               onBlur={(e) => handleBlur('digitalExpenses', digitalExpList, idx, 'v', e.target.value)} 
                               onFocus={(e) => e.target.select()}
                               placeholder="0" 
                             />
                           </div>
-
                           <button onClick={() => removeRow('digitalExpenses', digitalExpList, idx)} className="btn-remove">🗑️</button>
                         </div>
                       </li>
@@ -264,9 +263,9 @@ export default function Day({
                         <div className="currency-input">
                           <input 
                             className="number" 
-                            type="number" 
+                            type="text" 
                             inputMode="decimal"
-                            value={getNum(item.v) || ''} 
+                            value={item.v || ''} 
                             onChange={(e) => handleDynamicChange('digitalSales', digitalSalesList, idx, 'v', e.target.value)} 
                             onBlur={(e) => handleBlur('digitalSales', digitalSalesList, idx, 'v', e.target.value)} 
                             onFocus={(e) => e.target.select()}

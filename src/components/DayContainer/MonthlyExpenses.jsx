@@ -105,7 +105,16 @@ export default function MonthlyExpenses({ monthName, year, onClose, onRefresh })
                   <div className="row-inputs">
                     <input type="text" value={item.n} onChange={(e) => handleChange(idx, 'n', e.target.value)} className="text" placeholder="Ej: Luz, Alquiler..." />
                     <div className="currency-input">
-                      <input className="number" type="text" value={item.v || ''} onChange={(e) => handleChange(idx, 'v', e.target.value)} onBlur={(e) => handleBlur(idx, 'v', e.target.value)} placeholder="0" />
+                      <input 
+                        className="number" 
+                        type="text" 
+                        inputMode="decimal"
+                        value={item.v || ''} 
+                        onChange={(e) => handleChange(idx, 'v', e.target.value)} 
+                        onBlur={(e) => handleBlur(idx, 'v', e.target.value)} 
+                        onFocus={(e) => e.target.select()}
+                        placeholder="0" 
+                      />
                     </div>
                     <button onClick={() => removeRow(idx)} className="btn-remove">🗑️</button>
                   </div>
