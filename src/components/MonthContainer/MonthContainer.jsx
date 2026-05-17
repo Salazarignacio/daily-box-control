@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { ThemeContext } from '../../App';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
 
 export const componentsQuantity = (date) => {
   const time = [];
@@ -14,6 +15,7 @@ export const componentsQuantity = (date) => {
 };
 
 export default function MonthsContainer() {
+  const { logout, user } = useAuth();
   const { yearId } = useParams();
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState('day'); 
@@ -249,6 +251,22 @@ export default function MonthsContainer() {
         </div>
 
         <h1>Control de Caja Diario</h1>
+
+        <div className="user-session-header">
+          <div className="user-info">
+            <span className="user-label">USUARIO</span>
+            <span className="user-name">
+              {user?.email.split('@')[0].toUpperCase()}
+            </span>
+          </div>
+          <button 
+            onClick={logout}
+            className="btn-logout"
+            title="Cerrar Sesión"
+          >
+            ✕
+          </button>
+        </div>
 
         {activeView === 'year' && (
           <div className="YearSelector">

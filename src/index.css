@@ -54,12 +54,14 @@ body.dark-mode {
 }
 
 /* Solo para el modo oscuro, ajustamos los inputs de los formularios */
-body.dark-mode .days .section-card {
+body.dark-mode .days .section-card,
+body.dark-mode .login-container .section-card {
   background: #1e293b;       
 }
 
 body.dark-mode .days input.number, 
-body.dark-mode .days input.text {
+body.dark-mode .days input.text,
+body.dark-mode .login-container input.text {
   background: #334155 !important; 
   border-color: #475569;
   color: #f8fafc;
@@ -481,6 +483,76 @@ body {
   color: white;
 }
 
+.user-session-header {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.user-label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+}
+
+.user-name {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--text-main);
+  marginTop: -2px;
+}
+
+.btn-logout {
+  background: rgba(251, 113, 133, 0.1);
+  border: 1px solid rgba(251, 113, 133, 0.2);
+  color: var(--danger);
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.btn-logout:hover {
+  background: var(--danger);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .user-session-header {
+    top: 1rem;
+    left: 1rem;
+    gap: 8px;
+  }
+
+  .user-info {
+    display: none; /* Ocultamos el nombre en móvil para ahorrar espacio */
+  }
+
+  .btn-logout {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+}
+
 .Months {
   display: flex;
   flex-wrap: wrap;
@@ -549,6 +621,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  padding: 1.5rem;
+}
+
+/* Ajustes específicos para el login en modo oscuro */
+body.dark-mode .login-overlay .section-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .login-overlay input.text {
+  background: #334155 !important;
+  color: #f8fafc;
+  border-color: #475569;
+}
+
+body.dark-mode .login-overlay input::placeholder {
+  color: #94a3b8;
 }
 
 .TodayContainer {

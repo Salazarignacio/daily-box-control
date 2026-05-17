@@ -5,6 +5,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 import { formatNumber, parseNumber, getNum } from "../../utils/format";
 import { ThemeContext } from "../../App";
+import { useAuth } from "../../context/AuthContext";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL;
@@ -20,6 +21,8 @@ export default function Day({
 }) {
   const [loading, setLoading] = useState(false);
   const { setIsModalOpen } = useContext(ThemeContext);
+  const { role } = useAuth();
+  const isAdmin = role === 'ADMIN';
 
   useEffect(() => {
     setIsModalOpen(true);
@@ -154,38 +157,40 @@ export default function Day({
         </div>
         
         <div className="modal-content-body">
-          <div className="headerDay">
-            <div className="input-group">
-              <label>Efectivo Inicial</label>
-              <div className="currency-input">
-                <input 
-                  className="number" 
-                  value={inputs.efInicial || ''} 
-                  onChange={(e) => handleInputChange('efInicial', e.target.value)} 
-                  onBlur={(e) => handleInputBlur('efInicial', e.target.value)} 
-                  onFocus={(e) => e.target.select()}
-                  type="text" 
-                  inputMode="decimal"
-                  placeholder="0" 
-                />
+          {isAdmin && (
+            <div className="headerDay">
+              <div className="input-group">
+                <label>Efectivo Inicial</label>
+                <div className="currency-input">
+                  <input 
+                    className="number" 
+                    value={inputs.efInicial || ''} 
+                    onChange={(e) => handleInputChange('efInicial', e.target.value)} 
+                    onBlur={(e) => handleInputBlur('efInicial', e.target.value)} 
+                    onFocus={(e) => e.target.select()}
+                    type="text" 
+                    inputMode="decimal"
+                    placeholder="0" 
+                  />
+                </div>
+              </div>
+              <div className="input-group">
+                <label>Efectivo Final</label>
+                <div className="currency-input">
+                  <input 
+                    className="number" 
+                    value={inputs.efFinal || ''} 
+                    onChange={(e) => handleInputChange('efFinal', e.target.value)} 
+                    onBlur={(e) => handleInputBlur('efFinal', e.target.value)} 
+                    onFocus={(e) => e.target.select()}
+                    type="text" 
+                    inputMode="decimal"
+                    placeholder="0" 
+                  />
+                </div>
               </div>
             </div>
-            <div className="input-group">
-              <label>Efectivo Final</label>
-              <div className="currency-input">
-                <input 
-                  className="number" 
-                  value={inputs.efFinal || ''} 
-                  onChange={(e) => handleInputChange('efFinal', e.target.value)} 
-                  onBlur={(e) => handleInputBlur('efFinal', e.target.value)} 
-                  onFocus={(e) => e.target.select()}
-                  type="text" 
-                  inputMode="decimal"
-                  placeholder="0" 
-                />
-              </div>
-            </div>
-          </div>
+          )}
 
           <div className="gastosContainer">
             {/* SECCIÓN 1: EFECTIVO */}
@@ -281,10 +286,12 @@ export default function Day({
             </div>
           </div>
 
-          <div className="totales">
-            <p>VENTAS <span>${formatNumber(total.ventas)}</span></p>
-            <p>GASTOS <span>${formatNumber(total.gastos)}</span></p>
-          </div>
+          {isAdmin && (
+            <div className="totales">
+              <p>VENTAS <span>${formatNumber(total.ventas)}</span></p>
+              <p>GASTOS <span>${formatNumber(total.gastos)}</span></p>
+            </div>
+          )}
           <button onClick={sendDay} className="btn-send" disabled={loading}>
             {loading ? "SINCRONIZANDO..." : "GUARDAR Y SINCRONIZAR"}
           </button>

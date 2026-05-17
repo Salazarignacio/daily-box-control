@@ -7,11 +7,18 @@ import { componentsQuantity } from "../MonthContainer/MonthContainer";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../SendData/fbConfig";
 import { formatNumber, parseNumber, getNum } from "../../utils/format";
+import { useAuth } from "../../context/AuthContext";
 
 const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 const SHEET_URL = import.meta.env.VITE_SHEET_URL;
 
 export default function DayContainer({ month, year, autoOpenToday }) {
+  const { role } = useAuth();
+  
+  // Si el login está desactivado, somos ADMIN por defecto para la demo
+  const isAuthEnabled = import.meta.env.VITE_ENABLE_AUTH === 'true';
+  const isAdmin = isAuthEnabled ? (role === 'ADMIN') : true;
+
   const [monthlyTotals, setMonthlyTotals] = useState({ ventas: 0, gastos: 0 });
   const [daysData, setDaysData] = useState({});
   const [fixedExpenses, setFixedExpenses] = useState(0);
@@ -161,27 +168,31 @@ export default function DayContainer({ month, year, autoOpenToday }) {
       <div className="MonthHeader">
         <h1>{monthName.toUpperCase()}</h1>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <button 
-            onClick={() => { playPop(); setShowTotals(!showTotals); }} 
-            className="btn-toggle-stats"
-            title="Ver totales del mes"
-          >
-            {showTotals ? '👁️' : '📊'}
-          </button>
-          <button 
-            onClick={() => { playPop(); window.open(SHEET_URL, '_blank'); }} 
-            className="btn-open-sheet"
-            title="Abrir Planilla Google"
-          >
-            📄
-          </button>
-          <button 
-            onClick={() => { playPop(); setShowFixedModal(true); }} 
-            className="btn-add-monthly"
-            title="Añadir gastos fijos"
-          >
-            +
-          </button>
+          {isAdmin && (
+            <>
+              <button 
+                onClick={() => { playPop(); setShowTotals(!showTotals); }} 
+                className="btn-toggle-stats"
+                title="Ver totales del mes"
+              >
+                {showTotals ? '👁️' : '📊'}
+              </button>
+              <button 
+                onClick={() => { playPop(); window.open(SHEET_URL, '_blank'); }} 
+                className="btn-open-sheet"
+                title="Abrir Planilla Google"
+              >
+                📄
+              </button>
+              <button 
+                onClick={() => { playPop(); setShowFixedModal(true); }} 
+                className="btn-add-monthly"
+                title="Añadir gastos fijos"
+              >
+                +
+              </button>
+            </>
+          )}
         </div>
       </div>
       
