@@ -132,6 +132,17 @@ export default function DayContainer({ month, year, autoOpenToday }) {
 
   const renderCalendarItems = () => {
     const items = [];
+    const weekdays = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"];
+    
+    // Encabezados de los días
+    weekdays.forEach(day => {
+      items.push(
+        <div key={`header-${day}`} className="weekday-header">
+          {day}
+        </div>
+      );
+    });
+
     const emptyMap = { "domingo": 6, "sábado": 5, "viernes": 4, "jueves": 3, "miércoles": 2, "martes": 1, "lunes": 0 };
     const emptiesCount = emptyMap[whatDayIs(1)] || 0;
     for (let i = 0; i < emptiesCount; i++) items.push(<EmptyDay key={`empty-${i}`} />);

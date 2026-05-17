@@ -537,6 +537,20 @@ body {
   width: 100%;
 }
 
+.weekday-header {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-align: center;
+  text-transform: uppercase;
+  padding-bottom: 4px;
+  letter-spacing: 0.5px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .TodayContainer {
   display: flex;
   justify-content: center;
