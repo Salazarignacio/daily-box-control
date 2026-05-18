@@ -13,11 +13,7 @@ const DB_FIRE = import.meta.env.VITE_DB_FIRE;
 const SHEET_URL = import.meta.env.VITE_SHEET_URL;
 
 export default function DayContainer({ month, year, autoOpenToday }) {
-  const { role } = useAuth();
-  
-  // Si el login está desactivado, somos ADMIN por defecto para la demo
-  const isAuthEnabled = import.meta.env.VITE_ENABLE_AUTH === 'true';
-  const isAdmin = isAuthEnabled ? (role === 'ADMIN') : true;
+  const { canSeeAll } = useAuth();
 
   const [monthlyTotals, setMonthlyTotals] = useState({ ventas: 0, gastos: 0 });
   const [daysData, setDaysData] = useState({});
@@ -168,7 +164,7 @@ export default function DayContainer({ month, year, autoOpenToday }) {
       <div className="MonthHeader">
         <h1>{monthName.toUpperCase()}</h1>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          {isAdmin && (
+          {canSeeAll && (
             <>
               <button 
                 onClick={() => { playPop(); setShowTotals(!showTotals); }} 

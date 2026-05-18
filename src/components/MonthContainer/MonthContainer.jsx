@@ -15,7 +15,7 @@ export const componentsQuantity = (date) => {
 };
 
 export default function MonthsContainer() {
-  const { logout, user } = useAuth();
+  const { logout, user, isAuthEnabled } = useAuth();
   const { yearId } = useParams();
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState('day'); 
@@ -252,21 +252,23 @@ export default function MonthsContainer() {
 
         <h1>Control de Caja Diario</h1>
 
-        <div className="user-session-header">
-          <div className="user-info">
-            <span className="user-label">USUARIO</span>
-            <span className="user-name">
-              {user?.email.split('@')[0].toUpperCase()}
-            </span>
+        {isAuthEnabled && user && (
+          <div className="user-session-header">
+            <div className="user-info">
+              <span className="user-label">USUARIO</span>
+              <span className="user-name">
+                {user.email?.split('@')[0].toUpperCase()}
+              </span>
+            </div>
+            <button 
+              onClick={logout}
+              className="btn-logout"
+              title="Cerrar Sesión"
+            >
+              ✕
+            </button>
           </div>
-          <button 
-            onClick={logout}
-            className="btn-logout"
-            title="Cerrar Sesión"
-          >
-            ✕
-          </button>
-        </div>
+        )}
 
         {activeView === 'year' && (
           <div className="YearSelector">

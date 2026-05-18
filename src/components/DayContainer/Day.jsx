@@ -21,8 +21,7 @@ export default function Day({
 }) {
   const [loading, setLoading] = useState(false);
   const { setIsModalOpen } = useContext(ThemeContext);
-  const { role } = useAuth();
-  const isAdmin = role === 'ADMIN';
+  const { canSeeAll } = useAuth();
 
   useEffect(() => {
     setIsModalOpen(true);
@@ -157,40 +156,38 @@ export default function Day({
         </div>
         
         <div className="modal-content-body">
-          {isAdmin && (
-            <div className="headerDay">
-              <div className="input-group">
-                <label>Efectivo Inicial</label>
-                <div className="currency-input">
-                  <input 
-                    className="number" 
-                    value={inputs.efInicial || ''} 
-                    onChange={(e) => handleInputChange('efInicial', e.target.value)} 
-                    onBlur={(e) => handleInputBlur('efInicial', e.target.value)} 
-                    onFocus={(e) => e.target.select()}
-                    type="text" 
-                    inputMode="decimal"
-                    placeholder="0" 
-                  />
-                </div>
-              </div>
-              <div className="input-group">
-                <label>Efectivo Final</label>
-                <div className="currency-input">
-                  <input 
-                    className="number" 
-                    value={inputs.efFinal || ''} 
-                    onChange={(e) => handleInputChange('efFinal', e.target.value)} 
-                    onBlur={(e) => handleInputBlur('efFinal', e.target.value)} 
-                    onFocus={(e) => e.target.select()}
-                    type="text" 
-                    inputMode="decimal"
-                    placeholder="0" 
-                  />
-                </div>
+          <div className="headerDay">
+            <div className="input-group">
+              <label>Efectivo Inicial</label>
+              <div className="currency-input">
+                <input 
+                  className="number" 
+                  value={inputs.efInicial || ''} 
+                  onChange={(e) => handleInputChange('efInicial', e.target.value)} 
+                  onBlur={(e) => handleInputBlur('efInicial', e.target.value)} 
+                  onFocus={(e) => e.target.select()}
+                  type="text" 
+                  inputMode="decimal"
+                  placeholder="0" 
+                />
               </div>
             </div>
-          )}
+            <div className="input-group">
+              <label>Efectivo Final</label>
+              <div className="currency-input">
+                <input 
+                  className="number" 
+                  value={inputs.efFinal || ''} 
+                  onChange={(e) => handleInputChange('efFinal', e.target.value)} 
+                  onBlur={(e) => handleInputBlur('efFinal', e.target.value)} 
+                  onFocus={(e) => e.target.select()}
+                  type="text" 
+                  inputMode="decimal"
+                  placeholder="0" 
+                />
+              </div>
+            </div>
+          </div>
 
           <div className="gastosContainer">
             {/* SECCIÓN 1: EFECTIVO */}
@@ -286,7 +283,7 @@ export default function Day({
             </div>
           </div>
 
-          {isAdmin && (
+          {canSeeAll && (
             <div className="totales">
               <p>VENTAS <span>${formatNumber(total.ventas)}</span></p>
               <p>GASTOS <span>${formatNumber(total.gastos)}</span></p>
