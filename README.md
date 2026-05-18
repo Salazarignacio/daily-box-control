@@ -20,11 +20,16 @@
 *   **📈 Resumen Mensual Visual:** Barra de progreso de gastos vs. ventas y cálculo automático de **Rendimiento Neto**.
 *   **📱 Mobile First:** Interfaz optimizada para el uso diario desde celulares en el punto de venta.
 
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
+
 ## 🛠️ Stack Tecnológico
 
 *   **Frontend:** React (Vite)
 *   **Autenticación:** Firebase Auth
-*   **Animaciones:** Framer Motion
+*   **Ani![alt text](image-1.png)maciones:** Framer Motion
 *   **Backend & DB:** Firebase Firestore
 *   **Fechas:** Luxon
 *   **Integración:** Google Apps Script
