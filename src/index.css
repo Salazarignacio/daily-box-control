@@ -730,7 +730,9 @@ body.dark-mode .login-overlay input::placeholder {
 
 @media (max-width: 600px) {
   .days {
-    padding: 0.25rem !important;
+    padding: 0 !important; /* Eliminamos padding para ganar espacio */
+    align-items: flex-start !important; /* Importante para Android: que empiece arriba */
+    overflow-y: auto;
   }
 }
 
@@ -748,11 +750,19 @@ body.dark-mode .login-overlay input::placeholder {
   flex-direction: column;
 }
 
+@media (max-width: 600px) {
+  .days > div {
+    max-height: 100dvh; /* Usa dynamic viewport height si está disponible */
+    height: 100%;
+    border-radius: 0; /* En móvil queda mejor a pantalla completa */
+  }
+}
+
 .modal-header {
   position: sticky;
   top: 0;
   background: var(--card-bg);
-  padding: 0.75rem 1.5rem; /* Reducido de 1rem 2rem */
+  padding: 0.75rem 1.5rem;
   z-index: 100;
   border-bottom: 2px solid var(--border-color);
   display: flex;
@@ -761,9 +771,31 @@ body.dark-mode .login-overlay input::placeholder {
   width: 100%;
 }
 
-.modal-content-body { padding: 1rem 1.5rem; width: 100%; } /* Reducido de 1.25rem 2rem */
+.modal-content-body { padding: 1rem 1.5rem; width: 100%; }
 
-.dayActive {
+@media (max-width: 600px) {
+  .modal-content-body {
+    padding: 1rem 0.75rem; /* Más espacio lateral en móvil */
+  }
+}
+
+/* Formulario */
+.headerDay {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.75rem !important;
+  margin-bottom: 1rem;
+  background: var(--month-header-bg);
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 400px) {
+  .headerDay {
+    grid-template-columns: 1fr !important; /* En pantallas muy pequeñas, una sola columna */
+  }
+}
   width: 1.8rem !important; /* Un poco más chico */
   height: 1.8rem !important;
   min-width: 1.8rem;
