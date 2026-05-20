@@ -730,8 +730,8 @@ body.dark-mode .login-overlay input::placeholder {
 
 @media (max-width: 600px) {
   .days {
-    padding: 0 !important; /* Eliminamos padding para ganar espacio */
-    align-items: flex-start !important; /* Importante para Android: que empiece arriba */
+    padding: 0 !important; 
+    align-items: flex-start !important; 
     overflow-y: auto;
   }
 }
@@ -752,9 +752,9 @@ body.dark-mode .login-overlay input::placeholder {
 
 @media (max-width: 600px) {
   .days > div {
-    max-height: 100dvh; /* Usa dynamic viewport height si está disponible */
+    max-height: 100dvh; 
     height: 100%;
-    border-radius: 0; /* En móvil queda mejor a pantalla completa */
+    border-radius: 0; 
   }
 }
 
@@ -775,8 +775,30 @@ body.dark-mode .login-overlay input::placeholder {
 
 @media (max-width: 600px) {
   .modal-content-body {
-    padding: 1rem 0.75rem; /* Más espacio lateral en móvil */
+    padding: 1rem 0.75rem; 
   }
+}
+
+.dayActive {
+  width: 1.8rem !important; 
+  height: 1.8rem !important;
+  min-width: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-gold) !important;
+  border-radius: 50%;
+  color: #1e293b !important;
+  font-weight: bold;
+  cursor: pointer;
+  border: none !important;
+  font-size: 0.8rem;
+}
+
+.date {
+  font-size: 1rem; 
+  font-weight: 800;
+  color: var(--text-main);
 }
 
 /* Formulario */
@@ -793,52 +815,20 @@ body.dark-mode .login-overlay input::placeholder {
 
 @media (max-width: 400px) {
   .headerDay {
-    grid-template-columns: 1fr !important; /* En pantallas muy pequeñas, una sola columna */
+    grid-template-columns: 1fr !important;
   }
-}
-  width: 1.8rem !important; /* Un poco más chico */
-  height: 1.8rem !important;
-  min-width: 1.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent-gold) !important;
-  border-radius: 50%;
-  color: #1e293b !important;
-  font-weight: bold;
-  cursor: pointer;
-  border: none !important;
-  font-size: 0.8rem;
-}
-
-.date {
-  font-size: 1rem; /* Reducido de 1.1rem */
-  font-weight: 800;
-  color: var(--text-main);
-}
-
-/* Formulario */
-.headerDay {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 0.75rem !important; /* Reducido de 1rem */
-  margin-bottom: 1rem; /* Reducido de 1.25rem */
-  background: var(--month-header-bg);
-  padding: 1rem; /* Reducido de 1.25rem */
-  border-radius: 1rem;
-  width: 100%;
 }
 
 .input-group {
   display: flex !important;
   flex-direction: column !important;
-  gap: 0.25rem; /* Reducido */
+  gap: 0.25rem;
   text-align: left;
 }
 
 .input-group label {
   display: block;
-  font-size: 0.6rem; /* Reducido */
+  font-size: 0.6rem;
   font-weight: 800;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -847,14 +837,14 @@ body.dark-mode .login-overlay input::placeholder {
 .section-card {
   background: var(--card-bg);
   border-radius: 1.25rem;
-  padding: 1rem; /* Reducido de 1.5rem */
-  margin-bottom: 1rem; /* Reducido de 1.5rem */
+  padding: 1rem;
+  margin-bottom: 1rem;
   width: 100%;
   border: 1px solid var(--border-color);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Reducido de 1.25rem */
+  gap: 1rem;
 }
 
 .section-header {
@@ -865,7 +855,7 @@ body.dark-mode .login-overlay input::placeholder {
 }
 
 .section-header p {
-  font-size: 0.9rem; /* Reducido de 1rem */
+  font-size: 0.9rem;
   color: var(--text-main);
   font-weight: 800;
   margin: 0;
@@ -937,15 +927,15 @@ ul { list-style: none; padding: 0; margin: 0; }
   display: flex;
   gap: 0.5rem;
   width: 100%;
-  align-items: center; /* Asegura que el botón de eliminar esté centrado con los inputs */
+  align-items: center; 
 }
 
 .row-inputs .text {
-  flex: 3.5; /* Detalle mucho más ancho */
+  flex: 3.5;
 }
 
 .row-inputs .number {
-  flex: 1.5; /* Precio compacto */
+  flex: 1.5;
 }
 
 input.number {
@@ -956,7 +946,7 @@ input.number {
   position: relative;
   display: flex;
   align-items: center;
-  flex: 1.5; /* Ajuste base para que herede proporciones */
+  flex: 1.5;
 }
 
 .row-inputs .currency-input {
@@ -991,7 +981,6 @@ input.number, input.text {
   min-width: 0;
 }
 
-/* Ocultar flechas en inputs de tipo número */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -1004,8 +993,6 @@ input[type="number"] {
 }
 
 @media (max-width: 600px) {
-  .days { padding: 0.25rem; }
-  .days > div { border-radius: 1rem; }
   .modal-header { padding: 0.75rem 1rem; }
   .modal-content-body { padding: 0.65rem; }
   .section-card { padding: 0.65rem 0.5rem; margin-bottom: 0.75rem; gap: 0.75rem; border-radius: 1rem; }
@@ -1028,7 +1015,7 @@ input[type="number"] {
     padding: 0.5rem 0.5rem;
     font-size: 0.85rem;
     border-radius: 0.5rem;
-    height: 2.4rem; /* Altura fija para consistencia */
+    height: 2.4rem; 
   }
 
   .btn-remove {
