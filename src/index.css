@@ -35,40 +35,40 @@ body.light-mode {
 }
 
 body.dark-mode {
-  --bg-main: #1e1e1e;        /* Mismo fondo que POS panel en dark mode */
-  --primary-dark: #121212;   /* Fondo general de POS dark */
-  --header-text: #e2e8f0;
-  --selector-bg: rgba(255, 255, 255, 0.05);
-  --selector-border: rgba(255, 255, 255, 0.08);
-  --selector-text: #94a3b8;
+  --bg-main: #334155;        /* Slate 700 */
+  --primary-dark: #475569;   /* Slate 600 */
+  --header-text: #f8fafc;
+  --selector-bg: rgba(255, 255, 255, 0.12);
+  --selector-border: rgba(255, 255, 255, 0.15);
+  --selector-text: #cbd5e1;
   --selector-active-bg: #f59e0b; 
-  --selector-active-text: white;
-  --card-bg: #27272a;        /* Fondo de tarjetas de formulario POS */
-  --border-color: rgba(255, 255, 255, 0.08);
-  --text-main: #e2e8f0;
-  --text-muted: #94a3b8;
-  --month-header-bg: #121212;
+  --selector-active-text: #1e293b;
+  --card-bg: #1e293b;        /* Slate 800 */
+  --border-color: #475569;
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --month-header-bg: #475569;
   --accent-gold: #f59e0b;
-  --input-bg: #18181b;         
-  --input-readonly-bg: #121212;
+  --input-bg: white;         
+  --input-readonly-bg: #f1f5f9;
 }
 
 /* Solo para el modo oscuro, ajustamos los inputs de los formularios */
 body.dark-mode .days .section-card,
 body.dark-mode .login-container .section-card {
-  background: #27272a;       
+  background: #1e293b;       
 }
 
 body.dark-mode .days input.number, 
 body.dark-mode .days input.text,
 body.dark-mode .login-container input.text {
-  background: #18181b !important; 
-  border-color: rgba(255, 255, 255, 0.08);
-  color: #e2e8f0;
+  background: #334155 !important; 
+  border-color: #475569;
+  color: #f8fafc;
 }
 
 body.dark-mode .days input:read-only {
-  background: #121212 !important; 
+  background: #1e293b !important; 
   opacity: 0.8;
 }
 
