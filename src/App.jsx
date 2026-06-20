@@ -11,6 +11,10 @@ export const ThemeContext = createContext();
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const themeParam = urlParams.get("theme");
+    if (themeParam === "dark") return true;
+    if (themeParam === "light") return false;
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
@@ -21,14 +25,28 @@ function App() {
     seedTestUsers('liLM1DTsTybLpA2YI2kehB8XBuS2', 'ZUFsYDMDyMb001BrGObo3MVaKOC3');
   }, []);
 
+  // Escuchar mensajes del padre para cambiar de tema dinámicamente
+  useEffect(() => {
+    const handleMessage = (e) => {
+      if (e.data && e.data.type === "THEME_CHANGE") {
+        setIsDarkMode(e.data.theme === "dark");
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     
     const handleChange = (e) => {
-      setIsDarkMode(e.matches);
+      // Solo actualizamos desde el sistema si no hay parámetro de url forzado
+      const urlParams = new URLSearchParams(window.location.search);
+      if (!urlParams.get("theme")) {
+        setIsDarkMode(e.matches);
+      }
     };
 
-    // Escuchamos cambios en la preferencia del sistema
     mediaQuery.addEventListener('change', handleChange);
 
     if (isDarkMode) {

@@ -32,8 +32,8 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Solo interceptar peticiones GET
-  if (event.request.method !== 'GET') return;
+  // Solo interceptar peticiones GET de esquemas http/https
+  if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
 
   event.respondWith(
     fetch(event.request)
